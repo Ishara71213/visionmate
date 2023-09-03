@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
@@ -46,7 +47,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //   title: Text(widget.title),
       // ),
       body: BlocListener<UserCubit, UserState>(
-        listener: (context, state) {},
+        listener: (context, state) async {
+          if (state is UserSuccess) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, RouteConst.homeScreen, (route) => false);
+              BlocProvider.of<AuthCubit>(context).appStarted();
+            });
+          }
+        },
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
@@ -117,10 +126,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
                                     submitSignUp(context);
-                                    // final snackBar = SnackBar(
-                                    //     content: const Text("Creating Account"));
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(snackBar);
                                   }
                                 },
                                 style: FilledButton.styleFrom(
@@ -290,6 +295,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
             password: _passwordController.text,
             dob: _dateOfBirthController.text,
             userType: purposeOfUserSelectedVal));
-    await BlocProvider.of<AuthCubit>(context).appStarted();
   }
 }

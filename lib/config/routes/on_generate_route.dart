@@ -32,10 +32,11 @@ MaterialPageRoute materialBuilderAuthScreens({required Widget widget}) {
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                Future.delayed(const Duration(seconds: 2));
                 return const HomeScreen();
-              } else {
+              } else if (state is UnAuthenticated) {
                 return widget;
+              } else {
+                return const AuthOptionsScreen();
               }
             },
           ));

@@ -4,7 +4,7 @@ import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart'
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/injection_container.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:visionmate/on_generate_route.dart';
+import 'package:visionmate/config/routes/on_generate_route.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,19 +29,6 @@ class VisionMateApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         onGenerateRoute: OnGenerateRoute.route,
-        // routes: {
-        //   "/": (context) {
-        //     return BlocBuilder(builder: (context, authState) {
-        //       if (authState is Authenticated) {
-        //         return const AuthOptionsScreen();
-        //       }
-        //       if (authState is UnAuthenticated) {
-        //         return const SignInScreen();
-        //       }
-        //       return const CircularProgressIndicator();
-        //     });
-        //   }
-        // },
       ),
     );
   }
