@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text("signIn")),
           ElevatedButton(
               onPressed: () {
-                BlocProvider.of<UserCubit>(context).resettoInitialState();
+                BlocProvider.of<UserCubit>(context).resetToInitialState();
                 BlocProvider.of<AuthCubit>(context).signOut();
               },
               child: Text("signOut"))

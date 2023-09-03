@@ -18,18 +18,18 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeySignUp = GlobalKey<FormState>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  String? purposeOfUserSelectedVal;
 
   final List<Map<String, String>> purposeOfUserList = [
     {"text": "Navigation Assistance", "value": "visuallyImpairedUser"},
     {"text": "Guardian Of a Visually Imapired user", "value": "Guardian"},
     {"text": "Volunteer", "value": "Volunteer"}
   ];
-  String? purposeOfUserSelectedVal;
 
   @override
   void dispose() {
@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Form(
-                        key: formKey,
+                        key: formKeySignUp,
                         child: Column(
                           children: [
                             Padding(
@@ -127,7 +127,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     loadingText: 'Creating Account',
                                     successText: 'Account Created',
                                     onPressed: () {
-                                      if (formKey.currentState!.validate()) {
+                                      if (formKeySignUp.currentState!
+                                          .validate()) {
                                         submitSignUp(context);
                                       }
                                     },

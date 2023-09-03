@@ -25,7 +25,7 @@ class UserCubit extends Cubit<UserState> {
       required this.getCurrentUIdUsecase})
       : super(UserInitial());
 
-  Future<void> resettoInitialState() async {
+  Future<void> resetToInitialState() async {
     emit(UserInitial());
   }
 
@@ -47,8 +47,6 @@ class UserCubit extends Cubit<UserState> {
       await signUpUsecase.call(user);
       await getCreateCurrentUserUsecase.call(user);
       emit(UserSuccess());
-      // Navigator.pushNamedAndRemoveUntil(
-      //     context, "/homeScreen", (route) => false);
     } on SocketException catch (_) {
       emit(UserFailrue());
     } catch (e) {
