@@ -19,7 +19,7 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     } else if (user.userType == "Guardian") {
       userTypeCollectionRef = firestore.collection("Guardians");
     } else {
-      userTypeCollectionRef = firestore.collection("visuallyImpairedUsers");
+      userTypeCollectionRef = firestore.collection("VisuallyImpairedUsers");
     }
 
     final uid = await getCurrentUId();
@@ -40,7 +40,7 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
       //return;
     });
 
-    userCollectionRef = firestore.collection("users");
+    userCollectionRef = firestore.collection("Users");
     await userCollectionRef.doc(uid).get().then((value) {
       if (!value.exists) {
         final newUser = UserModel(userType: user.userType).toDocumentUserType();

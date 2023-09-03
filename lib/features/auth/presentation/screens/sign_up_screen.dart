@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:visionmate/core/constants/states.dart';
+import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
@@ -42,10 +44,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: Text(widget.title),
-      // ),
       body: BlocListener<UserCubit, UserState>(
         listener: (context, state) async {
           if (state is UserSuccess) {
@@ -122,62 +120,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 isMandotary: true,
                               ),
                             ),
-                            FilledButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    submitSignUp(context);
-                                  }
-                                },
-                                style: FilledButton.styleFrom(
-                                    minimumSize: const Size.fromHeight(60),
-                                    backgroundColor: kButtonPrimaryColor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0))),
-                                child: BlocBuilder<UserCubit, UserState>(
-                                  builder: (context, state) {
-                                    return (state is UserLoading)
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text("Creating Account",
-                                                  style:
-                                                      kFilledButtonTextstyle),
-                                              const SizedBox(width: 12),
-                                              const SizedBox(
-                                                height: 22,
-                                                width: 22,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            ],
-                                          )
+                            BlocBuilder<UserCubit, UserState>(
+                              builder: (context, state) {
+                                return FilledButtonWithLoader(
+                                    initText: 'Sign Up',
+                                    loadingText: 'Creating Account',
+                                    successText: 'Account Created',
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        submitSignUp(context);
+                                      }
+                                    },
+                                    state: (state is UserLoading)
+                                        ? States.loading
                                         : (state is UserSuccess)
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text("Account Created ",
-                                                      style:
-                                                          kFilledButtonTextstyle),
-                                                  const SizedBox(width: 4),
-                                                  const SizedBox(
-                                                    height: 22,
-                                                    width: 22,
-                                                    child: Icon(
-                                                      Icons.check_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            : Text("Sign Up",
-                                                style: kFilledButtonTextstyle);
-                                  },
-                                ))
+                                            ? States.success
+                                            : States.initial);
+                              },
+                            )
                           ],
                         )),
                     const SizedBox(
