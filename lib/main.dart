@@ -1,47 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
+import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/injection_container.dart' as di;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:visionmate/on_generate_route.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await di.init();
   runApp(const VisionMateApp());
 }
 
 class VisionMateApp extends StatelessWidget {
   const VisionMateApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Vision mate',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'tests',
-            ),
-          ],
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+            create: (_) => di.sl<AuthCubit>()..appStarted()),
+        BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>())
+      ],
+      child: const MaterialApp(
+        title: 'Vision mate',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        onGenerateRoute: OnGenerateRoute.route,
+        // routes: {
+        //   "/": (context) {
+        //     return BlocBuilder(builder: (context, authState) {
+        //       if (authState is Authenticated) {
+        //         return const AuthOptionsScreen();
+        //       }
+        //       if (authState is UnAuthenticated) {
+        //         return const SignInScreen();
+        //       }
+        //       return const CircularProgressIndicator();
+        //     });
+        //   }
+        // },
       ),
     );
   }
