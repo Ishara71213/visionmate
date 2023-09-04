@@ -5,6 +5,7 @@ import 'package:visionmate/features/auth/presentation/screens/auth_options_scree
 import 'package:visionmate/features/auth/presentation/screens/home_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:visionmate/splash_screen.dart';
 
 class OnGenerateRoute {
   static Route<dynamic> route(RouteSettings settings) {
@@ -13,6 +14,8 @@ class OnGenerateRoute {
     switch (settings.name) {
       case '/':
         return materialBuilderAuthScreens(widget: const AuthOptionsScreen());
+      case '/splashScreen':
+        return materialBuilderAuthScreens(widget: const SplashScreen());
       case '/signInScreen':
         return materialBuilderAuthScreens(widget: const SignInScreen());
       case '/signUpScreen':

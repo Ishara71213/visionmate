@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
-import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
 
 class AuthOptionsScreen extends StatefulWidget {
   const AuthOptionsScreen({super.key});

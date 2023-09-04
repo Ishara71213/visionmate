@@ -21,6 +21,13 @@ Color kInputFieldBgColor = const Color(0xFFF2F3F5);
 Color kInputFieldHintTextColor = const Color(0xFFA6A6A6);
 
 //filled buttons text style
+TextStyle kLogoTextstyle = GoogleFonts.poppins(
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+  color: kButtonTextWhiteColor,
+);
+
+//filled buttons text style
 TextStyle kFilledButtonTextstyle = GoogleFonts.poppins(
   fontSize: 16,
   fontWeight: FontWeight.w600,
