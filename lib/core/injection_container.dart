@@ -13,6 +13,13 @@ import 'package:visionmate/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source.dart';
+import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source_impl.dart';
+import 'package:visionmate/features/userInfoSetup/data/repository_impl/user_info_repository_impl.dart';
+import 'package:visionmate/features/userInfoSetup/domain/repository/user_info_repository.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/create_current_vi_user_type_info_usecase.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/get_current_uid_usecase.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -28,6 +35,9 @@ Future<void> init() async {
       signUpUsecase: sl.call(),
       getCreateCurrentUserUsecase: sl.call(),
       getCurrentUIdUsecase: sl.call()));
+
+  sl.registerFactory<UserInfoCubit>(() => UserInfoCubit(
+      createCurrentViUserTypeInfo: sl.call(), getCurrentUIdUsecase: sl.call()));
 
   //usecase
 
@@ -45,12 +55,23 @@ Future<void> init() async {
   sl.registerLazySingleton<GetCreateCurrentUserUsecase>(
       () => GetCreateCurrentUserUsecase(repository: sl.call()));
 
+  //user info usecases
+  sl.registerLazySingleton<CreateCurrentViUserTypeInfo>(
+      () => CreateCurrentViUserTypeInfo(repository: sl.call()));
+  sl.registerLazySingleton<GetCurrentUIdGlobalUsecase>(
+      () => GetCurrentUIdGlobalUsecase(repository: sl.call()));
+
   //repositories
   sl.registerLazySingleton<FirebaseRepository>(
       () => FirebaseRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<UserInfoRepository>(
+      () => UserInfoRepositoryImpl(remoteDataSource: sl.call()));
   //data source
   sl.registerLazySingleton<FirebaseRemoteDataSource>(() =>
       FirebaseRemoteDataSourceImpl(auth: sl.call(), firestore: sl.call()));
+  sl.registerLazySingleton<UserInfoFirebaseRemoteDataSource>(() =>
+      UserInfoFirebaseRemoteDataSourceImpl(
+          auth: sl.call(), firestore: sl.call()));
   //external
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;

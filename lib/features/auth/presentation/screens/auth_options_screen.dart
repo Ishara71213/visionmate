@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 
 class AuthOptionsScreen extends StatefulWidget {
   const AuthOptionsScreen({super.key});
@@ -28,8 +29,8 @@ class _AuthOptionsScreenState extends State<AuthOptionsScreen> {
               ),
               FilledButton(
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, RouteConst.signInScreen, (route) => false);
+                    navigationHandlerWithRemovePrevRoute(
+                        context, RouteConst.signInScreen);
                   },
                   style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),
@@ -42,8 +43,8 @@ class _AuthOptionsScreenState extends State<AuthOptionsScreen> {
               ),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, RouteConst.signUpScreen, (route) => false);
+                    navigationHandlerWithRemovePrevRoute(
+                        context, RouteConst.signUpScreen);
                   },
                   style: OutlinedButton.styleFrom(
                       minimumSize: const Size.fromHeight(60),

@@ -4,6 +4,7 @@ import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/states.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
@@ -49,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if (state is UserSuccess) {
             await Future.delayed(const Duration(seconds: 1), () {
               Navigator.pushNamedAndRemoveUntil(
-                  context, RouteConst.homeScreen, (route) => false);
+                  context, RouteConst.userInfoScreen, (route) => false);
               BlocProvider.of<AuthCubit>(context).appStarted();
             });
           }
@@ -228,8 +229,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           const SizedBox(width: 4.0),
                           TextButton(
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, "/signInScreen", (route) => false);
+                                navigationHandlerWithRemovePrevRoute(
+                                    context, RouteConst.signInScreen);
                               },
                               child: Text(
                                 "Sign In",

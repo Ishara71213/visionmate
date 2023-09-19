@@ -5,6 +5,7 @@ Color kPrimaryColor = const Color(0xFF0258DD);
 Color kAppBgColor = const Color(0xFFFAFAFA);
 Color kGreyColor = const Color(0xFFD9D9D9);
 Color kBlackColor = const Color(0xFF1C1D1E);
+Color kDarkGreyTextColor = const Color(0xFF5D6166);
 Color kDarkGreyColor = const Color(0xFF8E8E8E);
 Color kGrey = const Color(0xFFB3B3B3);
 Color kLightGreyColor = const Color(0xFFD9D9D9);
@@ -58,6 +59,13 @@ TextStyle kBlueSmalltextStyle = GoogleFonts.poppins(
   color: kPrimaryColor,
 );
 
+//primary color small text
+TextStyle kBluetextStyle = GoogleFonts.poppins(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  color: kPrimaryColor,
+);
+
 //Dark grey small text style
 TextStyle kInputFieldHintText = GoogleFonts.poppins(
   fontSize: 16,
@@ -84,3 +92,17 @@ TextStyle kTitleOneText = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
   color: kPrimaryColor,
 );
+
+//headding text style
+TextStyle kOnboardScreenTitle = GoogleFonts.poppins(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: kPrimaryColor,
+    height: 1.2);
+
+//headding text style
+TextStyle kOnboardScreenText = GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: kDarkGreyTextColor,
+    height: 1.4);

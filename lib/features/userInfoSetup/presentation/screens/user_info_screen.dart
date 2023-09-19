@@ -3,22 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:visionmate/core/constants/states.dart';
-import 'package:visionmate/core/util/functions/navigator_handler.dart';
+import 'package:visionmate/core/entities/visually_impaired_user_entity.dart';
+import 'package:visionmate/core/util/classes/cordinates.dart';
+import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class UserInfoScreen extends StatefulWidget {
+  const UserInfoScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _UserInfoScreenState extends State<UserInfoScreen> {
   final GlobalKey<FormState> formKeySignIn = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -54,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Image.asset(
-                      "assets/images/signin-page-image.png",
+                      "assets/images/loginPageImage.png",
                       alignment: Alignment.center,
                       scale: 1,
                     ),
@@ -78,24 +79,15 @@ class _SignInScreenState extends State<SignInScreen> {
                                   controller: _passwordController,
                                   prefixIcon: const Icon(Icons.lock),
                                 )),
-                            BlocBuilder<UserCubit, UserState>(
-                              builder: (context, state) {
-                                return FilledButtonWithLoader(
-                                    initText: 'Sign In',
-                                    loadingText: 'Signing In',
-                                    successText: 'Done',
-                                    onPressed: () {
-                                      if (formKeySignIn.currentState!
-                                          .validate()) {
-                                        submitSignIn(context);
-                                      }
-                                    },
-                                    state: (state is UserLoading)
-                                        ? States.loading
-                                        : (state is UserSuccess)
-                                            ? States.success
-                                            : States.initial);
+                            ElevatedButton(
+                              onPressed: () {
+                                submitUserInfo(context);
+                                // if (formKeySignIn.currentState!
+                                //     .validate()) {
+                                //   submitSignIn(context);
+                                // }
                               },
+                              child: const Text("press"),
                             )
                           ],
                         )),
@@ -186,8 +178,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           const SizedBox(width: 4.0),
                           TextButton(
                               onPressed: () {
-                                navigationHandlerWithRemovePrevRoute(
-                                    context, RouteConst.signUpScreen);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, "/signUpScreen", (route) => false);
                               },
                               child: Text(
                                 "Sign Up",
@@ -206,11 +198,23 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void submitSignIn(context) async {
-    await BlocProvider.of<UserCubit>(context).submitSignIn(
-        user: UserEntity(
-      email: _emailController.text,
-      password: _passwordController.text,
+  void submitUserInfo(context) async {
+    List<VisitLocation> visitLocations = [
+      VisitLocation(
+          locationName: "home",
+          locationPurpose: "visit home",
+          locationCordinates: Cordinates(latitude: "4522", longitude: "5666"))
+    ];
+
+    await BlocProvider.of<UserInfoCubit>(context).submitUserInfo(
+        user: VisuallyImpairedUserEntity(
+      disability: "blind",
+      emergencyContact: "54654544644",
+      emergencyContactName: "father",
+      recidenceAddress: "test adress",
+      recidenceCordinate: Cordinates(latitude: "4522", longitude: "5225"),
+      guardianId: "78523335",
+      visitLocation: visitLocations,
     ));
   }
 }

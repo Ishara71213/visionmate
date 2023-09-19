@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
-import 'package:visionmate/injection_container.dart' as di;
+import 'package:visionmate/core/injection_container.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:visionmate/config/routes/on_generate_route.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,8 @@ class VisionMateApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(
             create: (_) => di.sl<AuthCubit>()..appStarted()),
-        BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>())
+        BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
+        BlocProvider<UserInfoCubit>(create: (_) => di.sl<UserInfoCubit>())
       ],
       child: const MaterialApp(
         title: 'Vision mate',

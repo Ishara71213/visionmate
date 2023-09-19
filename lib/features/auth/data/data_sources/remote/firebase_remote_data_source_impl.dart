@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:visionmate/features/auth/data/models/user_model.dart';
+import 'package:visionmate/core/models/user_model.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,18 +13,11 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
   @override
   Future<void> getCreateCurrentUser(UserEntity user) async {
     CollectionReference userCollectionRef;
-    CollectionReference userTypeCollectionRef;
-    if (user.userType == "Volunteer") {
-      userTypeCollectionRef = firestore.collection("Volunteers");
-    } else if (user.userType == "Guardian") {
-      userTypeCollectionRef = firestore.collection("Guardians");
-    } else {
-      userTypeCollectionRef = firestore.collection("VisuallyImpairedUsers");
-    }
+    userCollectionRef = firestore.collection("Users");
 
     final uid = await getCurrentUId();
 
-    await userTypeCollectionRef.doc(uid).get().then((value) {
+    await userCollectionRef.doc(uid).get().then((value) {
       if (!value.exists) {
         final newUser = UserModel(
                 uid: uid,
@@ -35,20 +28,47 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
                 userType: user.userType)
             .toDocument();
 
-        userTypeCollectionRef.doc(uid).set(newUser);
-      }
-      //return;
-    });
-
-    userCollectionRef = firestore.collection("Users");
-    await userCollectionRef.doc(uid).get().then((value) {
-      if (!value.exists) {
-        final newUser = UserModel(userType: user.userType).toDocumentUserType();
-
         userCollectionRef.doc(uid).set(newUser);
       }
       return;
     });
+    // CollectionReference userCollectionRef;
+    // CollectionReference userTypeCollectionRef;
+    // if (user.userType == "Volunteer") {
+    //   userTypeCollectionRef = firestore.collection("Volunteers");
+    // } else if (user.userType == "Guardian") {
+    //   userTypeCollectionRef = firestore.collection("Guardians");
+    // } else {
+    //   userTypeCollectionRef = firestore.collection("VisuallyImpairedUsers");
+    // }
+
+    // final uid = await getCurrentUId();
+
+    // await userTypeCollectionRef.doc(uid).get().then((value) {
+    //   if (!value.exists) {
+    //     final newUser = UserModel(
+    //             uid: uid,
+    //             name: user.name,
+    //             email: user.email,
+    //             dob: user.dob,
+    //             status: user.status,
+    //             userType: user.userType)
+    //         .toDocument();
+
+    //     userTypeCollectionRef.doc(uid).set(newUser);
+    //   }
+    //   //return;
+    // });
+
+    // userCollectionRef = firestore.collection("Users");
+    // await userCollectionRef.doc(uid).get().then((value) {
+    //   if (!value.exists) {
+    //     final newUser = UserModel(userType: user.userType).toDocumentUserType();
+
+    //     userCollectionRef.doc(uid).set(newUser);
+    //   }
+    //   return;
+    // });
   }
 
   @override
