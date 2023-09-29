@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:visionmate/config/routes/on_generate_route.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
+// distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

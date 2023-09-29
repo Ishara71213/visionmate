@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/core/entities/visually_impaired_user_entity.dart';
 import 'package:visionmate/core/util/classes/cordinates.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
@@ -9,7 +10,7 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
       final String? emergencyContact,
       final String? emergencyContactName,
       final String? recidenceAddress,
-      final Cordinates? recidenceCordinate,
+      final LatLng? recidenceCordinate,
       final String? guardianId,
       final List<VisitLocation>? visitLocation})
       : super(

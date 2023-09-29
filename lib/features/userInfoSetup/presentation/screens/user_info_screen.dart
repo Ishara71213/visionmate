@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,7 +82,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                                 )),
                             ElevatedButton(
                               onPressed: () {
-                                submitUserInfo(context);
+                                // submitUserInfo(context);
                                 // if (formKeySignIn.currentState!
                                 //     .validate()) {
                                 //   submitSignIn(context);
@@ -198,23 +199,23 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     );
   }
 
-  void submitUserInfo(context) async {
-    List<VisitLocation> visitLocations = [
-      VisitLocation(
-          locationName: "home",
-          locationPurpose: "visit home",
-          locationCordinates: Cordinates(latitude: "4522", longitude: "5666"))
-    ];
+  // void submitUserInfo(context) async {
+  //   List<VisitLocation> visitLocations = [
+  //     const VisitLocation(
+  //         locationName: "home",
+  //         locationPurpose: "visit home",
+  //         locationCordinates: LatLng(4522, 5666))
+  //   ];
 
-    await BlocProvider.of<UserInfoCubit>(context).submitUserInfo(
-        user: VisuallyImpairedUserEntity(
-      disability: "blind",
-      emergencyContact: "54654544644",
-      emergencyContactName: "father",
-      recidenceAddress: "test adress",
-      recidenceCordinate: Cordinates(latitude: "4522", longitude: "5225"),
-      guardianId: "78523335",
-      visitLocation: visitLocations,
-    ));
-  }
+  //   await BlocProvider.of<UserInfoCubit>(context).submitUserInfo(
+  //       user: VisuallyImpairedUserEntity(
+  //     disability: "blind",
+  //     emergencyContact: "54654544644",
+  //     emergencyContactName: "father",
+  //     recidenceAddress: "test adress",
+  //     recidenceCordinate: const LatLng(4522, 5666),
+  //     guardianId: "78523335",
+  //     visitLocation: visitLocations,
+  //   ));
+  // }
 }

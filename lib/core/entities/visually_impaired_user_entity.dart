@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/core/util/classes/cordinates.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 
@@ -7,7 +8,7 @@ class VisuallyImpairedUserEntity extends Equatable {
   final String? emergencyContact;
   final String? emergencyContactName;
   final String? recidenceAddress;
-  final Cordinates? recidenceCordinate;
+  final LatLng? recidenceCordinate;
   final String? guardianId;
   final List<VisitLocation>? visitLocation;
 

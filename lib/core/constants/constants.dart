@@ -88,20 +88,34 @@ TextStyle kwarningText = GoogleFonts.poppins(
 
 //headding text style
 TextStyle kTitleOneText = GoogleFonts.poppins(
-  fontSize: 24,
+  fontSize: 22,
   fontWeight: FontWeight.w600,
   color: kPrimaryColor,
 );
 
 //headding text style
 TextStyle kOnboardScreenTitle = GoogleFonts.poppins(
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: FontWeight.w600,
     color: kPrimaryColor,
     height: 1.2);
 
-//headding text style
+//body text style
 TextStyle kOnboardScreenText = GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: kDarkGreyTextColor,
+    height: 1.4);
+
+//small title text style
+TextStyle kSmallTitleText = GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: kDarkGreyTextColor,
+    height: 1.4);
+
+//small title text style
+TextStyle kSmallSubTitleText = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: kDarkGreyTextColor,

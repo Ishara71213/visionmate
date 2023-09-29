@@ -8,6 +8,7 @@ class TextFormInput extends StatelessWidget {
   final bool isMandotary;
   final RegExp? regExp;
   final String? validatorMsg;
+  final Color? fillColor;
 
   const TextFormInput(
       {super.key,
@@ -17,6 +18,7 @@ class TextFormInput extends StatelessWidget {
       this.fieldName,
       this.regExp,
       this.validatorMsg,
+      this.fillColor,
       this.isMandotary = false});
 
   @override
@@ -42,15 +44,16 @@ class TextFormInput extends StatelessWidget {
           return null;
         }
       } else {
-        if (value!.isEmpty) {
-          return (validatorMsg != null && validatorMsg != "")
-              ? validatorMsg
-              : fieldName != null && fieldName != ""
-                  ? "$fieldName Field can't be Empty"
-                  : "Field can't be Empty";
-        } else {
-          return null;
-        }
+        return null;
+        // if (value!.isEmpty) {
+        //   return (validatorMsg != null && validatorMsg != "")
+        //       ? validatorMsg
+        //       : fieldName != null && fieldName != ""
+        //           ? "$fieldName Field can't be Empty"
+        //           : "Field can't be Empty";
+        // } else {
+        //   return null;
+        // }
       }
     }
 
@@ -61,12 +64,14 @@ class TextFormInput extends StatelessWidget {
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
           hintText: hintText,
           prefixIcon: prefixIcon,
           prefixIconColor: kGrey,
           hintStyle: kInputFieldHintText,
           filled: true,
-          fillColor: kInputFieldBgColor,
+          fillColor: fillColor ?? kInputFieldBgColor,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
               borderSide: BorderSide(

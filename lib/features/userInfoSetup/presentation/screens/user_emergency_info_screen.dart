@@ -48,86 +48,96 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-            ),
-            iconSize: 30,
-            splashRadius: 1,
-            padding: const EdgeInsets.only(top: 20),
-          ),
-          leadingWidth: 80,
-          elevation: 0,
-          toolbarHeight: 50,
-          backgroundColor: kAppBgColor,
-          foregroundColor: kPrimaryColor,
-        ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 10.0, right: 10.0),
-                      child: SvgPicture.asset(
-                        "assets/images/Emergency-call.svg",
-                        alignment: Alignment.center,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                            child: Text(
-                          'Setup your Emergency  contact Details',
-                          style: kOnboardScreenTitle,
-                        )),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    Form(
-                        key: formKeyEmergencyContact,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Column(
-                          children: [
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
                             Padding(
-                                padding: const EdgeInsets.only(bottom: 12.0),
-                                child: TextFormInput(
-                                  fieldName: "Name",
-                                  controller: _emergencyContactNameController,
-                                  hintText: "Name",
-                                  prefixIcon: const Icon(Icons.person),
+                              padding: const EdgeInsets.only(
+                                  top: 14.0, left: 18.0, right: 4.0),
+                              child: SvgPicture.asset(
+                                "assets/images/Emergency-call.svg",
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 30.0,
+                            ),
+                            Row(
+                              children: [
+                                Flexible(
+                                    child: Text(
+                                  'Setup your Emergency  contact Details',
+                                  style: kOnboardScreenTitle,
                                 )),
-                            Padding(
-                                padding: const EdgeInsets.only(bottom: 12.0),
-                                child: TextFormInput(
-                                  fieldName: "Contact number",
-                                  hintText: "Contact number",
-                                  controller: _emergencyContactController,
-                                  prefixIcon: const Icon(Icons.phone),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Form(
+                                key: formKeyEmergencyContact,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 12.0),
+                                        child: TextFormInput(
+                                          fieldName: "Name",
+                                          controller:
+                                              _emergencyContactNameController,
+                                          hintText: "Name",
+                                          prefixIcon: const Icon(Icons.person),
+                                        )),
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 12.0),
+                                        child: TextFormInput(
+                                          fieldName: "Contact number",
+                                          hintText: "Contact number",
+                                          controller:
+                                              _emergencyContactController,
+                                          prefixIcon: const Icon(Icons.phone),
+                                        )),
+                                  ],
                                 )),
                           ],
-                        )),
-                  ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                Container(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: kPrimaryColor,
+                    ),
+                    iconSize: 30,
+                    splashRadius: 1,
+                    padding:
+                        const EdgeInsets.only(left: 22, right: 6, bottom: 10),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -142,8 +152,7 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
               OutlinedButton(
                 onPressed: () {
                   saveDataState(context);
-                  navigationHandler(
-                      context, RouteConst.addfreqVisitingLocScreen);
+                  navigationHandler(context, RouteConst.setResidenceLocScreen);
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: kPrimaryColor),
@@ -165,7 +174,6 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }

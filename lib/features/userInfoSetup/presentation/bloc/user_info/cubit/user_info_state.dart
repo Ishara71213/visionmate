@@ -12,6 +12,14 @@ final class UserInfoInitial extends UserInfoState {
   List<Object> get props => [];
 }
 
+class UserInfoLocationDataGathering extends UserInfoState {
+  final LatLng curruntLocation;
+  const UserInfoLocationDataGathering(
+      {this.curruntLocation = const LatLng(10, 10.0)});
+  @override
+  List<Object> get props => [curruntLocation];
+}
+
 final class UserInfoLoading extends UserInfoState {
   @override
   List<Object> get props => [];

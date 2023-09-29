@@ -33,6 +33,7 @@ class _UserFrequentlyVisitingLocationsInfoScreenState
   @override
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
+    UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) async {
         if (state is UserSuccess) {
@@ -44,119 +45,179 @@ class _UserFrequentlyVisitingLocationsInfoScreenState
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-            ),
-            iconSize: 30,
-            splashRadius: 1,
-            padding: const EdgeInsets.only(top: 20),
-          ),
-          leadingWidth: 80,
-          elevation: 0,
-          toolbarHeight: 50,
-          backgroundColor: kAppBgColor,
-          foregroundColor: kPrimaryColor,
-        ),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      "assets/images/frequently-visiting-locations.svg",
-                      alignment: Alignment.center,
-                    ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
+          body: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
                       children: [
-                        Flexible(
-                            child: Text(
-                          'Setup frequently visiting locations',
-                          style: kOnboardScreenTitle,
-                        )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                "assets/images/frequently-visiting-locations.svg",
+                                alignment: Alignment.center,
+                              ),
+                              const SizedBox(
+                                height: 30.0,
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                      child: Text(
+                                    'Setup frequently visiting locations',
+                                    style: kOnboardScreenTitle,
+                                  )),
+                                ],
+                              ),
+                              SizedBox(
+                                height:
+                                    userInfoCubit.freqVisitingLocations.isEmpty
+                                        ? 14
+                                        : userInfoCubit.freqVisitingLocations
+                                                    .length ==
+                                                1
+                                            ? 70
+                                            : 140,
+                                child: ListView.builder(
+                                    itemCount: userInfoCubit
+                                        .freqVisitingLocations.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ListTile(
+                                        contentPadding: const EdgeInsets.all(0),
+                                        leading: const Icon(
+                                          Icons.location_on,
+                                          size: 28,
+                                        ),
+                                        horizontalTitleGap: 0,
+                                        title: Text(
+                                          userInfoCubit
+                                              .freqVisitingLocations[index]
+                                              .locationName
+                                              .toString(),
+                                          style: kSmallTitleText,
+                                        ),
+                                        subtitle: Text(
+                                          userInfoCubit
+                                              .freqVisitingLocations[index]
+                                              .locationPurpose
+                                              .toString(),
+                                          style: kSmallSubTitleText,
+                                        ),
+                                        trailing: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              userInfoCubit
+                                                  .freqVisitingLocations
+                                                  .removeAt(index);
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_circle,
+                                            color: kErrorColor,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                              const SizedBox(
+                                height: 4.0,
+                              ),
+                              FilledButton(
+                                  onPressed: () {
+                                    navigationHandler(context,
+                                        RouteConst.setfreqVisitingLocScreen);
+                                  },
+                                  style: FilledButton.styleFrom(
+                                      minimumSize: const Size.fromHeight(60),
+                                      backgroundColor: kButtonPrimaryColor,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6.0))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.add_circle),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text("Add More",
+                                          style: kFilledButtonTextstyle),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 10.0,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: kPrimaryColor,
+                      ),
+                      iconSize: 30,
+                      splashRadius: 1,
+                      padding:
+                          const EdgeInsets.only(left: 22, right: 6, bottom: 10),
                     ),
-                    FilledButton(
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              RouteConst.signInScreen, (route) => false);
-                        },
-                        style: FilledButton.styleFrom(
-                            minimumSize: const Size.fromHeight(60),
-                            backgroundColor: kButtonPrimaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add_circle),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text("Add More", style: kFilledButtonTextstyle),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        )),
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  navigationHandler(
-                      context, RouteConst.setVisualDisabilityScreen);
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Skip",
+                      style: kBluetextStyle,
+                    )),
+                OutlinedButton(
+                  onPressed: () {
+                    navigationHandler(
+                        context, RouteConst.setVisualDisabilityScreen);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: kPrimaryColor),
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(10),
+                    primary: kPrimaryColor,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(9),
+                    decoration: BoxDecoration(
+                        color: kPrimaryColor, shape: BoxShape.circle),
+                    child: Icon(
+                      Icons.navigate_next,
+                      size: 40,
+                      color: kLightGreyColor,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      ),
+              ],
+            ),
+          )),
     );
   }
 }

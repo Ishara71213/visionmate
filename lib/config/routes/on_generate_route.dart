@@ -7,11 +7,13 @@ import 'package:visionmate/features/auth/presentation/screens/home_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:visionmate/core/screens/splash_screen.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_frequently_visiting_locations_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_guardian_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_info_initial_screen.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_residence_location_screen.dart';
 
 class OnGenerateRoute {
   static Route<dynamic> route(RouteSettings settings) {
@@ -20,7 +22,10 @@ class OnGenerateRoute {
     switch (settings.name) {
       case '/':
         return materialBuilderAuthScreens(
-            widget: const AuthOptionsScreen(), route: routeName);
+            widget: const UserInfoInitialScreen()
+            //const AuthOptionsScreen()
+            ,
+            route: routeName);
       case '/splashScreen':
         return materialBuilderAuthScreens(
             widget: const SplashScreen(), route: routeName);
@@ -36,13 +41,17 @@ class OnGenerateRoute {
       case RouteConst.setEmergencyContactScreen:
         return materialBuilder(
             widget: const UserEmergencyInfoScreen(), route: routeName);
+      case RouteConst.setfreqVisitingLocScreen:
+        return materialBuilder(
+            widget: const UserSetFrequentlyVisitingLocationsScreen(),
+            route: routeName);
       case RouteConst.addfreqVisitingLocScreen:
         return materialBuilder(
             widget: const UserFrequentlyVisitingLocationsInfoScreen(),
             route: routeName);
       case RouteConst.setResidenceLocScreen:
         return materialBuilder(
-            widget: const UserEmergencyInfoScreen(), route: routeName);
+            widget: const UserSetResidenceLocationScreen(), route: routeName);
       case RouteConst.setVisualDisabilityScreen:
         return materialBuilder(
             widget: const UserDisabilityInfoScreen(), route: routeName);
@@ -50,7 +59,8 @@ class OnGenerateRoute {
         return materialBuilder(
             widget: const UserGuardianInfoScreen(), route: routeName);
       case '/homeScreen':
-        return materialBuilder(widget: const HomeScreen(), route: routeName);
+        return materialBuilder(
+            widget: const UserInfoInitialScreen(), route: routeName);
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
     }
