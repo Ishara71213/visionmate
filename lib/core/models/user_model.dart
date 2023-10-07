@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:visionmate/core/constants/user_types.dart';
+import 'package:visionmate/core/util/functions/user_type_helper.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -26,7 +28,6 @@ class UserModel extends UserEntity {
       email: documentSnapshot.get("email"),
       dob: documentSnapshot.get("dob"),
       status: documentSnapshot.get("status"),
-      password: documentSnapshot.get("password"),
       userType: documentSnapshot.get("userType"),
     );
   }
@@ -38,6 +39,16 @@ class UserModel extends UserEntity {
       "email": email,
       "userType": userType,
       "name": name
+    };
+  }
+
+  factory UserModel.fromSnapshotUserEmail(DocumentSnapshot documentSnapshot) {
+    return UserModel(uid: documentSnapshot.get("uid"));
+  }
+
+  Map<String, dynamic> toDocumentUserEmail() {
+    return {
+      "uid": uid,
     };
   }
 

@@ -68,8 +68,13 @@ class _UserInfoInitialScreenState extends State<UserInfoInitialScreen> {
                   ),
                   FilledButton(
                       onPressed: () {
-                        navigationHandler(
-                            context, RouteConst.setEmergencyContactScreen);
+                        navigationHandlerByUserType(
+                            context,
+                            RouteConst.setEmergencyContactScreen,
+                            RouteConst.setViUserScreen,
+                            "");
+                        // navigationHandler(
+                        //     context, RouteConst.setEmergencyContactScreen);
                       },
                       style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(60),

@@ -11,6 +11,7 @@ class RouteConst {
   static const String addfreqVisitingLocScreen = '/addfreqVisitingLocScreen';
   static const String setVisualDisabilityScreen = '/setVisualDisabilityScreen';
   static const String setGuardianScreen = '/setGuardianScreen';
+  static const String setViUserScreen = '/setViUserScreen';
 
   static const String homeScreen = '/homeScreen';
 }

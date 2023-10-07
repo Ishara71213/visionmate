@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
-import 'package:visionmate/features/auth/presentation/screens/home_screen.dart';
+import 'package:visionmate/core/screens/home_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:visionmate/core/screens/splash_screen.dart';
@@ -14,6 +14,7 @@ import 'package:visionmate/features/userInfoSetup/presentation/screens/user_freq
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_guardian_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_info_initial_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_residence_location_screen.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/screens/user_vi_user_info_screen.dart';
 
 class OnGenerateRoute {
   static Route<dynamic> route(RouteSettings settings) {
@@ -22,10 +23,7 @@ class OnGenerateRoute {
     switch (settings.name) {
       case '/':
         return materialBuilderAuthScreens(
-            widget: const UserInfoInitialScreen()
-            //const AuthOptionsScreen()
-            ,
-            route: routeName);
+            widget: const AuthOptionsScreen(), route: routeName);
       case '/splashScreen':
         return materialBuilderAuthScreens(
             widget: const SplashScreen(), route: routeName);
@@ -58,9 +56,11 @@ class OnGenerateRoute {
       case RouteConst.setGuardianScreen:
         return materialBuilder(
             widget: const UserGuardianInfoScreen(), route: routeName);
-      case '/homeScreen':
+      case RouteConst.setViUserScreen:
         return materialBuilder(
-            widget: const UserInfoInitialScreen(), route: routeName);
+            widget: const UserViUserInfoScreen(), route: routeName);
+      case '/homeScreen':
+        return materialBuilder(widget: const HomeScreen(), route: routeName);
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
     }

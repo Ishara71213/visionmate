@@ -11,6 +11,7 @@ class VisuallyImpairedUserEntity extends Equatable {
   final LatLng? recidenceCordinate;
   final String? guardianId;
   final List<VisitLocation>? visitLocation;
+  final bool isAllowedLivelocationShare;
 
   const VisuallyImpairedUserEntity(
       {this.disability,
@@ -19,7 +20,8 @@ class VisuallyImpairedUserEntity extends Equatable {
       this.recidenceAddress,
       this.recidenceCordinate,
       this.guardianId,
-      this.visitLocation});
+      this.visitLocation,
+      this.isAllowedLivelocationShare = false});
 
   @override
   List<Object?> get props => [
@@ -29,6 +31,7 @@ class VisuallyImpairedUserEntity extends Equatable {
         recidenceAddress,
         recidenceCordinate,
         guardianId,
-        visitLocation
+        visitLocation,
+        isAllowedLivelocationShare
       ];
 }

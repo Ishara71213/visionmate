@@ -12,7 +12,8 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
       final String? recidenceAddress,
       final LatLng? recidenceCordinate,
       final String? guardianId,
-      final List<VisitLocation>? visitLocation})
+      final List<VisitLocation>? visitLocation,
+      final bool isAllowedLivelocationShare = false})
       : super(
             disability: disability,
             emergencyContact: emergencyContact,
@@ -20,7 +21,8 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
             recidenceAddress: recidenceAddress,
             recidenceCordinate: recidenceCordinate,
             guardianId: guardianId,
-            visitLocation: visitLocation);
+            visitLocation: visitLocation,
+            isAllowedLivelocationShare: isAllowedLivelocationShare);
 
   factory VisuallyImpairedUserModel.fromSnapshot(
       DocumentSnapshot documentSnapshot) {
@@ -31,7 +33,9 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
         recidenceAddress: documentSnapshot.get("recidenceAddress"),
         recidenceCordinate: documentSnapshot.get("recidenceCordinate"),
         guardianId: documentSnapshot.get("guardianId"),
-        visitLocation: documentSnapshot.get("visitLocation"));
+        visitLocation: documentSnapshot.get("visitLocation"),
+        isAllowedLivelocationShare:
+            documentSnapshot.get("isAllowedLivelocationShare"));
   }
 
   Map<String, dynamic> toDocument() {
@@ -60,7 +64,8 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
       "recidenceAddress": recidenceAddress,
       "recidenceCordinate": cordinate,
       "guardianId": guardianId,
-      "visitLocation": visitLocationList
+      "visitLocation": visitLocationList,
+      "isAllowedLivelocationShare": isAllowedLivelocationShare,
     };
   }
 }

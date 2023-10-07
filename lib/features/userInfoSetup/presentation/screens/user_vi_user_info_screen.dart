@@ -9,22 +9,21 @@ import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart'
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
-class UserGuardianInfoScreen extends StatefulWidget {
-  const UserGuardianInfoScreen({super.key});
+class UserViUserInfoScreen extends StatefulWidget {
+  const UserViUserInfoScreen({super.key});
 
   @override
-  State<UserGuardianInfoScreen> createState() => _UserGuardianInfoScreenState();
+  State<UserViUserInfoScreen> createState() => _UserViUserInfoScreenState();
 }
 
-class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
+class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
   final GlobalKey<FormState> formKeyEmergencyContact = GlobalKey<FormState>();
-  final TextEditingController _guardianEmailController =
-      TextEditingController();
+  final TextEditingController _viUserEmailController = TextEditingController();
   bool agree = false;
 
   @override
   void dispose() {
-    _guardianEmailController.dispose();
+    _viUserEmailController.dispose();
     super.dispose();
   }
 
@@ -77,7 +76,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                         children: [
                                           Flexible(
                                               child: Text(
-                                            'Guardian Saved Successfully',
+                                            'Child Saved Successfully',
                                             style: kOnboardScreenTitle,
                                           )),
                                         ],
@@ -89,7 +88,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                         children: [
                                           Flexible(
                                               child: Text(
-                                            "Guardian can moniter your activities and location",
+                                            "You can moniter your childs location and activities",
                                             style: kOnboardScreenText,
                                           )),
                                         ],
@@ -111,7 +110,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                         ),
                                         trailing: IconButton(
                                           onPressed: () {
-                                            _guardianEmailController.clear();
+                                            _viUserEmailController.clear();
                                             userInfoCubit.removeAssignUser();
                                           },
                                           icon: Icon(
@@ -127,7 +126,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                           children: [
                                             Flexible(
                                                 child: Text(
-                                              'Setup your guardian',
+                                              'Setup your Child',
                                               style: kOnboardScreenTitle,
                                             )),
                                           ],
@@ -139,7 +138,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                           children: [
                                             Flexible(
                                                 child: Text(
-                                              "your Guardian must be a registered user of vison mate application",
+                                              "your Child must be a registered user of vison mate application",
                                               style: kOnboardScreenText,
                                             )),
                                           ],
@@ -158,9 +157,9 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                                     child: TextFormInput(
                                                       fieldName: "Email",
                                                       controller:
-                                                          _guardianEmailController,
+                                                          _viUserEmailController,
                                                       hintText:
-                                                          "Guardian email ",
+                                                          "Visually impaired user email ",
                                                       prefixIcon: const Icon(
                                                           Icons.email),
                                                     )),
@@ -304,7 +303,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
 
   void verifyGuardian(BuildContext context) async {
     BlocProvider.of<UserInfoCubit>(context).assignerEmail =
-        _guardianEmailController.text;
+        _viUserEmailController.text;
     BlocProvider.of<UserInfoCubit>(context).isAllowedLivelocationShare = agree;
     BlocProvider.of<UserInfoCubit>(context).verifyGuardian();
   }

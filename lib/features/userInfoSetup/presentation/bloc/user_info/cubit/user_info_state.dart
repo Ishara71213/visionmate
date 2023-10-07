@@ -20,6 +20,26 @@ class UserInfoLocationDataGathering extends UserInfoState {
   List<Object> get props => [curruntLocation];
 }
 
+final class UserInfoLinkUser extends UserInfoState {
+  @override
+  List<Object> get props => [];
+}
+
+final class UserInfoLinkUserLoading extends UserInfoState {
+  @override
+  List<Object> get props => [];
+}
+
+final class UserInfoLinkUserFailrue extends UserInfoState {
+  @override
+  List<Object> get props => [];
+}
+
+final class UserInfoLinkUserSuccess extends UserInfoState {
+  @override
+  List<Object> get props => [];
+}
+
 final class UserInfoLoading extends UserInfoState {
   @override
   List<Object> get props => [];

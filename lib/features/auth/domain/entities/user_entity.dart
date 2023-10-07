@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:visionmate/core/constants/user_types.dart';
 
 class UserEntity extends Equatable {
   final String? name;

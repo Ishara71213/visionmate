@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/models/user_model.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
@@ -13,7 +14,9 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
   @override
   Future<void> getCreateCurrentUser(UserEntity user) async {
     CollectionReference userCollectionRef;
+    // CollectionReference userEmailsCollectionRef;
     userCollectionRef = firestore.collection("Users");
+    // userEmailsCollectionRef = firestore.collection("UserEmails");
 
     final uid = await getCurrentUId();
 
@@ -30,8 +33,19 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
 
         userCollectionRef.doc(uid).set(newUser);
       }
-      return;
     });
+
+    userCollectionRef = firestore.collection("UserEmails");
+    await userCollectionRef.doc(user.email).get().then((value) {
+      if (!value.exists) {
+        final newUserEmail = UserModel(
+          uid: uid,
+        ).toDocumentUserEmail();
+
+        userCollectionRef.doc(user.email).set(newUserEmail);
+      }
+    });
+    return;
     // CollectionReference userCollectionRef;
     // CollectionReference userTypeCollectionRef;
     // if (user.userType == "Volunteer") {
@@ -69,6 +83,36 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     //   }
     //   return;
     // });
+  }
+
+  @override
+  Future<UserEntity> getCurrentUserById() async {
+    CollectionReference userCollectionRef;
+    userCollectionRef = firestore.collection("Users");
+
+    final uid = await getCurrentUId();
+    UserEntity currentUser = const UserEntity(
+        uid: "",
+        name: "",
+        email: "",
+        dob: "",
+        status: "",
+        userType: UserTypes.visuallyImpairedUser);
+
+    await userCollectionRef.doc(uid).get().then((value) {
+      if (value.exists) {
+        UserModel user = UserModel.fromSnapshot(value);
+        currentUser = UserEntity(
+            uid: user.uid,
+            name: user.name,
+            email: user.email,
+            dob: user.dob,
+            status: user.status,
+            userType: user.userType);
+      }
+      return;
+    });
+    return currentUser;
   }
 
   @override

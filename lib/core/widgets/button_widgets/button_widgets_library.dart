@@ -8,3 +8,4 @@ import 'package:intl/intl.dart';
 import 'package:visionmate/core/constants/states.dart';
 
 part 'filled_button_with_loader.dart';
+part 'filled_button_custom.dart';

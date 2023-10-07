@@ -4,6 +4,7 @@ import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/states.dart';
+import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
@@ -26,10 +27,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _dateOfBirthController = TextEditingController();
   String? purposeOfUserSelectedVal;
 
-  final List<Map<String, String>> purposeOfUserList = [
-    {"text": "Navigation Assistance", "value": "visuallyImpairedUser"},
-    {"text": "Guardian Of a Visually Imapired user", "value": "Guardian"},
-    {"text": "Volunteer", "value": "Volunteer"}
+  final List<Map<String, dynamic>> purposeOfUserList = [
+    {"text": "Navigation Assistance", "value": UserTypes.visuallyImpairedUser},
+    {
+      "text": "Guardian Of a Visually Imapired user",
+      "value": UserTypes.guardian
+    },
+    {"text": "Volunteer", "value": UserTypes.volunteer}
   ];
 
   @override
@@ -49,8 +53,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         listener: (context, state) async {
           if (state is UserSuccess) {
             await Future.delayed(const Duration(seconds: 1), () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, RouteConst.userInfoScreen, (route) => false);
+              navigationHandlerWithRemovePrevRoute(
+                  context, RouteConst.userInfoScreen);
               BlocProvider.of<AuthCubit>(context).appStarted();
             });
           }
