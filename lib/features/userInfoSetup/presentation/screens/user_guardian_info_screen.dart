@@ -36,8 +36,11 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
       listener: (context, state) async {
         if (state is UserSuccess) {
           await Future.delayed(const Duration(seconds: 1), () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, RouteConst.homeScreen, (route) => false);
+            navigationHandlerByUserType(
+                context,
+                RouteConst.homeViUserScreen,
+                RouteConst.homeGuardianUserScreen,
+                RouteConst.homeVolunteerUserScreen);
             BlocProvider.of<AuthCubit>(context).appStarted();
           });
         }
@@ -275,7 +278,7 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                   verifyGuardian(context);
                   userInfoCubit.submitViUserInfo();
                   navigationHandlerWithRemovePrevRoute(
-                      context, RouteConst.homeScreen);
+                      context, RouteConst.homeViUserScreen);
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: kPrimaryColor),

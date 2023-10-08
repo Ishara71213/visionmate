@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/core/constants/constants.dart';
@@ -8,14 +6,14 @@ import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.da
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeGuardianUserScreen extends StatefulWidget {
+  const HomeGuardianUserScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeGuardianUserScreen> createState() => _HomeGuardianUserScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeGuardianUserScreenState extends State<HomeGuardianUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,40 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
-                children: [
-                  FilledButtonCustom(
-                    onPressed: () {},
-                    initText: "Object Detection",
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FilledButtonCustom(
-                    onPressed: () {},
-                    initText: "Color Detection",
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FilledButtonCustom(
-                    onPressed: () {},
-                    initText: "Text to Speech",
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FilledButtonCustom(
-                    onPressed: () {},
-                    initText: "Connect Cane",
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FilledButtonCustom(
-                    onPressed: () {},
-                    initText: "Navigation Assistance",
-                  ),
-                ],
+                children: [],
               ),
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:visionmate/core/screens/home_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int selectedIndex;
@@ -54,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return const HomeScreen();
+                            return const HomeViUserScreen();
                           },
                         ),
                       );
@@ -63,7 +63,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return const HomeScreen();
+                            return const HomeViUserScreen();
                           },
                         ),
                       );
@@ -72,7 +72,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return HomeScreen();
+                            return const HomeViUserScreen();
                           },
                         ),
                       );
@@ -80,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                              builder: (context) => const HomeViUserScreen()));
                     }
 
                     // else if (index == 3) {
@@ -111,7 +111,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                             : Colors.black.withOpacity(0.4),
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       iconName,
                       style: TextStyle(

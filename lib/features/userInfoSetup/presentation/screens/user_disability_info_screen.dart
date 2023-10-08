@@ -36,8 +36,11 @@ class _UserDisabilityInfoScreenState extends State<UserDisabilityInfoScreen> {
         listener: (context, state) async {
           if (state is UserSuccess) {
             await Future.delayed(const Duration(seconds: 1), () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, RouteConst.homeScreen, (route) => false);
+              navigationHandlerByUserType(
+                  context,
+                  RouteConst.homeViUserScreen,
+                  RouteConst.homeGuardianUserScreen,
+                  RouteConst.homeVolunteerUserScreen);
               BlocProvider.of<AuthCubit>(context).appStarted();
             });
           }

@@ -143,7 +143,7 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
             children: [
               TextButton(
                   onPressed: () {
-                    navigationHandler(context, RouteConst.homeScreen);
+                    navigationHandler(context, RouteConst.homeViUserScreen);
                   },
                   child: Text(
                     "Skip",

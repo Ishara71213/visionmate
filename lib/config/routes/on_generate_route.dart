@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
-import 'package:visionmate/core/screens/home_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:visionmate/core/screens/splash_screen.dart';
@@ -59,8 +60,17 @@ class OnGenerateRoute {
       case RouteConst.setViUserScreen:
         return materialBuilder(
             widget: const UserViUserInfoScreen(), route: routeName);
-      case '/homeScreen':
-        return materialBuilder(widget: const HomeScreen(), route: routeName);
+      // home screens
+      case RouteConst.homeViUserScreen:
+        return materialBuilder(
+            widget: const HomeViUserScreen(), route: routeName);
+      case RouteConst.homeGuardianUserScreen:
+        return materialBuilder(
+            widget: const HomeGuardianUserScreen(), route: routeName);
+      case RouteConst.homeVolunteerUserScreen:
+        return materialBuilder(
+            widget: const HomeGuardianUserScreen(), route: routeName);
+      //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
     }

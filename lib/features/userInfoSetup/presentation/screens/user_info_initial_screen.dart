@@ -87,8 +87,11 @@ class _UserInfoInitialScreenState extends State<UserInfoInitialScreen> {
                   ),
                   OutlinedButton(
                       onPressed: () {
-                        navigationHandlerWithRemovePrevRoute(
-                            context, RouteConst.homeScreen);
+                        navigationHandlerByUserType(
+                            context,
+                            RouteConst.homeViUserScreen,
+                            RouteConst.homeGuardianUserScreen,
+                            RouteConst.homeVolunteerUserScreen);
                       },
                       style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(60),

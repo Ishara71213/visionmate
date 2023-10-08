@@ -39,6 +39,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       await signInUsecase.call(user);
       userData = await getCurrentUserByUidUsecase();
+      userType = userData?.userType.toString() ?? "";
       emit(UserSuccess());
     } on SocketException catch (_) {
       emit(UserFailrue());
@@ -53,7 +54,7 @@ class UserCubit extends Cubit<UserState> {
       await signUpUsecase.call(user);
       await getCreateCurrentUserUsecase.call(user);
       userData = await getCurrentUserByUidUsecase();
-      userType = user?.userType.toString() ?? "";
+      userType = userData?.userType.toString() ?? "";
       emit(UserSuccess());
     } on SocketException catch (_) {
       emit(UserFailrue());

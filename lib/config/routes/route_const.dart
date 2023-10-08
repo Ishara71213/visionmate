@@ -13,5 +13,7 @@ class RouteConst {
   static const String setGuardianScreen = '/setGuardianScreen';
   static const String setViUserScreen = '/setViUserScreen';
 
-  static const String homeScreen = '/homeScreen';
+  static const String homeViUserScreen = '/homeViUserScreen';
+  static const String homeGuardianUserScreen = '/homeGuardianUserScreen';
+  static const String homeVolunteerUserScreen = '/homeVolunteerUserScreen';
 }
