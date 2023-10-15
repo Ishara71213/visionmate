@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
@@ -65,7 +67,10 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
               child: Column(
                 children: [
                   FilledButtonCustom(
-                    onPressed: () {},
+                    onPressed: () {
+                      navigationHandler(
+                          context, RouteConst.objectDetectionScreen);
+                    },
                     initText: "Object Detection",
                   ),
                   const SizedBox(

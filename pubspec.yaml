@@ -59,6 +59,12 @@ dependencies:
   geolocator: ^10.1.0
   #permision 
   permission_handler: ^11.0.0
+  #object detection features
+  camera: ^0.10.5+5
+  # tflite_flutter: ^0.10.2
+  image: ^3.2.0
+  # flutter_tflite: ^1.0.1
+  tflite: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -91,7 +97,10 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-
+    - assets/objectRecognitionModel/yolov2_tiny.tflite
+    - assets/objectRecognitionModel/yolov2_tiny.txt
+    - assets/yolov2_tiny.tflite
+    - assets/yolov2_tiny.txt
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

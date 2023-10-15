@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
-import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:visionmate/core/screens/splash_screen.dart';
+import 'package:visionmate/features/object_detection/presentation/screens/home.dart';
+import 'package:visionmate/features/object_detection/presentation/screens/object_detection_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
@@ -36,7 +38,8 @@ class OnGenerateRoute {
             widget: const SignUpScreen(), route: routeName);
       case '/userInfoScreen':
         return materialBuilder(
-            widget: const UserInfoInitialScreen(), route: routeName);
+            widget: const HomeViUserScreen(), route: routeName);
+      // widget: const UserInfoInitialScreen(), route: routeName);
       case RouteConst.setEmergencyContactScreen:
         return materialBuilder(
             widget: const UserEmergencyInfoScreen(), route: routeName);
@@ -59,7 +62,9 @@ class OnGenerateRoute {
             widget: const UserGuardianInfoScreen(), route: routeName);
       case RouteConst.setViUserScreen:
         return materialBuilder(
-            widget: const UserViUserInfoScreen(), route: routeName);
+            // widget: const UserViUserInfoScreen(), route: routeName);
+            widget: const HomeViUserScreen(),
+            route: routeName);
       // home screens
       case RouteConst.homeViUserScreen:
         return materialBuilder(
@@ -70,6 +75,10 @@ class OnGenerateRoute {
       case RouteConst.homeVolunteerUserScreen:
         return materialBuilder(
             widget: const HomeGuardianUserScreen(), route: routeName);
+      //feture screens
+      case RouteConst.objectDetectionScreen:
+        return materialBuilder(widget: HomePage(), route: routeName);
+      // widget: const ObjectDetectionScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
@@ -86,7 +95,8 @@ MaterialPageRoute materialBuilderAuthScreens(
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                return const UserInfoInitialScreen();
+                // return const UserInfoInitialScreen();
+                return const HomeViUserScreen();
               } else if (state is UnAuthenticated) {
                 return widget;
               } else {
