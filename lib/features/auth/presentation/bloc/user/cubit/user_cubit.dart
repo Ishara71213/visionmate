@@ -34,6 +34,17 @@ class UserCubit extends Cubit<UserState> {
     emit(UserInitial());
   }
 
+  Future<void> getCurrrentUserType() async {
+    try {
+      userData = await getCurrentUserByUidUsecase();
+      userType = userData?.userType.toString() ?? "";
+    } on SocketException catch (_) {
+      emit(UserFailrue());
+    } catch (_) {
+      emit(UserFailrue());
+    }
+  }
+
   Future<void> submitSignIn({required UserEntity user}) async {
     emit(UserLoading());
     try {

@@ -26,8 +26,7 @@ class OnGenerateRoute {
         return materialBuilderAuthScreens(
             widget: const AuthOptionsScreen(), route: routeName);
       case '/splashScreen':
-        return materialBuilderAuthScreens(
-            widget: const SplashScreen(), route: routeName);
+        return materialBuilder(widget: const SplashScreen(), route: routeName);
       case '/signInScreen':
         return materialBuilderAuthScreens(
             widget: const SignInScreen(), route: routeName);
@@ -86,7 +85,7 @@ MaterialPageRoute materialBuilderAuthScreens(
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                return const UserInfoInitialScreen();
+                return const SplashScreen();
               } else if (state is UnAuthenticated) {
                 return widget;
               } else {

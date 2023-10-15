@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source_impl.dart';
 import 'package:visionmate/features/auth/data/repository_impl/firebase_repository_impl.dart';
@@ -45,6 +46,8 @@ Future<void> init() async {
       createCurrentguardianUserTypeInfo: sl.call(),
       getCurrentUIdUsecase: sl.call(),
       getUIdEmailUsecase: sl.call()));
+
+  sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
 
   //usecase
 
