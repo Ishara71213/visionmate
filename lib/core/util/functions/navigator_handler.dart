@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/route_name_comparison.dart';
+import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
@@ -45,7 +46,13 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
 
 void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
   String routeName = compareRouteName(routeCommand);
-  if (routeName != "not found") {
+  if (routeName.contains("home")) {
+    navigationHandlerByUserType(context, RouteConst.homeViUserScreen,
+        RouteConst.homeGuardianUserScreen, RouteConst.homeVolunteerUserScreen);
+  } else if (routeName != "not found") {
+    textToSpeech("Go to $routeCommand");
     navigationHandler(context, routeName);
+  } else {
+    textToSpeech("Invalid command go to $routeCommand");
   }
 }

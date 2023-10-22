@@ -16,31 +16,37 @@ class AppFeaturesFirebaseRemoteDataSourceImpl
       {required this.auth, required this.firestore});
 
   @override
-  Future<void> createCurrentViUserTypeInfo(
-      VisuallyImpairedUserEntity user) async {
+  Future<VisuallyImpairedUserEntity> getCurrentViUserTypeInfo() async {
     CollectionReference userCollectionRef;
     userCollectionRef = firestore.collection("VisuallyImpairedUsers");
 
     final uid = await getCurrentUId();
 
+    VisuallyImpairedUserModel userInfo = const VisuallyImpairedUserModel(
+        disability: "",
+        emergencyContact: "",
+        emergencyContactName: "",
+        recidenceAddress: "",
+        recidenceCordinate: null,
+        guardianId: "",
+        visitLocation: null);
+
     await userCollectionRef.doc(uid).get().then((value) {
-      if (!value.exists) {
-        final userInfo = VisuallyImpairedUserModel(
-                disability: user.disability,
-                emergencyContact: user.emergencyContact,
-                emergencyContactName: user.emergencyContactName,
-                recidenceAddress: user.recidenceAddress,
-                recidenceCordinate: user.recidenceCordinate,
-                guardianId: user.guardianId,
-                visitLocation: user.visitLocation)
-            .toDocument();
+      if (value.exists) {
+        VisuallyImpairedUserModel user =
+            VisuallyImpairedUserModel.fromSnapshot(value);
 
-        userCollectionRef.doc(uid).set(userInfo);
+        userInfo = VisuallyImpairedUserModel(
+            disability: user.disability,
+            emergencyContact: user.emergencyContact,
+            emergencyContactName: user.emergencyContactName,
+            recidenceAddress: user.recidenceAddress,
+            recidenceCordinate: user.recidenceCordinate,
+            guardianId: user.guardianId,
+            visitLocation: user.visitLocation);
       }
-      return;
     });
-
-    //   userTypeCollectionRef = firestore.collection("Volunteers");
+    return userInfo;
   }
 
   @override

@@ -9,13 +9,11 @@ class AppFeaturesRepositoryImpl extends AppFeaturesRepository {
   AppFeaturesRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<void> createCurrentViUserTypeInfo(
-          VisuallyImpairedUserEntity user) async =>
-      remoteDataSource.createCurrentViUserTypeInfo(user);
+  Future<VisuallyImpairedUserEntity> getCurrentViUserTypeInfo() async =>
+      remoteDataSource.getCurrentViUserTypeInfo();
 
   @override
-  Future<void> createCurrentGuardianUserTypeInfo(
-          GuardianUserEntity user) async =>
+  Future<void> getCurrentGuardianUserTypeInfo(GuardianUserEntity user) async =>
       remoteDataSource.createCurrentGuardianUserTypeInfo(user);
 
   @override

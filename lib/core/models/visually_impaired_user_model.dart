@@ -26,14 +26,39 @@ class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {
 
   factory VisuallyImpairedUserModel.fromSnapshot(
       DocumentSnapshot documentSnapshot) {
+    List<dynamic>? visitLocationData =
+        documentSnapshot.get("visitLocation") as List<dynamic>?;
+    List<VisitLocation>? visitLocation =
+        (visitLocationData ?? []).map((locationData) {
+      final locationCoordinatesData =
+          locationData['locationCordinates'] as Map<String, dynamic>?;
+      return VisitLocation(
+        locationName: locationData['locationName'] as String?,
+        locationPurpose: locationData['locationPurpose'] as String?,
+        locationCordinates: (locationCoordinatesData != null)
+            ? LatLng(
+                locationCoordinatesData['latitude'] as double? ?? 0.0,
+                locationCoordinatesData['longitude'] as double? ?? 0.0,
+              )
+            : null,
+      );
+    }).toList();
+
+    dynamic tempResidenceCordinate = documentSnapshot.get("recidenceCordinate");
+
+    LatLng? residenceCordinate = (tempResidenceCordinate != null)
+        ? LatLng(documentSnapshot.get("recidenceCordinate")['latitude'] ?? 0.0,
+            documentSnapshot.get("recidenceCordinate")['longitude'] ?? 0.0)
+        : null;
+
     return VisuallyImpairedUserModel(
         disability: documentSnapshot.get("disability"),
         emergencyContact: documentSnapshot.get("emergencyContact"),
         emergencyContactName: documentSnapshot.get("emergencyContactName"),
         recidenceAddress: documentSnapshot.get("recidenceAddress"),
-        recidenceCordinate: documentSnapshot.get("recidenceCordinate"),
+        recidenceCordinate: residenceCordinate,
         guardianId: documentSnapshot.get("guardianId"),
-        visitLocation: documentSnapshot.get("visitLocation"),
+        visitLocation: visitLocation,
         isAllowedLivelocationShare:
             documentSnapshot.get("isAllowedLivelocationShare"));
   }

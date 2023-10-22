@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/profile_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/settings_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
@@ -69,6 +72,14 @@ class OnGenerateRoute {
       case RouteConst.homeVolunteerUserScreen:
         return materialBuilder(
             widget: const HomeGuardianUserScreen(), route: routeName);
+      case RouteConst.settingsScreen:
+        return materialBuilder(
+            widget: const SettingsScreen(), route: routeName);
+      case RouteConst.profileScreen:
+        return materialBuilder(widget: const ProfileScreen(), route: routeName);
+      case RouteConst.locationScreen:
+        return materialBuilder(
+            widget: const LocationScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

@@ -1,15 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/constants/user_types.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/util/functions/voice_command_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stts;
+import 'package:lottie/lottie.dart';
 
 class HomeViUserScreen extends StatefulWidget {
   const HomeViUserScreen({super.key});
@@ -19,134 +22,124 @@ class HomeViUserScreen extends StatefulWidget {
 }
 
 class _HomeViUserScreenState extends State<HomeViUserScreen> {
-  var _speechToText = stts.SpeechToText();
-  bool isListning = false;
-
-  void listen() async {
-    if (!isListning) {
-      bool available = await _speechToText.initialize(
-        onStatus: (status) => print("$status"),
-        onError: (errorNotification) => print("$errorNotification"),
-      );
-      if (available) {
-        setState(() {
-          isListning == true;
-        });
-        _speechToText.listen(
-          onResult: (result) {
-            print(result);
-          },
-        );
-      }
-    } else {
-      setState(() {
-        isListning = false;
-      });
-      _speechToText.stop();
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _speechToText = stts.SpeechToText();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
         BlocProvider.of<SpeechToTextCubit>(context).listning(context);
-        print("test");
       },
       child: Scaffold(
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        BlocProvider.of<UserCubit>(context)
-                            .resetToInitialState();
-                        BlocProvider.of<AuthCubit>(context).signOut();
-                      },
-                      icon: Icon(
-                        Icons.menu_rounded,
-                        size: 40,
-                        color: kPrimaryColor,
-                      )),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/signInScreen", (route) => false);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kLightGreyColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      padding: const EdgeInsets.all(8),
-                      margin: const EdgeInsets.all(8),
-                      child: const Icon(
-                        Icons.supervised_user_circle_outlined,
-                        size: 30,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    FilledButtonCustom(
-                      onPressed: () {},
-                      initText: "Object Detection",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FilledButtonCustom(
-                      onPressed: () {},
-                      initText: "Color Detection",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FilledButtonCustom(
-                      onPressed: () {},
-                      initText: "Text to Speech",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FilledButtonCustom(
-                      onPressed: () {},
-                      initText: "Connect Cane",
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FilledButtonCustom(
-                      onPressed: () {},
-                      initText: "Navigation Assistance",
-                    ),
+                    IconButton(
+                        onPressed: () {
+                          navigationHandler(context, RouteConst.settingsScreen);
+                          // BlocProvider.of<UserCubit>(context)
+                          //     .resetToInitialState();
+                          // BlocProvider.of<AuthCubit>(context).signOut();
+                        },
+                        icon: Icon(
+                          Icons.menu_rounded,
+                          size: 40,
+                          color: kPrimaryColor,
+                        )),
+                    GestureDetector(
+                      onTap: () {
+                        navigationHandler(context, RouteConst.profileScreen);
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //     context, "/signInScreen", (route) => false);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: kLightGreyColor,
+                            borderRadius: BorderRadius.circular(50)),
+                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.supervised_user_circle_outlined,
+                          size: 30,
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      FilledButtonCustom(
+                        onPressed: () {},
+                        initText: "Object Detection",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FilledButtonCustom(
+                        onPressed: () {},
+                        initText: "Color Detection",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FilledButtonCustom(
+                        onPressed: () {
+                          print(BlocProvider.of<UserCubit>(context)
+                              .userData
+                              .toString());
+                          print(BlocProvider.of<ViuserCubit>(context)
+                              .userInfo
+                              .toString());
+                        },
+                        initText: "Text to Speech",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FilledButtonCustom(
+                        onPressed: () {
+                          BlocProvider.of<ViuserCubit>(context)
+                              .getCurrrentUserdata();
+                        },
+                        initText: "Connect Cane",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FilledButtonCustom(
+                        onPressed: () {
+                          navigationHandler(context, RouteConst.locationScreen);
+                        },
+                        initText: "Navigation Assistance",
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         )),
-        floatingActionButton: const BottomNavBar(
-          selectedIndex: 5,
+        floatingActionButton: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+          builder: (context, state) {
+            if (state is Listning) {
+              return Lottie.asset('assets/animations/assistant_circle.json',
+                  width: 106, height: 106);
+            } else {
+              return const BottomNavBar(
+                selectedIndex: 5,
+              );
+            }
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),

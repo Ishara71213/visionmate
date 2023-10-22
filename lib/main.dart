@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/core/injection_container.dart' as di;
@@ -29,7 +31,9 @@ class VisionMateApp extends StatelessWidget {
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
         BlocProvider<UserInfoCubit>(create: (_) => di.sl<UserInfoCubit>()),
         BlocProvider<SpeechToTextCubit>(
-            create: (_) => di.sl<SpeechToTextCubit>())
+            create: (_) => di.sl<SpeechToTextCubit>()),
+        BlocProvider<LocationCubit>(create: (_) => di.sl<LocationCubit>()),
+        BlocProvider<ViuserCubit>(create: (_) => di.sl<ViuserCubit>()),
       ],
       child: const MaterialApp(
         title: 'Vision mate',
