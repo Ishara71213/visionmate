@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/core/entities/visually_impaired_user_entity.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
+import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 
@@ -26,10 +27,12 @@ VisitLocation compareLocationName(BuildContext context, String locationComand) {
             locationCordinates: location.locationCordinates);
 
         locationCubit.setDestinationAndStartLocation(macthedLocation);
+        textToSpeech("Directions to ${location.locationName}");
       }
     }
   } else {
     macthedLocation = const VisitLocation(locationName: "not found");
+    textToSpeech("Directions Not Found");
     locationCubit.setDestinationAndStartLocation(macthedLocation);
   }
   return macthedLocation;

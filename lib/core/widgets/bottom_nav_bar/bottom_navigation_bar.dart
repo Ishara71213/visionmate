@@ -20,7 +20,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'assets/icons/User.svg'
     // 'assets/icons/navigation-Products.svg',
   ];
-  // List<String> iconNames = ['home', 'scan', 'findClubs', 'payments'];
+
   List<String> iconNames = ['home', 'contactUs', 'findClubs', 'user'];
 
   @override
@@ -36,9 +36,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+
       width: double.infinity,
       height: 60, // Increased the height to accommodate the icon names
+      decoration: BoxDecoration(
+        color: kPrimaryColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -82,19 +87,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           MaterialPageRoute(
                               builder: (context) => const HomeViUserScreen()));
                     }
-
-                    // else if (index == 3) {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) {
-                    //         return const HyperpayTest(
-                    //           title: 'Payments',
-                    //         );
-                    //       },
-                    //     ),
-                    //   );
-                    // }
                   });
                 },
                 child: Column(
@@ -102,13 +94,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       .center, // Align the icon and text in the center
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 0),
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       child: SvgPicture.asset(
                         data[index],
                         height: 25,
                         color: selectedIndex == index
-                            ? kPrimaryColor
-                            : Colors.black.withOpacity(0.4),
+                            ? Colors.white.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.5),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -116,8 +108,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       iconName,
                       style: TextStyle(
                         color: selectedIndex == index
-                            ? kPrimaryColor
-                            : Colors.black.withOpacity(0.4),
+                            ? Colors.white.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.5),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

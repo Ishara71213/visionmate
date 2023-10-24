@@ -46,6 +46,7 @@ class _LocationScreenState extends State<LocationScreen> {
     LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
     LatLng destinationLocation = const LatLng(6.8393012, 79.9003934);
     LocationCubit locationCubit = BlocProvider.of<LocationCubit>(context);
+
     return BlocListener<LocationCubit, LocationState>(
       listener: (context, state) async {},
       child: Scaffold(
@@ -64,8 +65,8 @@ class _LocationScreenState extends State<LocationScreen> {
                 Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: size.height - 150,
+                    Expanded(
+                      //height: size.height - 150,
                       child: BlocBuilder<LocationCubit, LocationState>(
                         builder: (context, state) {
                           if (state is LocationInitial) {
@@ -79,11 +80,22 @@ class _LocationScreenState extends State<LocationScreen> {
                               print(state.curruntLocation.latitude.toString() +
                                   "   " +
                                   state.curruntLocation.longitude.toString());
+                              locationCubit.updateCurrentLocation(controller);
                               // The GoogleMapController is ready, you can call methods on it here.
                               locationCubit.updateMapCameraView(
                                   state.curruntLocation.latitude.toString(),
                                   state.curruntLocation.longitude.toString(),
                                   controller);
+                            });
+                          } else if (state is LocationStartDirections) {
+                            currentLocation = state.curruntLocation;
+                            _controller.future
+                                .then((GoogleMapController controller) {
+                              print(state.curruntLocation.latitude.toString() +
+                                  "   " +
+                                  state.curruntLocation.longitude.toString());
+                              // The GoogleMapController is ready, you can call methods on it here.
+                              locationCubit.updateCurrentLocation(controller);
                             });
                           } else {
                             currentLocation = const LatLng(6.818623, 79.919339);
@@ -99,6 +111,13 @@ class _LocationScreenState extends State<LocationScreen> {
                               target: currentLocation,
                               zoom: 16.4746,
                             ),
+                            polylines: {
+                              Polyline(
+                                  polylineId: const PolylineId("route"),
+                                  points: locationCubit.polylineCordinates,
+                                  color: kPrimaryColor,
+                                  width: 6),
+                            },
                             markers: {
                               Marker(
                                 markerId: const MarkerId('currentLocation'),
@@ -147,8 +166,11 @@ class _LocationScreenState extends State<LocationScreen> {
                           //     width: 106,
                           //     height: 106);
                         } else {
-                          return const BottomNavBar(
-                            selectedIndex: 5,
+                          return const Padding(
+                            padding: EdgeInsets.only(bottom: 16.0),
+                            child: BottomNavBar(
+                              selectedIndex: 3,
+                            ),
                           );
                         }
                       },

@@ -29,7 +29,8 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
 
   if (user == UserTypes.visuallyImpairedUser) {
     if (previousRouteName != viUserpath) {
-      Navigator.pushNamed(context, viUserpath);
+      //Navigator.pushNamed(context, viUserpath);
+      Navigator.pushNamedAndRemoveUntil(context, viUserpath, (route) => false);
     }
   } else if (user == UserTypes.guardian) {
     if (previousRouteName != guardianPathpath) {

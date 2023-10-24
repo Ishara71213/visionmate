@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/widgets/pop_up_dialogs/location_popup_message.dart';
 
@@ -12,12 +16,28 @@ class LocationCubit extends Cubit<LocationState> {
   LatLng? residenceLocation;
   String recidenceAddress = "";
   List<VisitLocation> freqVisitingLocations = [];
-  LatLng destinationLoc = const LatLng(6.8393012, 79.9003934);
+  LatLng destinationLoc = const LatLng(0, 0);
   LatLng startLoc = const LatLng(0, 0);
   LatLng currentLoc = const LatLng(0, 0);
-  final Set<Marker> markers = new Set();
+  // final Set<Marker> markers = new Set();
+  List<LatLng> polylineCordinates = [];
 
   LocationCubit() : super(LocationInitial());
+
+  Future<void> getPolyLinePoints() async {
+    PolylinePoints polylinePoints = PolylinePoints();
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        GOOGLE_API_KEY,
+        PointLatLng(startLoc.latitude, startLoc.longitude),
+        PointLatLng(destinationLoc.latitude, destinationLoc.longitude));
+    polylineCordinates = [];
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+  }
 
   void updateMapCameraView(
       String latitude, String longitude, GoogleMapController controller) {
@@ -27,15 +47,44 @@ class LocationCubit extends Cubit<LocationState> {
     controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
   }
 
-  void setDestinationAndStartLocation(VisitLocation location) {
+  void setDestinationAndStartLocation(VisitLocation location) async {
     double lat = location.locationCordinates?.latitude ?? 0;
     double lng = location.locationCordinates?.longitude ?? 0;
     destinationLoc = LatLng(lat, lng);
+    startLoc = LatLng(currentLoc.latitude, currentLoc.longitude);
+
+    polylineCordinates = [];
+    emit(LocationDataGathering(curruntLocation: currentLoc));
+
+    await getPolyLinePoints();
+
     emit(LocationStartDirections(
+        polylineCordinates: polylineCordinates,
         startLocation: LatLng(currentLoc.latitude, currentLoc.longitude),
         curruntLocation: LatLng(currentLoc.latitude, currentLoc.longitude),
         destinationLocation: LatLng(lat, lng)));
     // controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
+  }
+
+  void updateCurrentLocation(GoogleMapController controller) async {
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.low,
+      distanceFilter: 0,
+    );
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
+      if (position != null) {
+        emit(LocationStartDirections(
+            polylineCordinates: polylineCordinates,
+            curruntLocation: LatLng(position.latitude, position.longitude)));
+        controller.animateCamera(CameraUpdate.newLatLng(
+            LatLng(position.latitude, position.longitude)));
+      }
+      print(position == null
+          ? 'Unknown'
+          : '${position.latitude.toString()}, ${position.longitude.toString()}');
+    });
   }
 
   void determinePosition() async {
@@ -63,6 +112,7 @@ class LocationCubit extends Cubit<LocationState> {
     // continue accessing the position of the device.
     Position currentLocation = await Geolocator.getCurrentPosition();
     currentLoc = LatLng(currentLocation.latitude, currentLocation.longitude);
+
     emit(LocationDataGathering(
         curruntLocation:
             LatLng(currentLocation.latitude, currentLocation.longitude)));
