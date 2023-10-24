@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:lottie/lottie.dart' as Lt;
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
@@ -33,10 +34,21 @@ class _LocationScreenState extends State<LocationScreen> {
       Completer<GoogleMapController>();
   final TextEditingController _locationSearchController =
       TextEditingController();
+  late LocationCubit cubitref;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    cubitref = BlocProvider.of<LocationCubit>(context);
+  }
 
   @override
   void dispose() {
     _locationSearchController.dispose();
+    _controller.future.then((GoogleMapController controller) {
+      controller.dispose();
+    });
+    cubitref.dispose();
     super.dispose();
   }
 
@@ -160,11 +172,11 @@ class _LocationScreenState extends State<LocationScreen> {
                     BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
                       builder: (context, state) {
                         if (state is Listning) {
-                          return Text("listning");
-                          // return Lottie.asset(
-                          //     'assets/animations/assistant_circle.json',
-                          //     width: 106,
-                          //     height: 106);
+                          //return Text("listning");
+                          return Lt.Lottie.asset(
+                              'assets/animations/assistant_circle.json',
+                              width: 106,
+                              height: 106);
                         } else {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),

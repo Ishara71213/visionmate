@@ -21,8 +21,15 @@ class LocationCubit extends Cubit<LocationState> {
   LatLng currentLoc = const LatLng(0, 0);
   // final Set<Marker> markers = new Set();
   List<LatLng> polylineCordinates = [];
+  late StreamSubscription<Position> positionStream;
+  bool isDisposed = false;
 
   LocationCubit() : super(LocationInitial());
+
+  void dispose() {
+    isDisposed = true;
+    positionStream.cancel();
+  }
 
   Future<void> getPolyLinePoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
@@ -71,19 +78,21 @@ class LocationCubit extends Cubit<LocationState> {
       accuracy: LocationAccuracy.low,
       distanceFilter: 0,
     );
-    StreamSubscription<Position> positionStream =
+    positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position? position) {
       if (position != null) {
         emit(LocationStartDirections(
             polylineCordinates: polylineCordinates,
             curruntLocation: LatLng(position.latitude, position.longitude)));
-        controller.animateCamera(CameraUpdate.newLatLng(
-            LatLng(position.latitude, position.longitude)));
+        if (!isDisposed) {
+          controller.animateCamera(CameraUpdate.newLatLng(
+              LatLng(position.latitude, position.longitude)));
+        }
       }
       print(position == null
           ? 'Unknown'
-          : '${position.latitude.toString()}, ${position.longitude.toString()}');
+          : 'live ${position.latitude.toString()}, ${position.longitude.toString()}');
     });
   }
 
