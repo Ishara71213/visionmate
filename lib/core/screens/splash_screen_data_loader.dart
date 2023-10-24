@@ -9,14 +9,14 @@ import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashDataLoadScreen extends StatefulWidget {
+  const SplashDataLoadScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashDataLoadScreen> createState() => _SplashDataLoadScreen();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashDataLoadScreen extends State<SplashDataLoadScreen>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
@@ -34,6 +34,24 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    Future<void> loadData() async {
+      BlocProvider.of<UserCubit>(context).getCurrrentUserType().then((value) {
+        Future.delayed(const Duration(seconds: 2), () {
+          String user = BlocProvider.of<UserCubit>(context).userType;
+          if (user == UserTypes.visuallyImpairedUser) {
+            BlocProvider.of<ViuserCubit>(context).getCurrrentUserdata();
+          }
+          navigationHandlerByUserType(
+              context,
+              RouteConst.homeViUserScreen,
+              RouteConst.homeGuardianUserScreen,
+              RouteConst.homeVolunteerUserScreen);
+        });
+      });
+    }
+
+    loadData();
 
     return Scaffold(
       body: Container(

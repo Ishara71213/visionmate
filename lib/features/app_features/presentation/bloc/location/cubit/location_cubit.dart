@@ -12,6 +12,10 @@ class LocationCubit extends Cubit<LocationState> {
   LatLng? residenceLocation;
   String recidenceAddress = "";
   List<VisitLocation> freqVisitingLocations = [];
+  LatLng destinationLoc = const LatLng(6.8393012, 79.9003934);
+  LatLng startLoc = const LatLng(0, 0);
+  LatLng currentLoc = const LatLng(0, 0);
+  final Set<Marker> markers = new Set();
 
   LocationCubit() : super(LocationInitial());
 
@@ -21,6 +25,17 @@ class LocationCubit extends Cubit<LocationState> {
     double lng = double.parse(longitude);
     emit(LocationDataGathering(curruntLocation: LatLng(lat, lng)));
     controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
+  }
+
+  void setDestinationAndStartLocation(VisitLocation location) {
+    double lat = location.locationCordinates?.latitude ?? 0;
+    double lng = location.locationCordinates?.longitude ?? 0;
+    destinationLoc = LatLng(lat, lng);
+    emit(LocationStartDirections(
+        startLocation: LatLng(currentLoc.latitude, currentLoc.longitude),
+        curruntLocation: LatLng(currentLoc.latitude, currentLoc.longitude),
+        destinationLocation: LatLng(lat, lng)));
+    // controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
   }
 
   void determinePosition() async {
@@ -47,6 +62,7 @@ class LocationCubit extends Cubit<LocationState> {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     Position currentLocation = await Geolocator.getCurrentPosition();
+    currentLoc = LatLng(currentLocation.latitude, currentLocation.longitude);
     emit(LocationDataGathering(
         curruntLocation:
             LatLng(currentLocation.latitude, currentLocation.longitude)));

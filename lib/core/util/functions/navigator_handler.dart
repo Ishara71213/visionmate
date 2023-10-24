@@ -38,8 +38,6 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
   } else if (user == UserTypes.volunteer) {
     if (previousRouteName != volunteerPath) {
       Navigator.pushNamed(context, volunteerPath);
-    } else {
-      Navigator.pushNamed(context, RouteConst.splashScreen);
     }
   }
 }

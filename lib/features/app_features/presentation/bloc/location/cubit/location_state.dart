@@ -14,10 +14,20 @@ final class LocationInitial extends LocationState {
 
 class LocationDataGathering extends LocationState {
   final LatLng curruntLocation;
-  final LatLng destinationLocation;
-  const LocationDataGathering(
-      {this.curruntLocation = const LatLng(10, 10.0),
-      this.destinationLocation = const LatLng(10, 10)});
+  const LocationDataGathering({this.curruntLocation = const LatLng(0, 0)});
   @override
   List<Object> get props => [curruntLocation];
+}
+
+class LocationStartDirections extends LocationState {
+  final LatLng curruntLocation;
+  final LatLng startLocation;
+  final LatLng destinationLocation;
+  const LocationStartDirections(
+      {this.curruntLocation = const LatLng(0, 0),
+      this.destinationLocation = const LatLng(0, 0),
+      this.startLocation = const LatLng(0, 0)});
+  @override
+  List<Object> get props =>
+      [curruntLocation, destinationLocation, startLocation];
 }

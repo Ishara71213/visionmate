@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/core/screens/splash_screen_data_loader.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
@@ -30,6 +31,9 @@ class OnGenerateRoute {
             widget: const AuthOptionsScreen(), route: routeName);
       case '/splashScreen':
         return materialBuilder(widget: const SplashScreen(), route: routeName);
+      case RouteConst.splashDataLoadScreen:
+        return materialBuilder(
+            widget: const SplashDataLoadScreen(), route: routeName);
       case '/signInScreen':
         return materialBuilderAuthScreens(
             widget: const SignInScreen(), route: routeName);
@@ -96,7 +100,7 @@ MaterialPageRoute materialBuilderAuthScreens(
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                return const SplashScreen();
+                return const SplashDataLoadScreen();
               } else if (state is UnAuthenticated) {
                 return widget;
               } else {
