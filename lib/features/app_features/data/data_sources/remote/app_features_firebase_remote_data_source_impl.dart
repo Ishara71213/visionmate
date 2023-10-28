@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:visionmate/core/entities/guardian_user_entity.dart';
-import 'package:visionmate/core/entities/visually_impaired_user_entity.dart';
-import 'package:visionmate/core/models/guardian_user_model.dart';
-import 'package:visionmate/core/models/user_model.dart';
-import 'package:visionmate/core/models/visually_impaired_user_model.dart';
+import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
+import 'package:visionmate/core/common/data/models/guardian_user_model.dart';
+import 'package:visionmate/core/common/data/models/user_model.dart';
+import 'package:visionmate/core/common/data/models/visually_impaired_user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:visionmate/features/app_features/data/data_sources/remote/app_features_firebase_remote_data_source.dart';
 
@@ -16,31 +16,37 @@ class AppFeaturesFirebaseRemoteDataSourceImpl
       {required this.auth, required this.firestore});
 
   @override
-  Future<void> createCurrentViUserTypeInfo(
-      VisuallyImpairedUserEntity user) async {
+  Future<VisuallyImpairedUserEntity> getCurrentViUserTypeInfo() async {
     CollectionReference userCollectionRef;
     userCollectionRef = firestore.collection("VisuallyImpairedUsers");
 
     final uid = await getCurrentUId();
 
+    VisuallyImpairedUserModel userInfo = const VisuallyImpairedUserModel(
+        disability: "",
+        emergencyContact: "",
+        emergencyContactName: "",
+        recidenceAddress: "",
+        recidenceCordinate: null,
+        guardianId: "",
+        visitLocation: null);
+
     await userCollectionRef.doc(uid).get().then((value) {
-      if (!value.exists) {
-        final userInfo = VisuallyImpairedUserModel(
-                disability: user.disability,
-                emergencyContact: user.emergencyContact,
-                emergencyContactName: user.emergencyContactName,
-                recidenceAddress: user.recidenceAddress,
-                recidenceCordinate: user.recidenceCordinate,
-                guardianId: user.guardianId,
-                visitLocation: user.visitLocation)
-            .toDocument();
+      if (value.exists) {
+        VisuallyImpairedUserModel user =
+            VisuallyImpairedUserModel.fromSnapshot(value);
 
-        userCollectionRef.doc(uid).set(userInfo);
+        userInfo = VisuallyImpairedUserModel(
+            disability: user.disability,
+            emergencyContact: user.emergencyContact,
+            emergencyContactName: user.emergencyContactName,
+            recidenceAddress: user.recidenceAddress,
+            recidenceCordinate: user.recidenceCordinate,
+            guardianId: user.guardianId,
+            visitLocation: user.visitLocation);
       }
-      return;
     });
-
-    //   userTypeCollectionRef = firestore.collection("Volunteers");
+    return userInfo;
   }
 
   @override

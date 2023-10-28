@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:visionmate/core/constants/user_types.dart';
-import 'package:visionmate/core/models/user_model.dart';
+import 'package:visionmate/core/common/data/models/user_model.dart';
 import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/profile_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/settings_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:visionmate/core/screens/splash_screen.dart';
+import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
@@ -27,6 +31,9 @@ class OnGenerateRoute {
             widget: const AuthOptionsScreen(), route: routeName);
       case '/splashScreen':
         return materialBuilder(widget: const SplashScreen(), route: routeName);
+      case RouteConst.splashDataLoadScreen:
+        return materialBuilder(
+            widget: const SplashDataLoadScreen(), route: routeName);
       case '/signInScreen':
         return materialBuilderAuthScreens(
             widget: const SignInScreen(), route: routeName);
@@ -69,6 +76,14 @@ class OnGenerateRoute {
       case RouteConst.homeVolunteerUserScreen:
         return materialBuilder(
             widget: const HomeGuardianUserScreen(), route: routeName);
+      case RouteConst.settingsScreen:
+        return materialBuilder(
+            widget: const SettingsScreen(), route: routeName);
+      case RouteConst.profileScreen:
+        return materialBuilder(widget: const ProfileScreen(), route: routeName);
+      case RouteConst.locationScreen:
+        return materialBuilder(
+            widget: const LocationScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
@@ -85,7 +100,12 @@ MaterialPageRoute materialBuilderAuthScreens(
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
-                return const SplashScreen();
+                String? previousRouteName =
+                    ModalRoute.of(context)?.settings.name.toString();
+                if (previousRouteName == RouteConst.signUpScreen) {
+                  return const UserInfoInitialScreen();
+                }
+                return const SplashDataLoadScreen();
               } else if (state is UnAuthenticated) {
                 return widget;
               } else {

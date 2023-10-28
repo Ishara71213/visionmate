@@ -53,9 +53,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         listener: (context, state) async {
           if (state is UserSuccess) {
             await Future.delayed(const Duration(seconds: 1), () {
-              navigationHandlerWithRemovePrevRoute(
-                  context, RouteConst.userInfoScreen);
               BlocProvider.of<AuthCubit>(context).appStarted();
+              // navigationHandlerWithRemovePrevRoute(
+              //     context, RouteConst.userInfoScreen);
             });
           }
         },

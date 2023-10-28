@@ -35,7 +35,7 @@ class LocationPopUp extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             const Text(
-              'We need your exact location to \ndisplay and sort the clubs according \nto distance.',
+              '',
               style: TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),
