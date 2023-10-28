@@ -7,7 +7,7 @@ import 'package:visionmate/core/constants/states.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/core/widgets/widgets_library.dart';
@@ -21,7 +21,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> formKeySignUp = GlobalKey<FormState>();
-  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _userFirstNameController =
+      TextEditingController();
+  final TextEditingController _userLastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
@@ -38,7 +40,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    _userNameController.dispose();
+    _userFirstNameController.dispose();
+    _userLastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _dateOfBirthController.dispose();
@@ -81,9 +84,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Padding(
                                 padding: const EdgeInsets.only(bottom: 12.0),
                                 child: TextFormInput(
-                                  fieldName: "User Name",
-                                  controller: _userNameController,
-                                  hintText: "User Name",
+                                  fieldName: "First Name",
+                                  controller: _userFirstNameController,
+                                  hintText: "First Name",
+                                  prefixIcon: const Icon(Icons.verified_user),
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 12.0),
+                                child: TextFormInput(
+                                  fieldName: "Last Name",
+                                  controller: _userLastNameController,
+                                  hintText: "Last Name",
                                   prefixIcon: const Icon(Icons.verified_user),
                                 )),
                             Padding(
@@ -256,7 +267,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void submitSignUp(context) async {
     await BlocProvider.of<UserCubit>(context).submitSignUp(
         user: UserEntity(
-            name: _userNameController.text,
+            firstName: _userFirstNameController.text,
+            lastName: _userLastNameController.text,
             email: _emailController.text,
             password: _passwordController.text,
             dob: _dateOfBirthController.text,

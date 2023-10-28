@@ -183,7 +183,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             style: kSmallTitleText,
                           ),
                           Text(
-                            userCubit.userData?.name?.toString() ?? "",
+                            userCubit.userData?.firstName?.toString() ?? "",
+                            style: kSmallSubTitleMediumBoldText,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Last Name",
+                            style: kSmallTitleText,
+                          ),
+                          Text(
+                            userCubit.userData?.lastName?.toString() ?? "",
                             style: kSmallSubTitleMediumBoldText,
                           ),
                         ],

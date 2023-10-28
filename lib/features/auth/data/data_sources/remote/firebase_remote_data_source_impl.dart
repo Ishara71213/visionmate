@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/common/data/models/user_model.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -24,10 +24,12 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
       if (!value.exists) {
         final newUser = UserModel(
                 uid: uid,
-                name: user.name,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 email: user.email,
                 dob: user.dob,
                 status: user.status,
+                imageUrl: user.imageUrl,
                 userType: user.userType)
             .toDocument();
 
@@ -93,9 +95,11 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     final uid = await getCurrentUId();
     UserEntity currentUser = const UserEntity(
         uid: "",
-        name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         dob: "",
+        imageUrl: "",
         status: "",
         userType: UserTypes.visuallyImpairedUser);
 
@@ -104,10 +108,12 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
         UserModel user = UserModel.fromSnapshot(value);
         currentUser = UserEntity(
             uid: user.uid,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             dob: user.dob,
             status: user.status,
+            imageUrl: user.imageUrl,
             userType: user.userType);
       }
       return;

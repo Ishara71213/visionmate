@@ -1,4 +1,4 @@
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/domain/repository/firebase_repository.dart';
 
 class SignUpUsecase {

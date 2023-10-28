@@ -6,7 +6,7 @@ import 'package:visionmate/core/common/data/models/guardian_user_model.dart';
 import 'package:visionmate/core/common/data/models/user_model.dart';
 import 'package:visionmate/core/common/data/models/visually_impaired_user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source.dart';
 
 class UserInfoFirebaseRemoteDataSourceImpl
@@ -76,10 +76,12 @@ class UserInfoFirebaseRemoteDataSourceImpl
     final uid = await getCurrentUId();
     UserEntity currentUser = const UserEntity(
         uid: "",
-        name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         dob: "",
         status: "",
+        imageUrl: "",
         userType: UserTypes.visuallyImpairedUser);
 
     await userCollectionRef.doc(uid).get().then((value) {
@@ -87,10 +89,12 @@ class UserInfoFirebaseRemoteDataSourceImpl
         UserModel user = UserModel.fromSnapshot(value);
         currentUser = UserEntity(
             uid: user.uid,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             dob: user.dob,
             status: user.status,
+            imageUrl: user.imageUrl,
             userType: user.userType);
       }
     });
