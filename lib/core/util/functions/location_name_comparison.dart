@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:visionmate/core/entities/visually_impaired_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';

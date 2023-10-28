@@ -1,4 +1,4 @@
-import 'package:visionmate/core/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
 import 'package:visionmate/features/userInfoSetup/domain/repository/user_info_repository.dart';
 
 class CreateCurrentguardianUserTypeInfo {

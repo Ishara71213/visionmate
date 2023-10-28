@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
-import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
+import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
-import 'package:visionmate/core/screens/splash_screen_data_loader.dart';
+import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
@@ -11,7 +11,7 @@ import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart'
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:visionmate/core/screens/splash_screen.dart';
+import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
