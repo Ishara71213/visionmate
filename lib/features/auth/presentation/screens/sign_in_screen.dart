@@ -37,11 +37,6 @@ class _SignInScreenState extends State<SignInScreen> {
       listener: (context, state) async {
         if (state is UserSuccess) {
           await Future.delayed(const Duration(seconds: 1), () {
-            navigationHandlerByUserType(
-                context,
-                RouteConst.homeViUserScreen,
-                RouteConst.homeGuardianUserScreen,
-                RouteConst.homeVolunteerUserScreen);
             BlocProvider.of<AuthCubit>(context).appStarted();
           });
         }

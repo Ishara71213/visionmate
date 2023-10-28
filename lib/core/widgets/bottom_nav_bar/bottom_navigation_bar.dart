@@ -15,13 +15,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 0;
   List<String> data = [
     'assets/icons/Home.svg',
-    'assets/icons/Contact.svg',
-    'assets/icons/Find Clubs.svg',
-    'assets/icons/User.svg'
+    'assets/icons/Guide.svg',
+    'assets/icons/Community.svg',
+    'assets/icons/Settings.svg'
     // 'assets/icons/navigation-Products.svg',
   ];
 
-  List<String> iconNames = ['home', 'contactUs', 'findClubs', 'user'];
+  List<String> iconNames = ['Home', 'Guide', 'Community', 'Settings'];
 
   @override
   void initState() {

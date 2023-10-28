@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
+import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/core/widgets/pop_up_dialogs/location_popup_message.dart';
 
 part 'location_state.dart';
@@ -28,7 +29,9 @@ class LocationCubit extends Cubit<LocationState> {
 
   void dispose() {
     isDisposed = true;
-    positionStream.cancel();
+    emit(LocationInitial());
+    polylineCordinates = [];
+    //positionStream.pause();
   }
 
   Future<void> getPolyLinePoints() async {
@@ -42,6 +45,10 @@ class LocationCubit extends Cubit<LocationState> {
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCordinates.add(LatLng(point.latitude, point.longitude));
+      });
+      Future.delayed(const Duration(seconds: 2), () {
+        textToSpeech(
+            "${result.distance.toString()} to the destination and it will take ${result.duration.toString()} to travel");
       });
     }
   }
@@ -64,7 +71,7 @@ class LocationCubit extends Cubit<LocationState> {
     emit(LocationDataGathering(curruntLocation: currentLoc));
 
     await getPolyLinePoints();
-
+    //***********only send the current location emmit if some thing goes wrong it will work fine then
     emit(LocationStartDirections(
         polylineCordinates: polylineCordinates,
         startLocation: LatLng(currentLoc.latitude, currentLoc.longitude),
@@ -84,7 +91,10 @@ class LocationCubit extends Cubit<LocationState> {
       if (position != null) {
         emit(LocationStartDirections(
             polylineCordinates: polylineCordinates,
-            curruntLocation: LatLng(position.latitude, position.longitude)));
+            curruntLocation: LatLng(position.latitude, position.longitude),
+            startLocation: LatLng(position.latitude, position.longitude),
+            destinationLocation:
+                LatLng(destinationLoc.latitude, destinationLoc.longitude)));
         if (!isDisposed) {
           controller.animateCamera(CameraUpdate.newLatLng(
               LatLng(position.latitude, position.longitude)));
@@ -119,7 +129,21 @@ class LocationCubit extends Cubit<LocationState> {
     }
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    Position currentLocation = await Geolocator.getCurrentPosition();
+    Position? lastKNownPosition = await Geolocator.getLastKnownPosition();
+    Position? currentLocation =
+        await Geolocator.getCurrentPosition().then((value) {
+      currentLoc = LatLng(value.latitude, value.longitude);
+      return value;
+    }).catchError((err) {
+      if (lastKNownPosition != null) {
+        currentLoc =
+            LatLng(lastKNownPosition.latitude, lastKNownPosition.longitude);
+        emit(LocationDataGathering(
+            curruntLocation: LatLng(
+                lastKNownPosition.latitude, lastKNownPosition.longitude)));
+        return lastKNownPosition;
+      }
+    });
     currentLoc = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     emit(LocationDataGathering(

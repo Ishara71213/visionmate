@@ -40,13 +40,21 @@ class _SplashDataLoadScreen extends State<SplashDataLoadScreen>
         Future.delayed(const Duration(seconds: 2), () {
           String user = BlocProvider.of<UserCubit>(context).userType;
           if (user == UserTypes.visuallyImpairedUser) {
-            BlocProvider.of<ViuserCubit>(context).getCurrrentUserdata();
+            BlocProvider.of<ViuserCubit>(context)
+                .getCurrrentUserdata()
+                .then((value) {
+              navigationHandlerByUserType(
+                  context,
+                  RouteConst.homeViUserScreen,
+                  RouteConst.homeGuardianUserScreen,
+                  RouteConst.homeVolunteerUserScreen);
+            });
           }
-          navigationHandlerByUserType(
-              context,
-              RouteConst.homeViUserScreen,
-              RouteConst.homeGuardianUserScreen,
-              RouteConst.homeVolunteerUserScreen);
+          // navigationHandlerByUserType(
+          //     context,
+          //     RouteConst.homeViUserScreen,
+          //     RouteConst.homeGuardianUserScreen,
+          //     RouteConst.homeVolunteerUserScreen);
         });
       });
     }

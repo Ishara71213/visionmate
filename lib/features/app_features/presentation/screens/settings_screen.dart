@@ -6,6 +6,9 @@ import 'package:visionmate/core/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
+import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
+import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -66,7 +69,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
-                  children: [],
+                  children: [
+                    Text(
+                      "Settings",
+                      style: kTitleOneText,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          BlocProvider.of<UserCubit>(context)
+                              .resetToInitialState();
+                          BlocProvider.of<AuthCubit>(context).signOut();
+                        },
+                        child: const Text("logout")),
+                    Text(BlocProvider.of<UserCubit>(context).userType),
+                    Text(BlocProvider.of<UserCubit>(context)
+                            .userData
+                            ?.email
+                            .toString() ??
+                        ""),
+                    Text(BlocProvider.of<ViuserCubit>(context)
+                            .userInfo
+                            ?.disability
+                            .toString() ??
+                        ""),
+                    Text(BlocProvider.of<ViuserCubit>(context)
+                            .userInfo
+                            ?.visitLocation
+                            ?.first
+                            .locationName
+                            .toString() ??
+                        ""),
+                  ],
                 ),
               ),
             ],
@@ -79,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(
-                selectedIndex: 5,
+                selectedIndex: 3,
               );
             }
           },

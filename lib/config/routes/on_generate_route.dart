@@ -100,6 +100,11 @@ MaterialPageRoute materialBuilderAuthScreens(
       builder: (context) => BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Authenticated) {
+                String? previousRouteName =
+                    ModalRoute.of(context)?.settings.name.toString();
+                if (previousRouteName == RouteConst.signUpScreen) {
+                  return const UserInfoInitialScreen();
+                }
                 return const SplashDataLoadScreen();
               } else if (state is UnAuthenticated) {
                 return widget;

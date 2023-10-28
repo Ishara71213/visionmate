@@ -53,6 +53,12 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
@@ -173,15 +179,17 @@ class _LocationScreenState extends State<LocationScreen> {
                       builder: (context, state) {
                         if (state is Listning) {
                           //return Text("listning");
-                          return Lt.Lottie.asset(
-                              'assets/animations/assistant_circle.json',
-                              width: 106,
-                              height: 106);
+                          return Center(
+                            child: Lt.Lottie.asset(
+                                'assets/animations/assistant_circle.json',
+                                width: 106,
+                                height: 106),
+                          );
                         } else {
                           return const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
                             child: BottomNavBar(
-                              selectedIndex: 3,
+                              selectedIndex: 4,
                             ),
                           );
                         }
