@@ -95,7 +95,10 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                   child: Column(
                     children: [
                       FilledButtonCustom(
-                        onPressed: () {},
+                        onPressed: () {
+                          navigationHandler(
+                              context, RouteConst.objectDetectionScreen);
+                        },
                         initText: "Object Detection",
                       ),
                       const SizedBox(
