@@ -53,6 +53,7 @@ dependencies:
   firebase_auth: ^4.7.2
   cloud_firestore: ^4.8.4
   firebase_core: ^2.15.0
+  firebase_storage: ^11.4.0
   #Location Services
   google_maps_flutter: ^2.5.0
   google_places_flutter: ^2.0.6

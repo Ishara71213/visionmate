@@ -4,9 +4,19 @@ import 'package:get_it/get_it.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/features/app_features/data/data_sources/remote/app_features_firebase_remote_data_source.dart';
 import 'package:visionmate/features/app_features/data/data_sources/remote/app_features_firebase_remote_data_source_impl.dart';
+import 'package:visionmate/features/app_features/data/data_sources/remote/guardian_user_profile_firebase_remote_data_source.dart';
+import 'package:visionmate/features/app_features/data/data_sources/remote/guardian_user_profile_firebase_remote_data_source_impl.dart';
+import 'package:visionmate/features/app_features/data/data_sources/remote/vi_user_profile_firebase_remote_data_source.dart';
+import 'package:visionmate/features/app_features/data/data_sources/remote/vi_user_profile_firebase_remote_data_source_impl.dart';
 import 'package:visionmate/features/app_features/data/repository_impl/app_features_repository_impl.dart';
+import 'package:visionmate/features/app_features/data/repository_impl/guardian_user_profile_repository_impl.dart';
+import 'package:visionmate/features/app_features/data/repository_impl/vi_user_profile_repository_impl.dart';
 import 'package:visionmate/features/app_features/domain/repository/app_features_repository.dart';
+import 'package:visionmate/features/app_features/domain/repository/guardian_user_profile_repository.dart';
+import 'package:visionmate/features/app_features/domain/repository/vi_user_profile_repository.dart';
 import 'package:visionmate/features/app_features/domain/usecases/get_current_vi_user_info_by_uid_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/update_profile_data_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/update_profile_image_usecase.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
@@ -57,7 +67,9 @@ Future<void> init() async {
 
   sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
   sl.registerFactory<LocationCubit>(() => LocationCubit());
-  sl.registerFactory<ProfileCubit>(() => ProfileCubit());
+  sl.registerFactory<ProfileCubit>(() => ProfileCubit(
+      updateProfileDataUsecase: sl.call(),
+      updateProfileImageUsecase: sl.call()));
   sl.registerFactory<ViuserCubit>(
       () => ViuserCubit(getCurrentViUserById: sl.call()));
 
@@ -89,7 +101,11 @@ Future<void> init() async {
   sl.registerLazySingleton<GetUIdByEmailUsecase>(
       () => GetUIdByEmailUsecase(repository: sl.call()));
 
-  //user info usecases
+  //App features usecases
+  sl.registerLazySingleton<UpdateProfileDataUsecase>(
+      () => UpdateProfileDataUsecase(repository: sl.call()));
+  sl.registerLazySingleton<UpdateProfileImageUsecase>(
+      () => UpdateProfileImageUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentViUserInfoByUidUsecase>(
       () => GetCurrentViUserInfoByUidUsecase(repository: sl.call()));
 
@@ -100,6 +116,10 @@ Future<void> init() async {
       () => UserInfoRepositoryImpl(remoteDataSource: sl.call()));
   sl.registerLazySingleton<AppFeaturesRepository>(
       () => AppFeaturesRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<ViUserProfileRepository>(
+      () => ViUserProfileRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<GuardianUserProfileRepository>(
+      () => GuardianUserProfileRepositoryImpl(remoteDataSource: sl.call()));
   //data source
   sl.registerLazySingleton<FirebaseRemoteDataSource>(() =>
       FirebaseRemoteDataSourceImpl(auth: sl.call(), firestore: sl.call()));
@@ -108,6 +128,12 @@ Future<void> init() async {
           auth: sl.call(), firestore: sl.call()));
   sl.registerLazySingleton<AppFeaturesFirebaseRemoteDataSource>(() =>
       AppFeaturesFirebaseRemoteDataSourceImpl(
+          auth: sl.call(), firestore: sl.call()));
+  sl.registerLazySingleton<ViProfileFirebaseRemoteDataSource>(() =>
+      ViProfileFirebaseRemoteDataSourceImpl(
+          auth: sl.call(), firestore: sl.call()));
+  sl.registerLazySingleton<GuardianProfileFirebaseRemoteDataSource>(() =>
+      GuardianProfileFirebaseRemoteDataSourceImpl(
           auth: sl.call(), firestore: sl.call()));
   //external
   final auth = FirebaseAuth.instance;

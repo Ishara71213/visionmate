@@ -24,6 +24,7 @@ class HomeViUserScreen extends StatefulWidget {
 class _HomeViUserScreenState extends State<HomeViUserScreen> {
   @override
   Widget build(BuildContext context) {
+    UserCubit userCubit = BlocProvider.of<UserCubit>(context);
     return GestureDetector(
       onLongPress: () {
         BlocProvider.of<SpeechToTextCubit>(context).listning(context);
@@ -52,23 +53,38 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                           color: kPrimaryColor,
                         )),
                     GestureDetector(
-                      onTap: () {
-                        navigationHandler(context, RouteConst.profileScreen);
-                        // Navigator.pushNamedAndRemoveUntil(
-                        //     context, "/signInScreen", (route) => false);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: kLightGreyColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.all(8),
-                        child: const Icon(
-                          Icons.supervised_user_circle_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    )
+                        onTap: () {
+                          navigationHandler(context, RouteConst.profileScreen);
+                          // Navigator.pushNamedAndRemoveUntil(
+                          //     context, "/signInScreen", (route) => false);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: userCubit.userData != null &&
+                                  userCubit.userData!.imageUrl != null
+                              ? CircleAvatar(
+                                  minRadius: 25,
+                                  maxRadius: 25,
+                                  backgroundColor: kLightGreyColor,
+                                  foregroundImage: NetworkImage(
+                                      userCubit.userData!.imageUrl.toString()),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: kGrey,
+                                    size: 35,
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  minRadius: 25,
+                                  maxRadius: 25,
+                                  backgroundColor: kLightGreyColor,
+                                  child: Icon(
+                                    Icons.person,
+                                    color: kGrey,
+                                    size: 35,
+                                  ),
+                                ),
+                        ))
                   ],
                 ),
                 const SizedBox(

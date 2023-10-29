@@ -9,6 +9,7 @@ import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -36,39 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          navigationHandlerWithRemovePrevRoute(
-                              context, RouteConst.settingsScreen);
-                        },
-                        icon: Icon(
-                          Icons.menu_rounded,
-                          size: 40,
-                          color: kPrimaryColor,
-                        )),
-                    GestureDetector(
-                      onTap: () {
-                        navigationHandlerWithRemovePrevRoute(
-                            context, RouteConst.homeViUserScreen);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: kLightGreyColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.all(8),
-                        child: const Icon(
-                          Icons.supervised_user_circle_outlined,
-                          size: 30,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                const AppBarMenuAndProfile(),
                 const SizedBox(
                   height: 30,
                 ),
@@ -80,7 +49,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           BlocBuilder<ProfileCubit, ProfileState>(
                             builder: (context, state) {
-                              if (state is ProfileImageLoading) {
+                              if (state is ProfileInitial &&
+                                  userCubit.userData != null &&
+                                  userCubit.userData!.imageUrl != null) {
+                                return CircleAvatar(
+                                  minRadius: 25,
+                                  maxRadius: 55,
+                                  backgroundColor: kLightGreyColor,
+                                  foregroundImage: NetworkImage(
+                                      userCubit.userData!.imageUrl.toString(),
+                                      scale: 1.0),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: kGrey,
+                                    size: 70,
+                                  ),
+                                );
+                              } else if (state is ProfileImageLoading) {
                                 return CircleAvatar(
                                   minRadius: 25,
                                   maxRadius: 55,
@@ -92,13 +77,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 );
                               } else if (state is ProfileImageSuccess &&
-                                  profileCubit.imageFile != null) {
+                                  profileCubit.imageFile != null &&
+                                  userCubit.userData != null &&
+                                  userCubit.userData!.imageUrl != null) {
                                 return CircleAvatar(
                                     minRadius: 25,
                                     maxRadius: 55,
                                     backgroundColor: kLightGreyColor,
-                                    foregroundImage:
-                                        FileImage(profileCubit.imageFile!));
+                                    foregroundImage: NetworkImage(userCubit
+                                        .userData!.imageUrl
+                                        .toString()));
+                                // return CircleAvatar(
+                                //     minRadius: 25,
+                                //     maxRadius: 55,
+                                //     backgroundColor: kLightGreyColor,
+                                //     foregroundImage:
+                                //         FileImage(profileCubit.imageFile!));
                               } else {
                                 return CircleAvatar(
                                   minRadius: 25,
@@ -114,8 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                           ),
                           Positioned(
-                            bottom: 3,
-                            right: 3,
+                            bottom: 1,
+                            right: 1,
                             child: Container(
                               width: 32,
                               decoration: BoxDecoration(
