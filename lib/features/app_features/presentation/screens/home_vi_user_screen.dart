@@ -9,6 +9,7 @@ import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/util/functions/voice_command_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
@@ -43,22 +44,17 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                     IconButton(
                         onPressed: () {
                           navigationHandler(context, RouteConst.settingsScreen);
-                          // BlocProvider.of<UserCubit>(context)
-                          //     .resetToInitialState();
-                          // BlocProvider.of<AuthCubit>(context).signOut();
                         },
                         icon: Icon(
                           Icons.menu_rounded,
                           size: 40,
                           color: kPrimaryColor,
                         )),
-                    GestureDetector(
-                        onTap: () {
-                          navigationHandler(context, RouteConst.profileScreen);
-                          // Navigator.pushNamedAndRemoveUntil(
-                          //     context, "/signInScreen", (route) => false);
-                        },
-                        child: Container(
+                    GestureDetector(onTap: () {
+                      navigationHandler(context, RouteConst.profileScreen);
+                    }, child: BlocBuilder<ProfileCubit, ProfileState>(
+                      builder: (context, state) {
+                        return Container(
                           padding: const EdgeInsets.all(10.0),
                           child: userCubit.userData != null &&
                                   userCubit.userData!.imageUrl != null
@@ -84,7 +80,9 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                                     size: 35,
                                   ),
                                 ),
-                        ))
+                        );
+                      },
+                    ))
                   ],
                 ),
                 const SizedBox(

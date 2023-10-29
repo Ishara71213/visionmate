@@ -26,3 +26,18 @@ final class ProfileImageFailure extends ProfileState {
   @override
   List<Object> get props => [];
 }
+
+final class ProfiledataUpdateLoading extends ProfileState {
+  @override
+  List<Object> get props => [];
+}
+
+final class ProfiledataUpdateSuccess extends ProfileState {
+  @override
+  List<Object> get props => [];
+}
+
+final class ProfiledataUpdateFailure extends ProfileState {
+  @override
+  List<Object> get props => [];
+}

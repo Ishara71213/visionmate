@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -122,18 +123,65 @@ class ProfileCubit extends Cubit<ProfileState> {
         UserEntity updatedUser = await updateProfileImageUsecase(imageFile!);
         if (updatedUser != null) {
           BlocProvider.of<UserCubit>(context).userData = updatedUser;
+          if (updatedUser.imageUrl != null) {
+            emit(ProfileImageSuccess());
+            return;
+          } else {
+            emit(ProfileImageFailure());
+            return;
+          }
         }
       } else {
         emit(ProfileInitial());
         return;
       }
-      if (profileImageUrl != null || profileImageUrl != "") {
-        emit(ProfileImageSuccess());
-      } else {
-        emit(ProfileInitial());
-      }
     } catch (ex) {
       emit(ProfileImageFailure());
+    }
+  }
+
+  void updateUserInfo({context, firstNameCtrl, lastNameCtrl, dobCtrl}) async {
+    try {
+      if (BlocProvider.of<UserCubit>(context).userData != null) {
+        emit(ProfiledataUpdateLoading());
+        UserEntity user = UserEntity(
+            uid: BlocProvider.of<UserCubit>(context).userData?.uid.toString(),
+            firstName: firstNameCtrl ??
+                BlocProvider.of<UserCubit>(context)
+                    .userData
+                    ?.firstName
+                    .toString(),
+            lastName: lastNameCtrl ??
+                BlocProvider.of<UserCubit>(context)
+                    .userData
+                    ?.lastName
+                    .toString(),
+            email:
+                BlocProvider.of<UserCubit>(context).userData?.email.toString(),
+            dob: dobCtrl ??
+                BlocProvider.of<UserCubit>(context).userData?.dob.toString(),
+            imageUrl: BlocProvider.of<UserCubit>(context)
+                .userData
+                ?.imageUrl
+                .toString(),
+            userType: BlocProvider.of<UserCubit>(context)
+                .userData
+                ?.userType
+                .toString());
+        user = await updateProfileDataUsecase(user);
+        if (user != null) {
+          emit(ProfiledataUpdateSuccess());
+        }
+        BlocProvider.of<UserCubit>(context).userData = user;
+        Future.delayed(const Duration(seconds: 2), () {
+          emit(ProfileInitial());
+        });
+      } else {
+        return;
+      }
+    } catch (ex) {
+      emit(ProfiledataUpdateFailure());
+      return;
     }
   }
 }

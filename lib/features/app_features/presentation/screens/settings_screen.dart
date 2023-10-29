@@ -7,6 +7,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -30,38 +31,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        navigationHandlerWithRemovePrevRoute(
-                            context, RouteConst.homeViUserScreen);
-                      },
-                      icon: Icon(
-                        Icons.menu_rounded,
-                        size: 40,
-                        color: kPrimaryColor,
-                      )),
-                  GestureDetector(
-                    onTap: () {
-                      navigationHandlerWithRemovePrevRoute(
-                          context, RouteConst.profileScreen);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kLightGreyColor,
-                          borderRadius: BorderRadius.circular(50)),
-                      padding: const EdgeInsets.all(8),
-                      margin: const EdgeInsets.all(8),
-                      child: const Icon(
-                        Icons.supervised_user_circle_outlined,
-                        size: 30,
-                      ),
-                    ),
-                  )
-                ],
+              AppBarMenuAndProfile(
+                appBarTitle: "Settings",
               ),
               const SizedBox(
                 height: 30,

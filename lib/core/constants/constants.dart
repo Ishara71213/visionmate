@@ -34,6 +34,12 @@ TextStyle kFilledButtonTextstyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
   color: kButtonTextWhiteColor,
 );
+//filled buttons text style
+TextStyle kFilledButtonSmallTextstyle = GoogleFonts.poppins(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  color: kButtonTextWhiteColor,
+);
 //outlined buttons text style
 TextStyle kOutlineButtonTextstyle = GoogleFonts.poppins(
   fontSize: 16,
@@ -131,5 +137,11 @@ TextStyle kSmallSubTitleText = GoogleFonts.poppins(
 TextStyle kSmallSubTitleMediumBoldText = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w500,
+    color: kDarkGreyTextColor,
+    height: 1.4);
+
+TextStyle kMediumSubTitleMediumBoldText = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
     color: kDarkGreyTextColor,
     height: 1.4);
