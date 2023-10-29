@@ -73,9 +73,8 @@ dependencies:
   flutter_tts: ^3.8.3
   lottie: ^2.6.0
   #pick Images
-  image_picker: ^1.0.2
+  # image_picker: ^1.0.2
   flutter_image_compress: ^2.0.4
-  # image: ^4.0.17
   
 dev_dependencies:
   flutter_test:
