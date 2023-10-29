@@ -1,6 +1,7 @@
 class RouteConst {
   static const String initialRoute = '/';
   static const String splashScreen = '/splashScreen';
+  static const String splashDataLoadScreen = '/splashDataLoadScreen';
   static const String signInScreen = '/signInScreen';
   static const String signUpScreen = '/signUpScreen';
 
@@ -13,9 +14,13 @@ class RouteConst {
   static const String setGuardianScreen = '/setGuardianScreen';
   static const String setViUserScreen = '/setViUserScreen';
 
+  static const String settingsScreen = '/settingsScreen';
+  static const String profileScreen = '/profileScreen';
+  static const String editProfileScreen = '/editProfileScreen';
   static const String homeViUserScreen = '/homeViUserScreen';
   static const String homeGuardianUserScreen = '/homeGuardianUserScreen';
   static const String homeVolunteerUserScreen = '/homeVolunteerUserScreen';
 
   static const String objectDetectionScreen = '/objectDetectionScreen';
+  static const String locationScreen = '/locationScreen';
 }

@@ -7,7 +7,7 @@ import 'package:visionmate/core/constants/states.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -37,11 +37,6 @@ class _SignInScreenState extends State<SignInScreen> {
       listener: (context, state) async {
         if (state is UserSuccess) {
           await Future.delayed(const Duration(seconds: 1), () {
-            navigationHandlerByUserType(
-                context,
-                RouteConst.homeViUserScreen,
-                RouteConst.homeGuardianUserScreen,
-                RouteConst.homeVolunteerUserScreen);
             BlocProvider.of<AuthCubit>(context).appStarted();
           });
         }

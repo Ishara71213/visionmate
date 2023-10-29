@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:visionmate/core/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
 
 class GuardianUserModel extends GuardianUserEntity {
   const GuardianUserModel(

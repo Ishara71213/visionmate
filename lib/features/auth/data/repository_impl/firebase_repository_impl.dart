@@ -1,5 +1,5 @@
 import 'package:visionmate/features/auth/data/data_sources/remote/firebase_remote_data_source.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/domain/repository/firebase_repository.dart';
 
 class FirebaseRepositoryImpl extends FirebaseRepository {

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:visionmate/features/auth/domain/entities/user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/features/auth/domain/usecases/get_create_current_user_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/get_current_uid_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/get_current_user_by_uid_usecase.dart';
@@ -32,6 +32,17 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> resetToInitialState() async {
     emit(UserInitial());
+  }
+
+  Future<void> getCurrrentUserType() async {
+    try {
+      userData = await getCurrentUserByUidUsecase();
+      userType = userData?.userType.toString() ?? "";
+    } on SocketException catch (_) {
+      emit(UserFailrue());
+    } catch (_) {
+      emit(UserFailrue());
+    }
   }
 
   Future<void> submitSignIn({required UserEntity user}) async {
