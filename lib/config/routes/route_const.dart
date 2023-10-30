@@ -21,6 +21,8 @@ class RouteConst {
   static const String homeGuardianUserScreen = '/homeGuardianUserScreen';
   static const String homeVolunteerUserScreen = '/homeVolunteerUserScreen';
 
+  static const String splashScreenYoloModelLoader =
+      '/splashScreenYoloModelLoader';
   static const String objectDetectionScreen = '/objectDetectionScreen';
   static const String locationScreen = '/locationScreen';
 }

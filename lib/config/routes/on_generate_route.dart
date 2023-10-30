@@ -15,6 +15,7 @@ import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dar
 import 'package:visionmate/features/object_detection/presentation/screens/home.dart';
 import 'package:visionmate/features/object_detection/presentation/screens/object_detection_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
+import 'package:visionmate/features/object_detection/presentation/widgets/splash_screen_yolo_model_loader.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
@@ -82,10 +83,14 @@ class OnGenerateRoute {
       case RouteConst.homeVolunteerUserScreen:
         return materialBuilder(
             widget: const HomeGuardianUserScreen(), route: routeName);
+      case RouteConst.splashScreenYoloModelLoader:
+        return materialBuilder(
+            widget: const SplashScreenYoloModelLoader(), route: routeName);
       //feture screens
       case RouteConst.objectDetectionScreen:
-        return materialBuilder(widget: HomePage(), route: routeName);
-      // widget: const ObjectDetectionScreen(), route: routeName);
+        //return materialBuilder(widget: HomePage(), route: routeName);
+        return materialBuilder(
+            widget: ObjectDetectionScreen(), route: routeName);
       //common screens
       case RouteConst.settingsScreen:
         return materialBuilder(

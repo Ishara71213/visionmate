@@ -10,6 +10,7 @@ import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit
 import 'package:visionmate/core/injection_container.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:visionmate/config/routes/on_generate_route.dart';
+import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 // distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
@@ -36,6 +37,8 @@ class VisionMateApp extends StatelessWidget {
         BlocProvider<LocationCubit>(create: (_) => di.sl<LocationCubit>()),
         BlocProvider<ViuserCubit>(create: (_) => di.sl<ViuserCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => di.sl<ProfileCubit>()),
+        BlocProvider<ObjectDetectionCubit>(
+            create: (_) => di.sl<ObjectDetectionCubit>()),
       ],
       child: const MaterialApp(
         title: 'Vision mate',

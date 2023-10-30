@@ -33,6 +33,7 @@ import 'package:visionmate/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source.dart';
 import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source_impl.dart';
 import 'package:visionmate/features/userInfoSetup/data/repository_impl/user_info_repository_impl.dart';
@@ -65,6 +66,7 @@ Future<void> init() async {
       getCurrentUIdUsecase: sl.call(),
       getUIdEmailUsecase: sl.call()));
 
+  sl.registerFactory<ObjectDetectionCubit>(() => ObjectDetectionCubit());
   sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
   sl.registerFactory<LocationCubit>(() => LocationCubit());
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(

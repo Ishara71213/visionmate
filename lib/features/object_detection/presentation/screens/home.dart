@@ -40,33 +40,12 @@ class _HomePageState extends State<HomePage> {
 
   loadModel() async {
     String res;
-    switch (_model) {
-      case yolo:
-        res = await Tflite.loadModel(
-          model: "assets/yolov2_tiny.tflite",
-          labels: "assets/yolov2_tiny.txt",
-        ).toString();
-        break;
 
-      case mobilenet:
-        res = await Tflite.loadModel(
-                model: "assets/mobilenet_v1_1.0_224.tflite",
-                labels: "assets/mobilenet_v1_1.0_224.txt")
-            .toString();
-        break;
+    res = await Tflite.loadModel(
+      model: "assets/yolov2_tiny.tflite",
+      labels: "assets/yolov2_tiny.txt",
+    ).toString();
 
-      case posenet:
-        res = await Tflite.loadModel(
-                model: "assets/posenet_mv1_075_float_from_checkpoints.tflite")
-            .toString();
-        break;
-
-      default:
-        res = await Tflite.loadModel(
-                model: "assets/ssd_mobilenet.tflite",
-                labels: "assets/ssd_mobilenet.txt")
-            .toString();
-    }
     print(res);
   }
 
