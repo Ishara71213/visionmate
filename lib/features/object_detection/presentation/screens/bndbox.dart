@@ -47,23 +47,66 @@ class BndBox extends StatelessWidget {
           left: math.max(0, x),
           top: math.max(0, y),
           width: w,
-          height: h,
-          child: Container(
-            padding: EdgeInsets.only(top: 5.0, left: 5.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color.fromRGBO(37, 213, 253, 1.0),
-                width: 3.0,
+          height: h + 20,
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: w,
+                    height: h,
+                    padding: const EdgeInsets.only(top: 5.0, left: 5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 6, 209, 6),
+                        width: 4.0,
+                      ),
+                    ),
+                    // child: Text(
+                    //   "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
+                    //   style: const TextStyle(
+                    //     color: Color.fromRGBO(37, 213, 253, 1.0),
+                    //     fontSize: 14.0,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                  ),
+                ],
               ),
-            ),
-            child: Text(
-              "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
-              style: TextStyle(
-                color: Color.fromRGBO(37, 213, 253, 1.0),
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Row(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: w),
+                      height: 20,
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 6, 209, 6),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 5.0, top: 2.0, right: 5.0),
+                        child: Text(
+                          "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         );
       }).toList();
@@ -80,7 +123,7 @@ class BndBox extends StatelessWidget {
           height: screenH,
           child: Text(
             "${re["label"]} ${(re["confidence"] * 100).toStringAsFixed(0)}%",
-            style: TextStyle(
+            style: const TextStyle(
               color: Color.fromRGBO(37, 213, 253, 1.0),
               fontSize: 14.0,
               fontWeight: FontWeight.bold,
@@ -119,7 +162,7 @@ class BndBox extends StatelessWidget {
             child: Container(
               child: Text(
                 "● ${k["part"]}",
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color.fromRGBO(37, 213, 253, 1.0),
                   fontSize: 12.0,
                 ),

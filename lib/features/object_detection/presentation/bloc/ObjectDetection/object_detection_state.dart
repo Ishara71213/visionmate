@@ -15,4 +15,10 @@ final class ObjectDetectionModelLoadingComplete extends ObjectDetectionState {}
 
 final class ObjectDetectionModelLoadingFailed extends ObjectDetectionState {}
 
+final class InitiateCameraInitial extends ObjectDetectionState {}
+
+final class ObjectDetectInitial extends ObjectDetectionState {}
+
 final class ObjectDetected extends ObjectDetectionState {}
+
+final class ObjectNotDetected extends ObjectDetectionState {}
