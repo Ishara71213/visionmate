@@ -5,6 +5,7 @@ import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 abstract class AppFeaturesRepository {
   Future<String> getCurrentUId();
   Future<String> getUserIdByEmail(String email);
+  Future<String> getUserEmailByUid(String uid);
   Future<UserEntity> uploadProfileImage(File image);
   Future<UserEntity> updateProfileData(UserEntity entity);
 }

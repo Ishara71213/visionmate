@@ -24,6 +24,11 @@ class UserInfoRepositoryImpl extends UserInfoRepository {
   Future<String> getCurrentUId() async => remoteDataSource.getCurrentUId();
 
   @override
+  Future<void> setSpecificFieldByUserNameUsecase(
+          String fieldName, String value) async =>
+      remoteDataSource.setSpecificFieldByUserNameUsecase(fieldName, value);
+
+  @override
   Future<String> getUserIdByEmail(String email) async {
     return await remoteDataSource.getUserIdByEmail(email);
   }

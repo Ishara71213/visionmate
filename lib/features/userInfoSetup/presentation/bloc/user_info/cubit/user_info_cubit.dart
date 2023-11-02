@@ -14,6 +14,7 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/get_current_ui
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_email.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 
 part 'user_info_state.dart';
 
@@ -22,6 +23,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
   final GetCurrentUIdGlobalUsecase getCurrentUIdUsecase;
   final GetUIdByEmailUsecase getUIdEmailUsecase;
   final CreateCurrentguardianUserTypeInfo createCurrentguardianUserTypeInfo;
+  final SetSpecificFieldByUserNameUsecase setSpecificFieldByUserNameUsecase;
 
   String errorMsg = "";
   String emergencyContactName = "";
@@ -40,7 +42,8 @@ class UserInfoCubit extends Cubit<UserInfoState> {
       {required this.createCurrentViUserTypeInfo,
       required this.createCurrentguardianUserTypeInfo,
       required this.getCurrentUIdUsecase,
-      required this.getUIdEmailUsecase})
+      required this.getUIdEmailUsecase,
+      required this.setSpecificFieldByUserNameUsecase})
       : super(UserInfoInitial());
 
   Future<void> resetToInitialState() async {
@@ -155,6 +158,23 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     try {
       await createCurrentViUserTypeInfo.call(user);
       emit(UserInfoSuccess());
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> submitSpecificField(String fieldName, String value) async {
+    try {
+      // if (fieldName == "guardianId") {
+      //   value = await getUIdEmailUsecase.call(value);
+      // }
+      if (value != "") {
+        await setSpecificFieldByUserNameUsecase.call(fieldName, value);
+      }
     } on SocketException catch (_) {
       emit(UserInfoFailrue());
     } catch (e) {

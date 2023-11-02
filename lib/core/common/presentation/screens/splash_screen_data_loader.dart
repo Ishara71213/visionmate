@@ -49,6 +49,12 @@ class _SplashDataLoadScreen extends State<SplashDataLoadScreen>
                   RouteConst.homeGuardianUserScreen,
                   RouteConst.homeVolunteerUserScreen);
             });
+          } else if (user == UserTypes.guardian) {
+            navigationHandlerByUserType(
+                context,
+                RouteConst.homeViUserScreen,
+                RouteConst.homeGuardianUserScreen,
+                RouteConst.homeVolunteerUserScreen);
           }
           // navigationHandlerByUserType(
           //     context,

@@ -15,6 +15,7 @@ import 'package:visionmate/features/app_features/domain/repository/app_features_
 import 'package:visionmate/features/app_features/domain/repository/guardian_user_profile_repository.dart';
 import 'package:visionmate/features/app_features/domain/repository/vi_user_profile_repository.dart';
 import 'package:visionmate/features/app_features/domain/usecases/get_current_vi_user_info_by_uid_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/get_email_by_uid.dart';
 import 'package:visionmate/features/app_features/domain/usecases/update_profile_data_usecase.dart';
 import 'package:visionmate/features/app_features/domain/usecases/update_profile_image_usecase.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';
@@ -41,6 +42,7 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/create_current
 import 'package:visionmate/features/userInfoSetup/domain/usecases/create_current_vi_user_type_info_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/get_current_uid_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_email.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 GetIt sl = GetIt.instance;
@@ -63,15 +65,16 @@ Future<void> init() async {
       createCurrentViUserTypeInfo: sl.call(),
       createCurrentguardianUserTypeInfo: sl.call(),
       getCurrentUIdUsecase: sl.call(),
-      getUIdEmailUsecase: sl.call()));
+      getUIdEmailUsecase: sl.call(),
+      setSpecificFieldByUserNameUsecase: sl.call()));
 
   sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
   sl.registerFactory<LocationCubit>(() => LocationCubit());
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(
       updateProfileDataUsecase: sl.call(),
       updateProfileImageUsecase: sl.call()));
-  sl.registerFactory<ViuserCubit>(
-      () => ViuserCubit(getCurrentViUserById: sl.call()));
+  sl.registerFactory<ViuserCubit>(() => ViuserCubit(
+      getCurrentViUserById: sl.call(), getEmailByUidUsecase: sl.call()));
 
   //usecase
 
@@ -100,6 +103,8 @@ Future<void> init() async {
       () => GetCurrentUIdGlobalUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetUIdByEmailUsecase>(
       () => GetUIdByEmailUsecase(repository: sl.call()));
+  sl.registerLazySingleton<SetSpecificFieldByUserNameUsecase>(
+      () => SetSpecificFieldByUserNameUsecase(repository: sl.call()));
 
   //App features usecases
   sl.registerLazySingleton<UpdateProfileDataUsecase>(
@@ -108,6 +113,8 @@ Future<void> init() async {
       () => UpdateProfileImageUsecase(repository: sl.call()));
   sl.registerLazySingleton<GetCurrentViUserInfoByUidUsecase>(
       () => GetCurrentViUserInfoByUidUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetEmailByUidUsecase>(
+      () => GetEmailByUidUsecase(repository: sl.call()));
 
   //repositories
   sl.registerLazySingleton<FirebaseRepository>(

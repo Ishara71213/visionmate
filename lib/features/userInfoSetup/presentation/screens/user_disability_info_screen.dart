@@ -8,12 +8,14 @@ import 'package:visionmate/core/util/classes/cordinates.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class UserDisabilityInfoScreen extends StatefulWidget {
-  const UserDisabilityInfoScreen({super.key});
+  final dynamic data;
+  const UserDisabilityInfoScreen({super.key, this.data});
 
   @override
   State<UserDisabilityInfoScreen> createState() =>
@@ -32,6 +34,11 @@ class _UserDisabilityInfoScreenState extends State<UserDisabilityInfoScreen> {
   @override
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
+    if (userDisabilityVal == "" || userDisabilityVal == null) {
+      userDisabilityVal = widget.data?['disability'] ?? "";
+    }
     return BlocListener<UserCubit, UserState>(
         listener: (context, state) async {
           if (state is UserSuccess) {
@@ -155,42 +162,67 @@ class _UserDisabilityInfoScreenState extends State<UserDisabilityInfoScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Skip",
-                      style: kBluetextStyle,
-                    )),
-                OutlinedButton(
-                  onPressed: () {
-                    saveDataState(context);
-                    navigationHandler(context, RouteConst.setGuardianScreen);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: kPrimaryColor),
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10),
-                    primary: kPrimaryColor,
+          bottomNavigationBar: !isAccessingFromSettings
+              ? Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Skip",
+                            style: kBluetextStyle,
+                          )),
+                      OutlinedButton(
+                        onPressed: () {
+                          saveDataState(context);
+                          navigationHandler(
+                              context, RouteConst.setGuardianScreen);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: kPrimaryColor),
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(10),
+                          primary: kPrimaryColor,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(9),
+                          decoration: BoxDecoration(
+                              color: kPrimaryColor, shape: BoxShape.circle),
+                          child: Icon(
+                            Icons.navigate_next,
+                            size: 40,
+                            color: kLightGreyColor,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Container(
-                    padding: const EdgeInsets.all(9),
-                    decoration: BoxDecoration(
-                        color: kPrimaryColor, shape: BoxShape.circle),
-                    child: Icon(
-                      Icons.navigate_next,
-                      size: 40,
-                      color: kLightGreyColor,
-                    ),
-                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: FilledButton(
+                      onPressed: () async {
+                        if (userDisabilityVal != "" &&
+                            userDisabilityVal != null) {
+                          await BlocProvider.of<UserInfoCubit>(context)
+                              .submitSpecificField(
+                                  "disability", userDisabilityVal.toString());
+                          BlocProvider.of<ViuserCubit>(context)
+                              .getCurrrentUserdata();
+                        }
+                      },
+                      style: FilledButton.styleFrom(
+                          minimumSize: const Size.fromHeight(60),
+                          backgroundColor: kButtonPrimaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0))),
+                      child: Text("Save", style: kFilledButtonTextstyle)),
                 ),
-              ],
-            ),
-          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         ));
   }
 

@@ -115,4 +115,19 @@ class UserInfoFirebaseRemoteDataSourceImpl
     });
     return uid;
   }
+
+  @override
+  Future<void> setSpecificFieldByUserNameUsecase(
+      String fieldName, String value) async {
+    CollectionReference userInfosCollectionRef =
+        firestore.collection("VisuallyImpairedUsers");
+    try {
+      final uid = auth.currentUser!.uid;
+      await userInfosCollectionRef.doc(uid).update({
+        fieldName: value,
+      });
+    } catch (ex) {
+      rethrow;
+    }
+  }
 }

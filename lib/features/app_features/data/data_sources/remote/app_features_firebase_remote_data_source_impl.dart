@@ -106,4 +106,23 @@ class AppFeaturesFirebaseRemoteDataSourceImpl
       throw ();
     }
   }
+
+  @override
+  Future<String> getUserEmailByUid(String uid) async {
+    try {
+      CollectionReference userCollectionRef = firestore.collection("Users");
+      String email = "";
+      await userCollectionRef.doc(uid).get().then((value) {
+        if (value.exists) {
+          UserModel existingUser = UserModel.fromSnapshot(value);
+          email = existingUser.email?.toString() ?? "";
+        } else {
+          email = "";
+        }
+      });
+      return email;
+    } catch (ex) {
+      throw ();
+    }
+  }
 }

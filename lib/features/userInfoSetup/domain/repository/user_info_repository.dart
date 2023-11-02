@@ -5,5 +5,7 @@ abstract class UserInfoRepository {
   Future<String> getCurrentUId();
   Future<void> createCurrentViUserTypeInfo(VisuallyImpairedUserEntity user);
   Future<void> createCurrentGuardianUserTypeInfo(GuardianUserEntity user);
+  Future<void> setSpecificFieldByUserNameUsecase(
+      String fieldName, String value);
   Future<String> getUserIdByEmail(String email);
 }

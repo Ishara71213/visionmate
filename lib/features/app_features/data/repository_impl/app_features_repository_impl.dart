@@ -20,6 +20,11 @@ class AppFeaturesRepositoryImpl extends AppFeaturesRepository {
   }
 
   @override
+  Future<String> getUserEmailByUid(String uid) async {
+    return await remoteDataSource.getUserEmailByUid(uid);
+  }
+
+  @override
   Future<UserEntity> updateProfileData(UserEntity entity) async =>
       await remoteDataSource.updateProfileData(entity);
 

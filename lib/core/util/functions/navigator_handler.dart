@@ -22,6 +22,14 @@ void navigationHandler(BuildContext context, String path) {
   }
 }
 
+void navigationHandlerWithArgumnets(
+    BuildContext context, String path, Map<String, dynamic> args) {
+  String? previousRouteName = ModalRoute.of(context)?.settings.name.toString();
+  if (previousRouteName != path) {
+    Navigator.pushNamed(context, path, arguments: args);
+  }
+}
+
 void navigationHandlerByUserType(BuildContext context, String viUserpath,
     String guardianPathpath, String volunteerPath) async {
   String? previousRouteName = ModalRoute.of(context)?.settings.name.toString();

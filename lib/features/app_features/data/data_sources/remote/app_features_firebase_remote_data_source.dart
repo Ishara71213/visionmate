@@ -7,6 +7,7 @@ import 'package:visionmate/core/common/domain/entities/visually_impaired_user_en
 abstract class AppFeaturesFirebaseRemoteDataSource {
   Future<String> getCurrentUId();
   Future<String> getUserIdByEmail(String email);
+  Future<String> getUserEmailByUid(String uid);
   Future<UserEntity> uploadProfileImage(File image);
   Future<UserEntity> updateProfileData(UserEntity entity);
 }

@@ -60,10 +60,10 @@ class OnGenerateRoute {
             widget: const UserSetResidenceLocationScreen(), route: routeName);
       case RouteConst.setVisualDisabilityScreen:
         return materialBuilder(
-            widget: const UserDisabilityInfoScreen(), route: routeName);
+            widget: UserDisabilityInfoScreen(data: args), route: routeName);
       case RouteConst.setGuardianScreen:
         return materialBuilder(
-            widget: const UserGuardianInfoScreen(), route: routeName);
+            widget: UserGuardianInfoScreen(data: args), route: routeName);
       case RouteConst.setViUserScreen:
         return materialBuilder(
             widget: const UserViUserInfoScreen(), route: routeName);

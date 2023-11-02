@@ -31,27 +31,204 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              AppBarMenuAndProfile(
+              const AppBarMenuAndProfile(
                 appBarTitle: "Settings",
               ),
               const SizedBox(
-                height: 30,
+                height: 36,
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    Text(
-                      "Settings",
-                      style: kTitleOneText,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {
+                                navigationHandlerWithArgumnets(
+                                    context, RouteConst.setGuardianScreen, {
+                                  'isAccessingFromSettings': true,
+                                  'guardianId':
+                                      BlocProvider.of<ViuserCubit>(context)
+                                              .guardianEmail ??
+                                          ""
+                                });
+                              },
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.group,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Guardian",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
                     ),
-                    TextButton(
-                        onPressed: () {
-                          BlocProvider.of<UserCubit>(context)
-                              .resetToInitialState();
-                          BlocProvider.of<AuthCubit>(context).signOut();
-                        },
-                        child: const Text("logout")),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {
+                                navigationHandler(
+                                    context, RouteConst.setGuardianScreen);
+                              },
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.home,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Home Location",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Visit Locations",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.emergency,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Emergency Contact",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {
+                                navigationHandlerWithArgumnets(context,
+                                    RouteConst.setVisualDisabilityScreen, {
+                                  'isAccessingFromSettings': true,
+                                  'disability':
+                                      BlocProvider.of<ViuserCubit>(context)
+                                              .userInfo
+                                              ?.disability ??
+                                          ""
+                                });
+                              },
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.info,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Disability Info",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: TextButton(
+                              onPressed: () {
+                                BlocProvider.of<UserCubit>(context)
+                                    .resetToInitialState();
+                                BlocProvider.of<AuthCubit>(context).signOut();
+                              },
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => kSplashGreyColor)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.logout,
+                                    color: kDarkGreyColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    "Log out",
+                                    style: kMediumSubTitleMediumBoldText,
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
                     Text(BlocProvider.of<UserCubit>(context).userType),
                     Text(BlocProvider.of<UserCubit>(context)
                             .userData
@@ -60,7 +237,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ""),
                     Text(BlocProvider.of<ViuserCubit>(context)
                             .userInfo
-                            ?.disability
+                            ?.guardianId
                             .toString() ??
                         ""),
                     Text(BlocProvider.of<ViuserCubit>(context)

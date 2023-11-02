@@ -5,12 +5,14 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class UserGuardianInfoScreen extends StatefulWidget {
-  const UserGuardianInfoScreen({super.key});
+  final dynamic data;
+  const UserGuardianInfoScreen({super.key, this.data});
 
   @override
   State<UserGuardianInfoScreen> createState() => _UserGuardianInfoScreenState();
@@ -30,6 +32,13 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
+    final String guardianEmail = widget.data?['guardianId'] ?? "";
+    if (_guardianEmailController.text == "") {
+      _guardianEmailController.text = widget.data?['guardianId'] ?? "";
+    }
+
     //Size size = MediaQuery.of(context).size;
     UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
     return BlocListener<UserCubit, UserState>(
@@ -193,21 +202,31 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                                                 style: kOnboardScreenText),
                                           )
                                         ]),
-                                        FilledButton(
-                                            onPressed: () {
-                                              verifyGuardian(context);
-                                            },
-                                            style: FilledButton.styleFrom(
-                                                minimumSize:
-                                                    const Size.fromHeight(60),
-                                                backgroundColor:
-                                                    kButtonPrimaryColor,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.0))),
-                                            child: Text("Save",
-                                                style: kFilledButtonTextstyle)),
+                                        !isAccessingFromSettings
+                                            ? FilledButton(
+                                                onPressed: () {
+                                                  if (_guardianEmailController
+                                                          .text !=
+                                                      "") {
+                                                    verifyGuardian(context);
+                                                  }
+                                                },
+                                                style: FilledButton.styleFrom(
+                                                    minimumSize:
+                                                        const Size.fromHeight(
+                                                            60),
+                                                    backgroundColor:
+                                                        kButtonPrimaryColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6.0))),
+                                                child: Text("Save",
+                                                    style:
+                                                        kFilledButtonTextstyle))
+                                            : const SizedBox.shrink(),
                                         const SizedBox(height: 8),
                                         SizedBox(
                                           height: 40.0,
@@ -264,53 +283,96 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  verifyGuardian(context);
-                  userInfoCubit.submitViUserInfo();
-                  navigationHandlerWithRemovePrevRoute(
-                      context, RouteConst.splashDataLoadScreen);
+        bottomNavigationBar: !isAccessingFromSettings
+            ? Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Skip",
+                          style: kBluetextStyle,
+                        )),
+                    OutlinedButton(
+                      onPressed: () {
+                        if (_guardianEmailController.text != "") {
+                          verifyGuardian(context);
+                          userInfoCubit.submitViUserInfo();
+                        }
+                        navigationHandlerWithRemovePrevRoute(
+                            context, RouteConst.splashDataLoadScreen);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kPrimaryColor),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10),
+                        primary: kPrimaryColor,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor, shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.navigate_next,
+                          size: 40,
+                          color: kLightGreyColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : BlocBuilder<UserInfoCubit, UserInfoState>(
+                builder: (context, state) {
+                  if (state is UserInfoLinkUserSuccess) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Back To Settings",
+                              style: kFilledButtonTextstyle)),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () async {
+                            if (_guardianEmailController.text != "") {
+                              await verifyGuardian(context);
+                              await userInfoCubit.submitSpecificField(
+                                  "guardianId", userInfoCubit.assignerId);
+                              BlocProvider.of<ViuserCubit>(context)
+                                  .getCurrrentUserdata();
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Save", style: kFilledButtonTextstyle)),
+                    );
+                  }
                 },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
-                  ),
-                ),
               ),
-            ],
-          ),
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
 
-  void verifyGuardian(BuildContext context) async {
+  Future<void> verifyGuardian(BuildContext context) async {
     BlocProvider.of<UserInfoCubit>(context).assignerEmail =
         _guardianEmailController.text;
     BlocProvider.of<UserInfoCubit>(context).isAllowedLivelocationShare = agree;
-    BlocProvider.of<UserInfoCubit>(context).verifyGuardian();
+    await BlocProvider.of<UserInfoCubit>(context).verifyGuardian();
   }
 }

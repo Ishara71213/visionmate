@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 Color kPrimaryColor = const Color(0xFF0258DD);
 Color kAppBgColor = const Color(0xFFFAFAFA);
 Color kGreyColor = const Color(0xFFD9D9D9);
+Color kSplashGreyColor = const Color.fromARGB(255, 240, 240, 240);
 Color kBlackColor = const Color(0xFF1C1D1E);
 Color kDarkGreyTextColor = const Color(0xFF5D6166);
 Color kDarkGreyColor = const Color(0xFF8E8E8E);
