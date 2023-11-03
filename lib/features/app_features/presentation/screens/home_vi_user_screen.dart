@@ -143,7 +143,7 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
             ),
           ),
         )),
-        floatingActionButton: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+        bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
           builder: (context, state) {
             if (state is Listning) {
               return Lottie.asset('assets/animations/assistant_circle.json',

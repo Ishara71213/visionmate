@@ -299,8 +299,8 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                       onPressed: () {
                         if (_guardianEmailController.text != "") {
                           verifyGuardian(context);
-                          userInfoCubit.submitViUserInfo();
                         }
+                        userInfoCubit.submitViUserInfo();
                         navigationHandlerWithRemovePrevRoute(
                             context, RouteConst.splashDataLoadScreen);
                       },
@@ -350,8 +350,6 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                               await verifyGuardian(context);
                               await userInfoCubit.submitSpecificField(
                                   "guardianId", userInfoCubit.assignerId);
-                              BlocProvider.of<ViuserCubit>(context)
-                                  .getCurrrentUserdata();
                             }
                           },
                           style: FilledButton.styleFrom(

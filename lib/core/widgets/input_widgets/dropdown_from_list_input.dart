@@ -29,7 +29,7 @@ class _DropdownFromListInputState extends State<DropdownFromListInput> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      value: widget.selectedValue,
+      value: widget.selectedValue == "" ? null : widget.selectedValue,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
         if (value == null && widget.isMandotary) {

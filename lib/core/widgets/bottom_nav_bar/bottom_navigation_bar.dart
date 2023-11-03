@@ -36,7 +36,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16.0),
 
       width: double.infinity,
       height: 60, // Increased the height to accommodate the icon names

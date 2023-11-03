@@ -8,12 +8,14 @@ import 'package:visionmate/core/util/classes/cordinates.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class UserEmergencyInfoScreen extends StatefulWidget {
-  const UserEmergencyInfoScreen({super.key});
+  final dynamic data;
+  const UserEmergencyInfoScreen({super.key, required this.data});
 
   @override
   State<UserEmergencyInfoScreen> createState() =>
@@ -37,6 +39,14 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
   @override
   Widget build(BuildContext context) {
     //Size size = MediaQuery.of(context).size;
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
+    if (_emergencyContactNameController.text == "" &&
+        _emergencyContactController.text == "") {
+      _emergencyContactNameController.text =
+          widget.data?['emergencyContactName'] ?? "";
+      _emergencyContactController.text = widget.data?['emergencyContact'] ?? "";
+    }
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) async {
         if (state is UserSuccess) {
@@ -136,44 +146,70 @@ class _UserEmergencyInfoScreenState extends State<UserEmergencyInfoScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    navigationHandler(context, RouteConst.homeViUserScreen);
-                  },
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  saveDataState(context);
-                  navigationHandler(context, RouteConst.setResidenceLocScreen);
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
+        bottomNavigationBar: !isAccessingFromSettings
+            ? Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          navigationHandler(
+                              context, RouteConst.homeViUserScreen);
+                        },
+                        child: Text(
+                          "Skip",
+                          style: kBluetextStyle,
+                        )),
+                    OutlinedButton(
+                      onPressed: () {
+                        saveDataState(context);
+                        navigationHandler(
+                            context, RouteConst.setResidenceLocScreen);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kPrimaryColor),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10),
+                        primary: kPrimaryColor,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor, shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.navigate_next,
+                          size: 40,
+                          color: kLightGreyColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
-                  ),
-                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: FilledButton(
+                    onPressed: () async {
+                      if (_emergencyContactNameController.text != "" &&
+                          _emergencyContactController.text != "") {
+                        await BlocProvider.of<UserInfoCubit>(context)
+                            .submitSpecificField("emergencyContactName",
+                                _emergencyContactNameController.text);
+                        await BlocProvider.of<UserInfoCubit>(context)
+                            .submitSpecificField("emergencyContact",
+                                _emergencyContactController.text);
+                        BlocProvider.of<ViuserCubit>(context)
+                            .getCurrrentUserdata();
+                      }
+                    },
+                    style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(60),
+                        backgroundColor: kButtonPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0))),
+                    child: Text("Save", style: kFilledButtonTextstyle)),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }

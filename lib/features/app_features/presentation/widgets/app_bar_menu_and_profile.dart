@@ -59,66 +59,42 @@ class _AppBarMenuAndProfileState extends State<AppBarMenuAndProfile> {
                 child: Container(
                     padding: const EdgeInsets.all(10.0),
                     child: BlocBuilder<ProfileCubit, ProfileState>(
-                      builder: (context, state) {
-                        if (state is ProfileInitial ||
-                            state is ProfileImageLoading &&
-                                BlocProvider.of<UserCubit>(context).userData !=
+                        builder: (context, state) {
+                      return Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: BlocProvider.of<UserCubit>(context).userData !=
                                     null &&
                                 BlocProvider.of<UserCubit>(context)
                                         .userData!
                                         .imageUrl !=
-                                    null) {
-                          return CircleAvatar(
-                            minRadius: 25,
-                            maxRadius: 25,
-                            backgroundColor: kLightGreyColor,
-                            foregroundImage: NetworkImage(
-                                BlocProvider.of<UserCubit>(context)
-                                    .userData!
-                                    .imageUrl
-                                    .toString()),
-                            child: Icon(
-                              Icons.person,
-                              color: kGrey,
-                              size: 35,
-                            ),
-                          );
-                        } else if (state is ProfileImageSuccess &&
-                            BlocProvider.of<UserCubit>(context).userData !=
-                                null &&
-                            BlocProvider.of<UserCubit>(context)
-                                    .userData!
-                                    .imageUrl !=
-                                null) {
-                          return CircleAvatar(
-                            minRadius: 25,
-                            maxRadius: 25,
-                            backgroundColor: kLightGreyColor,
-                            foregroundImage: NetworkImage(
-                                BlocProvider.of<UserCubit>(context)
-                                    .userData!
-                                    .imageUrl
-                                    .toString()),
-                            child: Icon(
-                              Icons.person,
-                              color: kGrey,
-                              size: 35,
-                            ),
-                          );
-                        } else {
-                          return CircleAvatar(
-                            minRadius: 25,
-                            maxRadius: 25,
-                            backgroundColor: kLightGreyColor,
-                            child: Icon(
-                              Icons.person,
-                              color: kGrey,
-                              size: 35,
-                            ),
-                          );
-                        }
-                      },
-                    )))
+                                    null
+                            ? CircleAvatar(
+                                minRadius: 25,
+                                maxRadius: 25,
+                                backgroundColor: kLightGreyColor,
+                                foregroundImage: NetworkImage(
+                                    BlocProvider.of<UserCubit>(context)
+                                        .userData!
+                                        .imageUrl
+                                        .toString()),
+                                child: Icon(
+                                  Icons.person,
+                                  color: kGrey,
+                                  size: 35,
+                                ),
+                              )
+                            : CircleAvatar(
+                                minRadius: 25,
+                                maxRadius: 25,
+                                backgroundColor: kLightGreyColor,
+                                child: Icon(
+                                  Icons.person,
+                                  color: kGrey,
+                                  size: 35,
+                                ),
+                              ),
+                      );
+                    })))
           ],
         ),
       ],

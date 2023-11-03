@@ -46,7 +46,7 @@ class OnGenerateRoute {
             widget: const UserInfoInitialScreen(), route: routeName);
       case RouteConst.setEmergencyContactScreen:
         return materialBuilder(
-            widget: const UserEmergencyInfoScreen(), route: routeName);
+            widget: UserEmergencyInfoScreen(data: args), route: routeName);
       case RouteConst.setfreqVisitingLocScreen:
         return materialBuilder(
             widget: const UserSetFrequentlyVisitingLocationsScreen(),

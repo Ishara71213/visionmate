@@ -36,9 +36,9 @@ class _UserDisabilityInfoScreenState extends State<UserDisabilityInfoScreen> {
     //Size size = MediaQuery.of(context).size;
     final bool isAccessingFromSettings =
         widget.data?['isAccessingFromSettings'] ?? false;
-    if (userDisabilityVal == "" || userDisabilityVal == null) {
-      userDisabilityVal = widget.data?['disability'] ?? "";
-    }
+
+    userDisabilityVal ??= widget.data?['disability'];
+
     return BlocListener<UserCubit, UserState>(
         listener: (context, state) async {
           if (state is UserSuccess) {

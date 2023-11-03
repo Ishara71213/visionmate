@@ -27,233 +27,256 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
       child: Scaffold(
         body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const AppBarMenuAndProfile(
-                appBarTitle: "Settings",
-              ),
-              const SizedBox(
-                height: 36,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {
-                                navigationHandlerWithArgumnets(
-                                    context, RouteConst.setGuardianScreen, {
-                                  'isAccessingFromSettings': true,
-                                  'guardianId':
-                                      BlocProvider.of<ViuserCubit>(context)
-                                              .guardianEmail ??
-                                          ""
-                                });
-                              },
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.group,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Guardian",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {
-                                navigationHandler(
-                                    context, RouteConst.setGuardianScreen);
-                              },
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.home,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Home Location",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Visit Locations",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.emergency,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Emergency Contact",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {
-                                navigationHandlerWithArgumnets(context,
-                                    RouteConst.setVisualDisabilityScreen, {
-                                  'isAccessingFromSettings': true,
-                                  'disability':
-                                      BlocProvider.of<ViuserCubit>(context)
-                                              .userInfo
-                                              ?.disability ??
-                                          ""
-                                });
-                              },
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.info,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Disability Info",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextButton(
-                              onPressed: () {
-                                BlocProvider.of<UserCubit>(context)
-                                    .resetToInitialState();
-                                BlocProvider.of<AuthCubit>(context).signOut();
-                              },
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => kSplashGreyColor)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.logout,
-                                    color: kDarkGreyColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 14,
-                                  ),
-                                  Text(
-                                    "Log out",
-                                    style: kMediumSubTitleMediumBoldText,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                    Text(BlocProvider.of<UserCubit>(context).userType),
-                    Text(BlocProvider.of<UserCubit>(context)
-                            .userData
-                            ?.email
-                            .toString() ??
-                        ""),
-                    Text(BlocProvider.of<ViuserCubit>(context)
-                            .userInfo
-                            ?.guardianId
-                            .toString() ??
-                        ""),
-                    Text(BlocProvider.of<ViuserCubit>(context)
-                            .userInfo
-                            ?.visitLocation
-                            ?.first
-                            .locationName
-                            .toString() ??
-                        ""),
-                  ],
+            child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const AppBarMenuAndProfile(
+                  appBarTitle: "Settings",
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 36,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigationHandlerWithArgumnets(
+                                      context, RouteConst.setGuardianScreen, {
+                                    'isAccessingFromSettings': true,
+                                    'guardianId':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .guardianEmail ??
+                                            ""
+                                  });
+                                },
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.group,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Guardian",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigationHandler(
+                                      context, RouteConst.setGuardianScreen);
+                                },
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.home,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Home Location",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Visit Locations",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigationHandlerWithArgumnets(context,
+                                      RouteConst.setEmergencyContactScreen, {
+                                    'isAccessingFromSettings': true,
+                                    'emergencyContactName':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.emergencyContactName ??
+                                            "",
+                                    'emergencyContact':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.emergencyContact ??
+                                            ""
+                                  });
+                                },
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.emergency,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Emergency Contact",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {
+                                  navigationHandlerWithArgumnets(context,
+                                      RouteConst.setVisualDisabilityScreen, {
+                                    'isAccessingFromSettings': true,
+                                    'disability':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.disability ??
+                                            ""
+                                  });
+                                },
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.info,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Disability Info",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextButton(
+                                onPressed: () {
+                                  BlocProvider.of<UserCubit>(context)
+                                      .resetToInitialState();
+                                  BlocProvider.of<AuthCubit>(context).signOut();
+                                },
+                                style: ButtonStyle(
+                                    overlayColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => kSplashGreyColor)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.logout,
+                                      color: kDarkGreyColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      "Log out",
+                                      style: kMediumSubTitleMediumBoldText,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ],
+                      ),
+                      Text(BlocProvider.of<UserCubit>(context).userType),
+                      Text(BlocProvider.of<UserCubit>(context)
+                              .userData
+                              ?.email
+                              .toString() ??
+                          ""),
+                      Text(BlocProvider.of<ViuserCubit>(context)
+                              .userInfo
+                              ?.guardianId
+                              .toString() ??
+                          ""),
+                      Text(BlocProvider.of<ViuserCubit>(context)
+                              .userInfo
+                              ?.visitLocation
+                              ?.first
+                              .locationName
+                              .toString() ??
+                          ""),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         )),
-        floatingActionButton: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+        bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
           builder: (context, state) {
             if (state is Listning) {
               return Lottie.asset('assets/animations/assistant_circle.json',
