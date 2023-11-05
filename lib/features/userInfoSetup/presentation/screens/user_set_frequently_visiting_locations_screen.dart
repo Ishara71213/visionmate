@@ -13,12 +13,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 
 class UserSetFrequentlyVisitingLocationsScreen extends StatefulWidget {
-  const UserSetFrequentlyVisitingLocationsScreen({super.key});
+  final dynamic data;
+  const UserSetFrequentlyVisitingLocationsScreen(
+      {super.key, required this.data});
 
   @override
   State<UserSetFrequentlyVisitingLocationsScreen> createState() =>
@@ -47,6 +50,9 @@ class _UserSetFrequentlyVisitingLocationsScreenState
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
+
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
     return BlocListener<UserInfoCubit, UserInfoState>(
       listener: (context, state) async {
         // if (state is UserInfoInitial) {
@@ -129,43 +135,49 @@ class _UserSetFrequentlyVisitingLocationsScreenState
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: FilledButton(
-                                      onPressed: () {
-                                        userInfoCubit
-                                            .addFeqVisitLocationsToList(
-                                                _locationNameController.text,
-                                                _locationPurposeController
-                                                    .text);
-                                        navigationHandler(
-                                            context,
-                                            RouteConst
-                                                .addfreqVisitingLocScreen);
-                                      },
-                                      style: FilledButton.styleFrom(
-                                          minimumSize:
-                                              const Size.fromHeight(60),
-                                          backgroundColor: kButtonPrimaryColor,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0))),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.add_circle),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text("Add Location",
-                                              style: kFilledButtonTextstyle),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
-                                      )),
-                                ),
+                                !isAccessingFromSettings
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: FilledButton(
+                                            onPressed: () {
+                                              userInfoCubit
+                                                  .addFeqVisitLocationsToList(
+                                                      _locationNameController
+                                                          .text,
+                                                      _locationPurposeController
+                                                          .text);
+                                              navigationHandler(
+                                                  context,
+                                                  RouteConst
+                                                      .addfreqVisitingLocScreen);
+                                            },
+                                            style: FilledButton.styleFrom(
+                                                minimumSize:
+                                                    const Size.fromHeight(60),
+                                                backgroundColor:
+                                                    kButtonPrimaryColor,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0))),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.add_circle),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text("Add Location",
+                                                    style:
+                                                        kFilledButtonTextstyle),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )),
+                                      )
+                                    : const SizedBox.shrink(),
                               ],
                             ),
                           ),
@@ -303,42 +315,65 @@ class _UserSetFrequentlyVisitingLocationsScreenState
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  navigationHandler(
-                      context, RouteConst.setVisualDisabilityScreen);
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
+        bottomNavigationBar: !isAccessingFromSettings
+            ? Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Skip",
+                          style: kBluetextStyle,
+                        )),
+                    OutlinedButton(
+                      onPressed: () {
+                        navigationHandler(
+                            context, RouteConst.setVisualDisabilityScreen);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kPrimaryColor),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10),
+                        primary: kPrimaryColor,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor, shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.navigate_next,
+                          size: 40,
+                          color: kLightGreyColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
-                  ),
-                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: FilledButton(
+                    onPressed: () async {
+                      if (_locationNameController.text != "" &&
+                          _locationPurposeController.text != "") {
+                        userInfoCubit.addFeqVisitLocationsToList(
+                            _locationNameController.text,
+                            _locationPurposeController.text);
+                        await userInfoCubit.submitFreqVisitingPlacesField();
+                        Navigator.pop(context);
+                        BlocProvider.of<ViuserCubit>(context)
+                            .getCurrrentUserdata();
+                      }
+                    },
+                    style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(60),
+                        backgroundColor: kButtonPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0))),
+                    child: Text("Save", style: kFilledButtonTextstyle)),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }

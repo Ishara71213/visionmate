@@ -81,7 +81,7 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
                                         children: [
                                           Flexible(
                                               child: Text(
-                                            'Child Saved Successfully',
+                                            'Ward Saved Successfully',
                                             style: kOnboardScreenTitle,
                                           )),
                                         ],
@@ -93,7 +93,7 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
                                         children: [
                                           Flexible(
                                               child: Text(
-                                            "You can moniter your childs location and activities",
+                                            "You can moniter your wards location and activities",
                                             style: kOnboardScreenText,
                                           )),
                                         ],
@@ -131,7 +131,7 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
                                           children: [
                                             Flexible(
                                                 child: Text(
-                                              'Setup your Child',
+                                              'Setup your ward',
                                               style: kOnboardScreenTitle,
                                             )),
                                           ],
@@ -143,7 +143,7 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
                                           children: [
                                             Flexible(
                                                 child: Text(
-                                              "your Child must be a registered user of vison mate application",
+                                              "your ward must be a registered user of vison mate application",
                                               style: kOnboardScreenText,
                                             )),
                                           ],

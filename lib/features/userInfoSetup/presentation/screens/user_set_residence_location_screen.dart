@@ -45,10 +45,7 @@ class _UserSetResidenceLocationScreenState
 
     final bool isAccessingFromSettings =
         widget.data?['isAccessingFromSettings'] ?? false;
-    if (_locationSearchController.text == "") {
-      _locationSearchController.text =
-          widget.data?['emergencyContactName'] ?? "";
-    }
+
     LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
     UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
     return BlocListener<UserInfoCubit, UserInfoState>(

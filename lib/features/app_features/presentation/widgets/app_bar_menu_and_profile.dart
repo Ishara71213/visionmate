@@ -23,10 +23,11 @@ class _AppBarMenuAndProfileState extends State<AppBarMenuAndProfile> {
         widget.appBarTitle != ""
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.only(bottom: 10, top: 18, right: 12),
+                        const EdgeInsets.only(bottom: 10, top: 28, right: 12),
                     child: Text(
                       widget.appBarTitle,
                       style: kTitleOneText,

@@ -49,11 +49,15 @@ class OnGenerateRoute {
             widget: UserEmergencyInfoScreen(data: args), route: routeName);
       case RouteConst.setfreqVisitingLocScreen:
         return materialBuilder(
-            widget: const UserSetFrequentlyVisitingLocationsScreen(),
+            widget: UserSetFrequentlyVisitingLocationsScreen(
+              data: args,
+            ),
             route: routeName);
       case RouteConst.addfreqVisitingLocScreen:
         return materialBuilder(
-            widget: const UserFrequentlyVisitingLocationsInfoScreen(),
+            widget: UserFrequentlyVisitingLocationsInfoScreen(
+              data: args,
+            ),
             route: routeName);
       case RouteConst.setResidenceLocScreen:
         return materialBuilder(

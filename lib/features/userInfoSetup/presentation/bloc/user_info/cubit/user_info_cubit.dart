@@ -215,6 +215,36 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     }
   }
 
+  Future<void> submitFreqVisitingPlacesField() async {
+    try {
+      List<Map<String, dynamic>> visitLocationList;
+
+      if (freqVisitingLocations != null && freqVisitingLocations.isNotEmpty) {
+        visitLocationList = (freqVisitingLocations != null)
+            ? freqVisitingLocations!.map((visitLocation) {
+                return {
+                  "locationName": visitLocation.locationName,
+                  "locationPurpose": visitLocation.locationPurpose,
+                  "locationCordinates": {
+                    "latitude": visitLocation.locationCordinates?.latitude,
+                    "longitude": visitLocation.locationCordinates?.longitude,
+                  },
+                };
+              }).toList()
+            : [];
+        await setSpecificFieldByUserNameUsecase.call(
+            "visitLocation", visitLocationList);
+        emit(UserInfoSuccess());
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
   Future<void> submitGuardianUserInfo() async {
     GuardianUserEntity user = GuardianUserEntity(
         vissuallyImpairedUserId: assignerId,
