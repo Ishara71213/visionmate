@@ -118,7 +118,7 @@ class UserInfoFirebaseRemoteDataSourceImpl
 
   @override
   Future<void> setSpecificFieldByUserNameUsecase(
-      String fieldName, String value) async {
+      String fieldName, dynamic value) async {
     CollectionReference userInfosCollectionRef =
         firestore.collection("VisuallyImpairedUsers");
     try {

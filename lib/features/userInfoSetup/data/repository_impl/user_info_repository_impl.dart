@@ -25,7 +25,7 @@ class UserInfoRepositoryImpl extends UserInfoRepository {
 
   @override
   Future<void> setSpecificFieldByUserNameUsecase(
-          String fieldName, String value) async =>
+          String fieldName, dynamic value) async =>
       remoteDataSource.setSpecificFieldByUserNameUsecase(fieldName, value);
 
   @override

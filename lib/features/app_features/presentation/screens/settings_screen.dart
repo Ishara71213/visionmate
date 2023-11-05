@@ -84,8 +84,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Flexible(
                             child: TextButton(
                                 onPressed: () {
-                                  navigationHandler(
-                                      context, RouteConst.setGuardianScreen);
+                                  navigationHandlerWithArgumnets(context,
+                                      RouteConst.setResidenceLocScreen, {
+                                    'isAccessingFromSettings': true,
+                                    'recidenceAddress':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.recidenceAddress ??
+                                            "",
+                                    'latitude':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.recidenceCordinate
+                                                ?.latitude ??
+                                            "",
+                                    'longitude':
+                                        BlocProvider.of<ViuserCubit>(context)
+                                                .userInfo
+                                                ?.recidenceCordinate
+                                                ?.longitude ??
+                                            ""
+                                  });
                                 },
                                 style: ButtonStyle(
                                     overlayColor:

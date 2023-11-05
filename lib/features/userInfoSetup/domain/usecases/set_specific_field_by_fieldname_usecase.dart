@@ -6,7 +6,7 @@ class SetSpecificFieldByUserNameUsecase {
   SetSpecificFieldByUserNameUsecase({required UserInfoRepository repository})
       : _repository = repository;
 
-  Future<void> call(String fieldName, String value) async {
+  Future<void> call(String fieldName, dynamic value) async {
     return await _repository.setSpecificFieldByUserNameUsecase(
         fieldName, value);
   }

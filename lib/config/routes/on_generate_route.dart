@@ -57,7 +57,10 @@ class OnGenerateRoute {
             route: routeName);
       case RouteConst.setResidenceLocScreen:
         return materialBuilder(
-            widget: const UserSetResidenceLocationScreen(), route: routeName);
+            widget: UserSetResidenceLocationScreen(
+              data: args,
+            ),
+            route: routeName);
       case RouteConst.setVisualDisabilityScreen:
         return materialBuilder(
             widget: UserDisabilityInfoScreen(data: args), route: routeName);

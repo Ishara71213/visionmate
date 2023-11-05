@@ -35,6 +35,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
   List<VisitLocation> freqVisitingLocations = [];
   String assignerEmail = "";
   String assignerId = "";
+  LatLng? currentLocationTemp;
 
   bool isAllowedLivelocationShare = false;
 
@@ -55,6 +56,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     double lat = double.parse(latitude);
     double lng = double.parse(longitude);
     freqVisitLocationTemp = LatLng(lat, lng);
+    currentLocationTemp = LatLng(lat, lng);
     emit(UserInfoLocationDataGathering(curruntLocation: LatLng(lat, lng)));
     controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
   }
@@ -83,6 +85,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     Position currentLocation = await Geolocator.getCurrentPosition();
+
     emit(UserInfoLocationDataGathering(
         curruntLocation:
             LatLng(currentLocation.latitude, currentLocation.longitude)));
@@ -174,6 +177,34 @@ class UserInfoCubit extends Cubit<UserInfoState> {
       // }
       if (value != "") {
         await setSpecificFieldByUserNameUsecase.call(fieldName, value);
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> submitResidenceLocatinField() async {
+    try {
+      Map<String, dynamic> cordinate;
+
+      if (residenceLocation == null && currentLocationTemp != null) {
+        residenceLocation = currentLocationTemp;
+        recidenceAddress = "Home Location";
+      }
+      if (recidenceAddress != "" && residenceLocation != null) {
+        cordinate = {
+          "latitude": residenceLocation?.latitude,
+          "longitude": residenceLocation?.longitude,
+        };
+
+        await setSpecificFieldByUserNameUsecase.call(
+            "recidenceAddress", recidenceAddress);
+        await setSpecificFieldByUserNameUsecase.call(
+            "recidenceCordinate", cordinate);
       }
     } on SocketException catch (_) {
       emit(UserInfoFailrue());
