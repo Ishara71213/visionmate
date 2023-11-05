@@ -32,4 +32,9 @@ class UserInfoRepositoryImpl extends UserInfoRepository {
   Future<String> getUserIdByEmail(String email) async {
     return await remoteDataSource.getUserIdByEmail(email);
   }
+
+  @override
+  Future<void> guardianInfoUpdateByFieldName(String fieldName, dynamic value) {
+    return remoteDataSource.guardianInfoUpdateByFieldName(fieldName, value);
+  }
 }

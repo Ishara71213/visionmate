@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -55,14 +57,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onTap: () {
                   setState(() {
                     if (index == 0) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
+                      navigationHandlerByUserType(
+                          context,
+                          RouteConst.homeViUserScreen,
+                          RouteConst.homeGuardianUserScreen,
+                          RouteConst.homeVolunteerUserScreen);
                     } else if (index == 1) {
                       Navigator.push(
                         context,

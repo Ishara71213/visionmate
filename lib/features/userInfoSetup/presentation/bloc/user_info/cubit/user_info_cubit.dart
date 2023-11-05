@@ -14,6 +14,7 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/get_current_ui
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_email.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/guardian_info_updateby_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 
 part 'user_info_state.dart';
@@ -24,6 +25,8 @@ class UserInfoCubit extends Cubit<UserInfoState> {
   final GetUIdByEmailUsecase getUIdEmailUsecase;
   final CreateCurrentguardianUserTypeInfo createCurrentguardianUserTypeInfo;
   final SetSpecificFieldByUserNameUsecase setSpecificFieldByUserNameUsecase;
+  final GuardianInfoUpdateByFieldNameUsecase
+      guardianInfoUpdateByFieldNameUsecase;
 
   String errorMsg = "";
   String emergencyContactName = "";
@@ -44,7 +47,8 @@ class UserInfoCubit extends Cubit<UserInfoState> {
       required this.createCurrentguardianUserTypeInfo,
       required this.getCurrentUIdUsecase,
       required this.getUIdEmailUsecase,
-      required this.setSpecificFieldByUserNameUsecase})
+      required this.setSpecificFieldByUserNameUsecase,
+      required this.guardianInfoUpdateByFieldNameUsecase})
       : super(UserInfoInitial());
 
   Future<void> resetToInitialState() async {
@@ -177,6 +181,21 @@ class UserInfoCubit extends Cubit<UserInfoState> {
       // }
       if (value != "") {
         await setSpecificFieldByUserNameUsecase.call(fieldName, value);
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> guardianDataUpdateByFieldName(
+      String fieldName, String value) async {
+    try {
+      if (value != "") {
+        await guardianInfoUpdateByFieldNameUsecase.call(fieldName, value);
       }
     } on SocketException catch (_) {
       emit(UserInfoFailrue());

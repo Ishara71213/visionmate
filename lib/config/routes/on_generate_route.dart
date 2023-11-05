@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
 import 'package:visionmate/features/app_features/presentation/screens/edit_profile_screen.dart';
-import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen%20copy.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/profile_screen.dart';
@@ -73,7 +73,10 @@ class OnGenerateRoute {
             widget: UserGuardianInfoScreen(data: args), route: routeName);
       case RouteConst.setViUserScreen:
         return materialBuilder(
-            widget: const UserViUserInfoScreen(), route: routeName);
+            widget: UserViUserInfoScreen(
+              data: args,
+            ),
+            route: routeName);
       // home screens
       case RouteConst.homeViUserScreen:
         return materialBuilder(

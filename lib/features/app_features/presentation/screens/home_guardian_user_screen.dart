@@ -1,28 +1,24 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
-import 'package:visionmate/core/util/functions/voice_command_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
-import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
-import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
-import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/guardian_default_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
-import 'package:lottie/lottie.dart';
+import 'package:lottie/lottie.dart' as li;
 
-class HomeViUserScreen extends StatefulWidget {
-  const HomeViUserScreen({super.key});
+class HomeGuardianUserScreen extends StatefulWidget {
+  const HomeGuardianUserScreen({super.key});
 
   @override
-  State<HomeViUserScreen> createState() => _HomeViUserScreenState();
+  State<HomeGuardianUserScreen> createState() => _HomeGuardianUserScreenState();
 }
 
-class _HomeViUserScreenState extends State<HomeViUserScreen> {
+class _HomeGuardianUserScreenState extends State<HomeGuardianUserScreen> {
   @override
   Widget build(BuildContext context) {
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
@@ -93,50 +89,9 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      FilledButtonCustom(
-                        onPressed: () {},
-                        initText: "Object Detection",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FilledButtonCustom(
-                        onPressed: () {},
-                        initText: "Color Detection",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FilledButtonCustom(
-                        onPressed: () {
-                          print(BlocProvider.of<UserCubit>(context)
-                              .userData
-                              .toString());
-                          print(BlocProvider.of<ViuserCubit>(context)
-                              .userInfo
-                              .toString());
-                        },
-                        initText: "Text to Speech",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FilledButtonCustom(
-                        onPressed: () {
-                          BlocProvider.of<ViuserCubit>(context)
-                              .getCurrrentUserdata();
-                        },
-                        initText: "Connect Cane",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FilledButtonCustom(
-                        onPressed: () {
-                          navigationHandler(context, RouteConst.locationScreen);
-                        },
-                        initText: "Navigation Assistance",
-                      ),
+                      BlocProvider.of<GuardianCubit>(context).wardEmail == ""
+                          ? GuardianDefaultView()
+                          : SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -147,7 +102,7 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
         bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
           builder: (context, state) {
             if (state is Listning) {
-              return Lottie.asset('assets/animations/assistant_circle.json',
+              return li.Lottie.asset('assets/animations/assistant_circle.json',
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(

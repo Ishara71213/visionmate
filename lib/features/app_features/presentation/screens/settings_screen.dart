@@ -7,6 +7,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
@@ -290,7 +291,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ],
                             )
-                          : const SizedBox.shrink(),
+                          : BlocProvider.of<UserCubit>(context).userType ==
+                                  UserTypes.guardian
+                              ? Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: TextButton(
+                                              onPressed: () {
+                                                navigationHandlerWithArgumnets(
+                                                    context,
+                                                    RouteConst.setViUserScreen,
+                                                    {
+                                                      'isAccessingFromSettings':
+                                                          true,
+                                                      'wardId': BlocProvider.of<
+                                                                      GuardianCubit>(
+                                                                  context)
+                                                              .wardEmail ??
+                                                          ""
+                                                    });
+                                              },
+                                              style: ButtonStyle(
+                                                  overlayColor: MaterialStateColor
+                                                      .resolveWith((states) =>
+                                                          kSplashGreyColor)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.group,
+                                                    color: kDarkGreyColor,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 14,
+                                                  ),
+                                                  Text(
+                                                    "Ward",
+                                                    style:
+                                                        kMediumSubTitleMediumBoldText,
+                                                  ),
+                                                ],
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox.shrink(),
                       Row(
                         children: [
                           Flexible(

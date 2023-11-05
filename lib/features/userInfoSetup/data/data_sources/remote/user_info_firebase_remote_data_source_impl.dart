@@ -49,7 +49,7 @@ class UserInfoFirebaseRemoteDataSourceImpl
   Future<void> createCurrentGuardianUserTypeInfo(
       GuardianUserEntity user) async {
     CollectionReference userCollectionRef;
-    userCollectionRef = firestore.collection("Guardians");
+    userCollectionRef = firestore.collection("GuardianUsers");
 
     final uid = await getCurrentUId();
 
@@ -121,6 +121,20 @@ class UserInfoFirebaseRemoteDataSourceImpl
       String fieldName, dynamic value) async {
     CollectionReference userInfosCollectionRef =
         firestore.collection("VisuallyImpairedUsers");
+    try {
+      final uid = auth.currentUser!.uid;
+      await userInfosCollectionRef.doc(uid).update({
+        fieldName: value,
+      });
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> guardianInfoUpdateByFieldName(String fieldName, value) async {
+    CollectionReference userInfosCollectionRef =
+        firestore.collection("GuardianUsers");
     try {
       final uid = auth.currentUser!.uid;
       await userInfosCollectionRef.doc(uid).update({

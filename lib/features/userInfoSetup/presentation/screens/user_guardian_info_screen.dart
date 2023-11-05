@@ -12,7 +12,7 @@ import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cu
 
 class UserGuardianInfoScreen extends StatefulWidget {
   final dynamic data;
-  const UserGuardianInfoScreen({super.key, this.data});
+  const UserGuardianInfoScreen({super.key, required this.data});
 
   @override
   State<UserGuardianInfoScreen> createState() => _UserGuardianInfoScreenState();

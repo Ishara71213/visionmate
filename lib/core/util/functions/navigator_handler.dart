@@ -42,11 +42,13 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
     }
   } else if (user == UserTypes.guardian) {
     if (previousRouteName != guardianPathpath) {
-      Navigator.pushNamed(context, guardianPathpath);
+      Navigator.pushNamedAndRemoveUntil(
+          context, guardianPathpath, (route) => false);
     }
   } else if (user == UserTypes.volunteer) {
     if (previousRouteName != volunteerPath) {
-      Navigator.pushNamed(context, volunteerPath);
+      Navigator.pushNamedAndRemoveUntil(
+          context, volunteerPath, (route) => false);
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -50,11 +51,15 @@ class _SplashDataLoadScreen extends State<SplashDataLoadScreen>
                   RouteConst.homeVolunteerUserScreen);
             });
           } else if (user == UserTypes.guardian) {
-            navigationHandlerByUserType(
-                context,
-                RouteConst.homeViUserScreen,
-                RouteConst.homeGuardianUserScreen,
-                RouteConst.homeVolunteerUserScreen);
+            BlocProvider.of<GuardianCubit>(context)
+                .getCurrrentUserdata()
+                .then((value) {
+              navigationHandlerByUserType(
+                  context,
+                  RouteConst.homeViUserScreen,
+                  RouteConst.homeGuardianUserScreen,
+                  RouteConst.homeVolunteerUserScreen);
+            });
           }
           // navigationHandlerByUserType(
           //     context,

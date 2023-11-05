@@ -68,7 +68,11 @@ class _AppBarMenuAndProfileState extends State<AppBarMenuAndProfile> {
                                 BlocProvider.of<UserCubit>(context)
                                         .userData!
                                         .imageUrl !=
-                                    null
+                                    null &&
+                                BlocProvider.of<UserCubit>(context)
+                                        .userData!
+                                        .imageUrl !=
+                                    "null"
                             ? CircleAvatar(
                                 minRadius: 25,
                                 maxRadius: 25,

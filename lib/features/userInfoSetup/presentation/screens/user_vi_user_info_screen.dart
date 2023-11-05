@@ -10,13 +10,14 @@ import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class UserViUserInfoScreen extends StatefulWidget {
-  const UserViUserInfoScreen({super.key});
+  final dynamic data;
+  const UserViUserInfoScreen({super.key, this.data});
 
   @override
-  State<UserViUserInfoScreen> createState() => _UserViUserInfoScreenState();
+  State<UserViUserInfoScreen> createState() => _UserGuardianInfoScreenState();
 }
 
-class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
+class _UserGuardianInfoScreenState extends State<UserViUserInfoScreen> {
   final GlobalKey<FormState> formKeyEmergencyContact = GlobalKey<FormState>();
   final TextEditingController _viUserEmailController = TextEditingController();
   bool agree = false;
@@ -29,18 +30,19 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
+    final String wardEmail = widget.data?['wardId'] ?? "";
+    if (_viUserEmailController.text == "") {
+      _viUserEmailController.text = widget.data?['wardId'] ?? "";
+    }
+
     //Size size = MediaQuery.of(context).size;
     UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) async {
         if (state is UserSuccess) {
           await Future.delayed(const Duration(seconds: 1), () {
-            // navigationHandlerByUserType(
-            //     context,
-            //     RouteConst.homeViUserScreen,
-            //     RouteConst.homeGuardianUserScreen,
-            //     RouteConst.homeVolunteerUserScreen);
-            // BlocProvider.of<AuthCubit>(context).appStarted();
             navigationHandlerWithRemovePrevRoute(
                 context, RouteConst.splashDataLoadScreen);
           });
@@ -192,21 +194,31 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
                                                 style: kOnboardScreenText),
                                           )
                                         ]),
-                                        FilledButton(
-                                            onPressed: () {
-                                              verifyGuardian(context);
-                                            },
-                                            style: FilledButton.styleFrom(
-                                                minimumSize:
-                                                    const Size.fromHeight(60),
-                                                backgroundColor:
-                                                    kButtonPrimaryColor,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6.0))),
-                                            child: Text("Save",
-                                                style: kFilledButtonTextstyle)),
+                                        !isAccessingFromSettings
+                                            ? FilledButton(
+                                                onPressed: () {
+                                                  if (_viUserEmailController
+                                                          .text !=
+                                                      "") {
+                                                    verifyGuardian(context);
+                                                  }
+                                                },
+                                                style: FilledButton.styleFrom(
+                                                    minimumSize:
+                                                        const Size.fromHeight(
+                                                            60),
+                                                    backgroundColor:
+                                                        kButtonPrimaryColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6.0))),
+                                                child: Text("Save",
+                                                    style:
+                                                        kFilledButtonTextstyle))
+                                            : const SizedBox.shrink(),
                                         const SizedBox(height: 8),
                                         SizedBox(
                                           height: 40.0,
@@ -263,53 +275,96 @@ class _UserViUserInfoScreenState extends State<UserViUserInfoScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  verifyGuardian(context);
-                  userInfoCubit.submitGuardianUserInfo();
-                  navigationHandlerWithRemovePrevRoute(
-                      context, RouteConst.homeGuardianUserScreen);
+        bottomNavigationBar: !isAccessingFromSettings
+            ? Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Skip",
+                          style: kBluetextStyle,
+                        )),
+                    OutlinedButton(
+                      onPressed: () async {
+                        if (_viUserEmailController.text != "") {
+                          await verifyGuardian(context);
+                        }
+                        await userInfoCubit.submitGuardianUserInfo();
+                        // ignore: use_build_context_synchronously
+                        navigationHandlerWithRemovePrevRoute(
+                            context, RouteConst.splashDataLoadScreen);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kPrimaryColor),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10),
+                        primary: kPrimaryColor,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                            color: kPrimaryColor, shape: BoxShape.circle),
+                        child: Icon(
+                          Icons.navigate_next,
+                          size: 40,
+                          color: kLightGreyColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : BlocBuilder<UserInfoCubit, UserInfoState>(
+                builder: (context, state) {
+                  if (state is UserInfoLinkUserSuccess) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Back To Settings",
+                              style: kFilledButtonTextstyle)),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () async {
+                            if (_viUserEmailController.text != "") {
+                              await verifyGuardian(context);
+                              await userInfoCubit.guardianDataUpdateByFieldName(
+                                  "vissuallyImpairedUserId",
+                                  userInfoCubit.assignerId);
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Save", style: kFilledButtonTextstyle)),
+                    );
+                  }
                 },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
-                  ),
-                ),
               ),
-            ],
-          ),
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
 
-  void verifyGuardian(BuildContext context) async {
+  Future<void> verifyGuardian(BuildContext context) async {
     BlocProvider.of<UserInfoCubit>(context).assignerEmail =
         _viUserEmailController.text;
     BlocProvider.of<UserInfoCubit>(context).isAllowedLivelocationShare = agree;
-    BlocProvider.of<UserInfoCubit>(context).verifyGuardian();
+    await BlocProvider.of<UserInfoCubit>(context).verifyGuardian();
   }
 }
