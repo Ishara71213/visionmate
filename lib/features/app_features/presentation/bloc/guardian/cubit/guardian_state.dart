@@ -32,3 +32,21 @@ final class GuardianDataLoadingError extends GuardianState {
   @override
   List<Object> get props => [];
 }
+
+class GuardianLocationDataGathering extends GuardianState {
+  final LatLng curruntLocation;
+  const GuardianLocationDataGathering(
+      {this.curruntLocation = const LatLng(10, 10.0)});
+  @override
+  List<Object> get props => [curruntLocation];
+}
+
+class LiveLocationDataMonitoring extends GuardianState {
+  final LatLng curruntLocation;
+  final LatLng wardLocation;
+  const LiveLocationDataMonitoring(
+      {this.curruntLocation = const LatLng(10, 10.0),
+      this.wardLocation = const LatLng(10, 10.0)});
+  @override
+  List<Object> get props => [curruntLocation, wardLocation];
+}

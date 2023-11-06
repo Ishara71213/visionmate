@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/live_location_entity.dart';
 import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
 import 'package:visionmate/features/app_features/data/data_sources/remote/app_features_firebase_remote_data_source.dart';

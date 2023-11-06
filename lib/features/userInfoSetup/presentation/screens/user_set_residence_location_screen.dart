@@ -70,8 +70,11 @@ class _UserSetResidenceLocationScreenState
                       ),
                       Stack(
                         children: [
-                          SizedBox(
-                            height: size.height - 256,
+                          OverflowBox(
+                            maxHeight: size.height - 256,
+                            maxWidth: size.width,
+                            minHeight: size.height - 256,
+                            minWidth: size.width + 256,
                             child: BlocBuilder<UserInfoCubit, UserInfoState>(
                               builder: (context, state) {
                                 if (state is UserInfoInitial) {

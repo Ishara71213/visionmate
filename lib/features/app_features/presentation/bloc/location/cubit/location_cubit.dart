@@ -6,14 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:visionmate/core/common/domain/entities/live_location_entity.dart';
 import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/core/widgets/pop_up_dialogs/location_popup_message.dart';
+import 'package:visionmate/features/app_features/domain/usecases/live_location_usecase.dart';
 
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
+  final LiveLocationDataUsecase liveLocationDataUsecase;
+
   LatLng? residenceLocation;
   String recidenceAddress = "";
   List<VisitLocation> freqVisitingLocations = [];
@@ -25,7 +29,8 @@ class LocationCubit extends Cubit<LocationState> {
   late StreamSubscription<Position> positionStream;
   bool isDisposed = false;
 
-  LocationCubit() : super(LocationInitial());
+  LocationCubit({required this.liveLocationDataUsecase})
+      : super(LocationInitial());
 
   void dispose() {
     isDisposed = true;
@@ -89,6 +94,14 @@ class LocationCubit extends Cubit<LocationState> {
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position? position) {
       if (position != null) {
+        var count = 0;
+        if (count % 25 == 0) {
+          LiveLocationEntity liveLocationEntity = LiveLocationEntity(
+              isAllowedLivelocationShare: true,
+              liveLocation: LatLng(position.latitude, position.longitude));
+          liveLocationDataUsecase(liveLocationEntity);
+        }
+        count++;
         emit(LocationStartDirections(
             polylineCordinates: polylineCordinates,
             curruntLocation: LatLng(position.latitude, position.longitude),

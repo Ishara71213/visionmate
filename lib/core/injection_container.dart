@@ -17,6 +17,8 @@ import 'package:visionmate/features/app_features/domain/repository/vi_user_profi
 import 'package:visionmate/features/app_features/domain/usecases/get_current_guardian_info_by_uid_usecase.dart';
 import 'package:visionmate/features/app_features/domain/usecases/get_current_vi_user_info_by_uid_usecase.dart';
 import 'package:visionmate/features/app_features/domain/usecases/get_email_by_uid.dart';
+import 'package:visionmate/features/app_features/domain/usecases/live_location_data_monitor_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/live_location_usecase.dart';
 import 'package:visionmate/features/app_features/domain/usecases/update_profile_data_usecase.dart';
 import 'package:visionmate/features/app_features/domain/usecases/update_profile_image_usecase.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
@@ -73,14 +75,17 @@ Future<void> init() async {
       guardianInfoUpdateByFieldNameUsecase: sl.call()));
 
   sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
-  sl.registerFactory<LocationCubit>(() => LocationCubit());
+  sl.registerFactory<LocationCubit>(
+      () => LocationCubit(liveLocationDataUsecase: sl.call()));
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(
       updateProfileDataUsecase: sl.call(),
       updateProfileImageUsecase: sl.call()));
   sl.registerFactory<ViuserCubit>(() => ViuserCubit(
       getCurrentViUserById: sl.call(), getEmailByUidUsecase: sl.call()));
   sl.registerFactory<GuardianCubit>(() => GuardianCubit(
-      getCurrentGuardianUserById: sl.call(), getEmailByUidUsecase: sl.call()));
+      getCurrentGuardianUserById: sl.call(),
+      getEmailByUidUsecase: sl.call(),
+      liveLocationDataMonitotUsecase: sl.call()));
 
   //usecase
 
@@ -126,6 +131,10 @@ Future<void> init() async {
 
   sl.registerLazySingleton<GuardianInfoUpdateByFieldNameUsecase>(
       () => GuardianInfoUpdateByFieldNameUsecase(repository: sl.call()));
+  sl.registerLazySingleton<LiveLocationDataUsecase>(
+      () => LiveLocationDataUsecase(repository: sl.call()));
+  sl.registerLazySingleton<LiveLocationDataMonitotUsecase>(
+      () => LiveLocationDataMonitotUsecase(repository: sl.call()));
 
   //repositories
   sl.registerLazySingleton<FirebaseRepository>(

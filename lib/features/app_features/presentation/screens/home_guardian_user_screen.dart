@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
@@ -19,21 +22,26 @@ class HomeGuardianUserScreen extends StatefulWidget {
 }
 
 class _HomeGuardianUserScreenState extends State<HomeGuardianUserScreen> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   @override
   Widget build(BuildContext context) {
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
+    GuardianCubit guardianCubit = BlocProvider.of<GuardianCubit>(context);
+    Size size = MediaQuery.of(context).size;
+    LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
     return GestureDetector(
       onLongPress: () {
         BlocProvider.of<SpeechToTextCubit>(context).listning(context);
       },
       child: Scaffold(
         body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -82,21 +90,105 @@ class _HomeGuardianUserScreenState extends State<HomeGuardianUserScreen> {
                     ))
                   ],
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      BlocProvider.of<GuardianCubit>(context).wardEmail == ""
-                          ? GuardianDefaultView()
-                          : SizedBox.shrink()
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Column(
+                children: [
+                  BlocProvider.of<GuardianCubit>(context).wardEmail == ""
+                      ? const Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: GuardianDefaultView(),
+                        )
+                      : SizedBox(
+                          height: size.height - 256,
+                          child: BlocBuilder<GuardianCubit, GuardianState>(
+                            builder: (context, state) {
+                              if (state is GuardianDataLoadingComplete) {
+                                guardianCubit
+                                    .checkIsLocationServiceEnabled(context);
+                                guardianCubit.determinePosition();
+                              } else if (state
+                                  is GuardianLocationDataGathering) {
+                                currentLocation = state.curruntLocation;
+                                _controller.future
+                                    .then((GoogleMapController controller) {
+                                  // The GoogleMapController is ready, you can call methods on it here.
+                                  guardianCubit.updateCurrentLocation(
+                                      BlocProvider.of<GuardianCubit>(context)
+                                              ?.userInfo
+                                              ?.vissuallyImpairedUserId ??
+                                          "",
+                                      controller);
+                                  // guardianCubit.updateMapCameraView(
+                                  //     state.curruntLocation.latitude.toString(),
+                                  //     state.curruntLocation.longitude
+                                  //         .toString(),
+                                  //     controller);
+                                });
+                              } else if (state is LiveLocationDataMonitoring) {
+                                currentLocation = state.curruntLocation;
+                                _controller.future
+                                    .then((GoogleMapController controller) {
+                                  print(state.curruntLocation.latitude
+                                          .toString() +
+                                      "   " +
+                                      state.curruntLocation.longitude
+                                          .toString());
+                                  // The GoogleMapController is ready, you can call methods on it here.
+                                  guardianCubit.updateCurrentLocation(
+                                      BlocProvider.of<GuardianCubit>(context)
+                                              ?.userInfo
+                                              ?.vissuallyImpairedUserId ??
+                                          "",
+                                      controller);
+                                });
+                              } else {
+                                currentLocation = const LatLng(
+                                    37.42796133580664, -122.085749655962);
+                              }
+                              return GoogleMap(
+                                onTap: (argument) =>
+                                    FocusScope.of(context).unfocus(),
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false,
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                  target: currentLocation,
+                                  zoom: 16.4746,
+                                ),
+                                markers: {
+                                  Marker(
+                                    markerId: const MarkerId('currentLocation'),
+                                    position:
+                                        state is LiveLocationDataMonitoring
+                                            ? state.curruntLocation
+                                            : const LatLng(0, 0),
+                                    infoWindow: const InfoWindow(
+                                        title: 'Current Location'),
+                                  ),
+                                  Marker(
+                                    markerId: const MarkerId('startLocation'),
+                                    position:
+                                        state is LiveLocationDataMonitoring
+                                            ? state.wardLocation
+                                            : const LatLng(0, 0),
+                                    infoWindow: const InfoWindow(
+                                        title: 'Start Location'),
+                                  ),
+                                },
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              ),
+            ],
           ),
         )),
         bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
