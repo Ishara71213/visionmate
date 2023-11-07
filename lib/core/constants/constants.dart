@@ -10,6 +10,8 @@ Color kDarkGreyTextColor = const Color(0xFF5D6166);
 Color kDarkGreyColor = const Color(0xFF8E8E8E);
 Color kGrey = const Color(0xFFB3B3B3);
 Color kLightGreyColor = const Color(0xFFD9D9D9);
+Color kGuideBoxBgColor = const Color(0xFFE9E9E9);
+Color kGuideBoxIconColor = const Color.fromARGB(255, 190, 190, 190);
 
 Color kSuccessColor = const Color.fromARGB(255, 96, 231, 7);
 Color kWarnningColor = const Color.fromARGB(255, 253, 167, 19);
@@ -111,6 +113,13 @@ TextStyle kOnboardScreenTitle = GoogleFonts.poppins(
     fontSize: 22,
     fontWeight: FontWeight.w600,
     color: kPrimaryColor,
+    height: 1.2);
+
+//headding text style
+TextStyle kGuideBoxTitle = GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: kDarkGreyColor,
     height: 1.2);
 
 //body text style

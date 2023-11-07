@@ -63,23 +63,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           RouteConst.homeGuardianUserScreen,
                           RouteConst.homeVolunteerUserScreen);
                     } else if (index == 1) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
+                      navigationHandler(context, RouteConst.guideScreen);
                     } else if (index == 2) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
+                      navigationHandler(context, RouteConst.guideScreen);
                     } else if (index == 3) {
                       Navigator.push(
                           context,
