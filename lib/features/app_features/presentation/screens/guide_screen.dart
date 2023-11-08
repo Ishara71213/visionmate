@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/enum/guide_screen_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
@@ -21,13 +22,13 @@ class GuideScreen extends StatefulWidget {
 
 class _GuideScreenState extends State<GuideScreen> {
   bool isGuideBtnClick = false;
-  String guideName = "";
+  GuideScreens guideName = GuideScreens.voiceAssistance;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
 
-    void selectGuide(String name) {
+    void selectGuide(GuideScreens name) {
       setState(() {
         isGuideBtnClick = true;
         guideName = name;
@@ -128,7 +129,8 @@ class _GuideScreenState extends State<GuideScreen> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        selectGuide("ObjectDetection");
+                                        selectGuide(
+                                            GuideScreens.voiceAssistance);
                                       },
                                       child: GuideBox(
                                           title: "Voice Assistance",
@@ -139,6 +141,9 @@ class _GuideScreenState extends State<GuideScreen> {
                                       width: 16,
                                     ),
                                     GestureDetector(
+                                      onTap: () {
+                                        selectGuide(GuideScreens.emergencyCall);
+                                      },
                                       child: GuideBox(
                                           title: "Emergency call guide",
                                           icon: Icons.emergency_rounded,
@@ -152,6 +157,9 @@ class _GuideScreenState extends State<GuideScreen> {
                                 Row(
                                   children: [
                                     GestureDetector(
+                                      onTap: () {
+                                        selectGuide(GuideScreens.useLocation);
+                                      },
                                       child: GuideBox(
                                           title: "How to use Location",
                                           icon: Icons.directions,
@@ -160,10 +168,16 @@ class _GuideScreenState extends State<GuideScreen> {
                                     const SizedBox(
                                       width: 16,
                                     ),
-                                    GuideBox(
-                                        title: "Object Detection",
-                                        icon: Icons.camera_alt_rounded,
-                                        size: size)
+                                    GestureDetector(
+                                      onTap: () {
+                                        selectGuide(
+                                            GuideScreens.objectDetection);
+                                      },
+                                      child: GuideBox(
+                                          title: "Object Detection",
+                                          icon: Icons.camera_alt_rounded,
+                                          size: size),
+                                    )
                                   ],
                                 ),
                                 const SizedBox(
@@ -171,17 +185,29 @@ class _GuideScreenState extends State<GuideScreen> {
                                 ),
                                 Row(
                                   children: [
-                                    GuideBox(
-                                        title: "Feature Navigation",
-                                        icon: Icons.record_voice_over_rounded,
-                                        size: size),
+                                    GestureDetector(
+                                      onTap: () {
+                                        selectGuide(
+                                            GuideScreens.featureNavigation);
+                                      },
+                                      child: GuideBox(
+                                          title: "Feature Navigation",
+                                          icon: Icons.record_voice_over_rounded,
+                                          size: size),
+                                    ),
                                     const SizedBox(
                                       width: 16,
                                     ),
-                                    GuideBox(
-                                        title: "Community guide",
-                                        icon: Icons.post_add_rounded,
-                                        size: size)
+                                    GestureDetector(
+                                      onTap: () {
+                                        selectGuide(
+                                            GuideScreens.communityGuide);
+                                      },
+                                      child: GuideBox(
+                                          title: "Community guide",
+                                          icon: Icons.post_add_rounded,
+                                          size: size),
+                                    )
                                   ],
                                 )
                               ],

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:visionmate/core/constants/states.dart';
+import 'package:visionmate/core/enum/states.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';

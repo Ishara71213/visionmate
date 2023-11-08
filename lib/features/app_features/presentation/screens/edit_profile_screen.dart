@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:visionmate/core/constants/states.dart';
+import 'package:visionmate/core/enum/states.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
 import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';

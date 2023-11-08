@@ -3,8 +3,8 @@ import 'package:lottie/lottie.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/CommonBubble.dart';
 
-class VoiceAssistanceGuide extends StatelessWidget {
-  const VoiceAssistanceGuide({
+class ObjectDetectionGuide extends StatelessWidget {
+  const ObjectDetectionGuide({
     super.key,
     required this.size,
   });
@@ -16,7 +16,7 @@ class VoiceAssistanceGuide extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Voice Assistance Guide",
+          "Object Detection Guide",
           style: kOnboardScreenTitle,
         ),
         const SizedBox(height: 18),
