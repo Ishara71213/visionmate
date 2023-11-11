@@ -59,6 +59,9 @@ void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
     textToSpeech("Go to home");
     navigationHandlerByUserType(context, RouteConst.homeViUserScreen,
         RouteConst.homeGuardianUserScreen, RouteConst.homeVolunteerUserScreen);
+  } else if (routeName == RouteConst.textToSpeechScreen) {
+    textToSpeech("Go to $routeCommand \n Tap Screen to Scan Text");
+    navigationHandler(context, routeName);
   } else if (routeName != "not found") {
     textToSpeech("Go to $routeCommand");
     navigationHandler(context, routeName);

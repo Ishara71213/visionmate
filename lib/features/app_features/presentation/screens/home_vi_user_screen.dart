@@ -20,6 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/common_app_bar.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 
 class HomeViUserScreen extends StatefulWidget {
   const HomeViUserScreen({super.key});
@@ -77,12 +78,8 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                       ),
                       FilledButtonCustom(
                         onPressed: () {
-                          print(BlocProvider.of<UserCubit>(context)
-                              .userData
-                              .toString());
-                          print(BlocProvider.of<ViuserCubit>(context)
-                              .userInfo
-                              .toString());
+                          navigationHandler(
+                              context, RouteConst.textToSpeechScreen);
                         },
                         initText: "Text to Speech",
                       ),

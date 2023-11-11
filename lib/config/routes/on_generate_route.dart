@@ -21,6 +21,7 @@ import 'package:visionmate/features/object_detection/presentation/screens/home.d
 import 'package:visionmate/features/object_detection/presentation/screens/object_detection_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
 import 'package:visionmate/features/object_detection/presentation/widgets/splash_screen_yolo_model_loader.dart';
+import 'package:visionmate/features/text_to_Speech/presentation/screens/text_to_speech_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_frequently_visiting_locations_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_disability_info_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_emergency_info_screen.dart';
@@ -127,6 +128,9 @@ class OnGenerateRoute {
       case RouteConst.communityUploadPostScreen:
         return materialBuilder(
             widget: const CommunityUploadPostsScreen(), route: routeName);
+      case RouteConst.textToSpeechScreen:
+        return materialBuilder(
+            widget: const TextToSpeechScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

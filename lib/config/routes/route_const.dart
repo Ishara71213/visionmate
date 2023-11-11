@@ -29,4 +29,5 @@ class RouteConst {
   static const String communityPostsScreen = '/communityPostsScreen';
   static const String communitySinglePostScreen = '/communitySinglePostScreen';
   static const String communityUploadPostScreen = '/communityUploadPostScreen';
+  static const String textToSpeechScreen = '/textToSpeechScreen';
 }

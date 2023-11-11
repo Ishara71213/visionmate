@@ -6,6 +6,8 @@ String compareRouteName(String routeCommand) {
       return RouteConst.setEmergencyContactScreen;
     case "color detection" || "colour detector" || "colour detection":
       return RouteConst.setGuardianScreen;
+    case "text to speech" || "text two speech" || "test to speech":
+      return RouteConst.textToSpeechScreen;
     case "text to speech":
       return RouteConst.setGuardianScreen;
     case "connect cane" || "connect kane":
@@ -16,7 +18,7 @@ String compareRouteName(String routeCommand) {
       return RouteConst.profileScreen;
     case "guide" || "guid" || "gide":
       return RouteConst.guideScreen;
-    case "Community" || "comunity" || "communi":
+    case "community" || "comunity" || "communi":
       return RouteConst.communityPostsScreen;
     case "add post" || "add posts" || "community post" || "adpost" || "addpost":
       return RouteConst.communityUploadPostScreen;

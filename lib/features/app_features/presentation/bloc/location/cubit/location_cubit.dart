@@ -96,10 +96,10 @@ class LocationCubit extends Cubit<LocationState> {
       if (position != null) {
         var count = 0;
         if (count % 25 == 0) {
-          LiveLocationEntity liveLocationEntity = LiveLocationEntity(
-              isAllowedLivelocationShare: true,
-              liveLocation: LatLng(position.latitude, position.longitude));
-          liveLocationDataUsecase(liveLocationEntity);
+          // LiveLocationEntity liveLocationEntity = LiveLocationEntity(
+          //     isAllowedLivelocationShare: true,
+          //     liveLocation: LatLng(position.latitude, position.longitude));
+          // liveLocationDataUsecase(liveLocationEntity);
         }
         count++;
         emit(LocationStartDirections(

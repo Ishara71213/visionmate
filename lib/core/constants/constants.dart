@@ -125,6 +125,13 @@ TextStyle kOnboardScreenTitle = GoogleFonts.poppins(
     height: 1.2);
 
 //headding text style
+TextStyle kTextRecognitionText = GoogleFonts.poppins(
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    color: kPrimaryColor,
+    height: 1.4);
+
+//headding text style
 TextStyle kGuideBoxTitle = GoogleFonts.poppins(
     fontSize: 20,
     fontWeight: FontWeight.w500,

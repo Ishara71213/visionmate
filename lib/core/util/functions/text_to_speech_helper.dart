@@ -7,6 +7,11 @@ void textToSpeech(String text) async {
   await tts.speak(text);
 }
 
+void textToSpeechStop() async {
+  final FlutterTts tts = FlutterTts();
+  tts.stop();
+}
+
 Future<void> textToSpeechFuture(String text) async {
   final FlutterTts tts = FlutterTts();
   await tts.setLanguage('en-US');

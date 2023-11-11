@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/core/util/functions/direct_phone_call.dart';
 import 'package:visionmate/core/util/functions/location_name_comparison.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/util/functions/string_helper.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
-import 'package:visionmate/core/util/functions/url_luncher.dart';
+import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 
 void voiceCommandHandler(BuildContext context, command, double confidence) {
   if (command.isNotEmpty && confidence > 0.5) {
@@ -20,6 +21,10 @@ void voiceCommandHandler(BuildContext context, command, double confidence) {
     } else if (command.contains("emergency")) {
       //String routeCommand = command;
       directPhoneCall(context);
+    } else if (command.contains("read again")) {
+      textToSpeech(BlocProvider.of<TextToSpeechCubit>(context)?.readText ?? "");
+    } else if (command.contains("clear screen")) {
+      BlocProvider.of<TextToSpeechCubit>(context)?.clearData();
     } else {
       textToSpeech("Invalid command $command");
     }

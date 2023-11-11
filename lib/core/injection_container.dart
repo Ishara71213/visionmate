@@ -43,6 +43,7 @@ import 'package:visionmate/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
+import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source.dart';
 import 'package:visionmate/features/userInfoSetup/data/data_sources/remote/user_info_firebase_remote_data_source_impl.dart';
 import 'package:visionmate/features/userInfoSetup/data/repository_impl/user_info_repository_impl.dart';
@@ -97,6 +98,8 @@ Future<void> init() async {
       getAllPostUsecase: sl.call(),
       submitPosteUsecase: sl.call(),
       uploadimageUsecase: sl.call()));
+
+  sl.registerFactory<TextToSpeechCubit>(() => TextToSpeechCubit());
 
   //usecase
 

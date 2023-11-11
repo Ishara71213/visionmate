@@ -67,27 +67,27 @@ class GuardianCubit extends Cubit<GuardianState> {
       accuracy: LocationAccuracy.low,
       distanceFilter: 0,
     );
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) async {
-      if (position != null) {
-        LiveLocationEntity liveLocationMonitor =
-            await liveLocationDataMonitotUsecase(wardId);
-        emit(LiveLocationDataMonitoring(
-          curruntLocation: LatLng(position.latitude, position.longitude),
-          wardLocation: LatLng(liveLocationMonitor?.liveLocation?.latitude ?? 0,
-              liveLocationMonitor?.liveLocation?.longitude ?? 0),
-        ));
-        if (!isDisposed) {
-          controller.animateCamera(CameraUpdate.newLatLng(LatLng(
-              liveLocationMonitor.liveLocation?.latitude ?? 0,
-              liveLocationMonitor.liveLocation?.longitude ?? 0)));
-        }
-      }
-      print(position == null
-          ? 'Unknown'
-          : 'live ${position.latitude.toString()}, ${position.longitude.toString()}');
-    });
+    // positionStream =
+    //     Geolocator.getPositionStream(locationSettings: locationSettings)
+    //         .listen((Position? position) async {
+    //   if (position != null) {
+    //     LiveLocationEntity liveLocationMonitor =
+    //         await liveLocationDataMonitotUsecase(wardId);
+    //     emit(LiveLocationDataMonitoring(
+    //       curruntLocation: LatLng(position.latitude, position.longitude),
+    //       wardLocation: LatLng(liveLocationMonitor?.liveLocation?.latitude ?? 0,
+    //           liveLocationMonitor?.liveLocation?.longitude ?? 0),
+    //     ));
+    //     if (!isDisposed) {
+    //       controller.animateCamera(CameraUpdate.newLatLng(LatLng(
+    //           liveLocationMonitor.liveLocation?.latitude ?? 0,
+    //           liveLocationMonitor.liveLocation?.longitude ?? 0)));
+    //     }
+    //   }
+    //   print(position == null
+    //       ? 'Unknown'
+    //       : 'live ${position.latitude.toString()}, ${position.longitude.toString()}');
+    // });
   }
 
   void determinePosition() async {
