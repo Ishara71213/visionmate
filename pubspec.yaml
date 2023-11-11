@@ -74,9 +74,9 @@ dependencies:
   lottie: ^2.6.0
   #pick Images
   cached_network_image: ^3.3.0
-  image_picker: ^1.0.2
+  image_picker: ^0.8.5
   flutter_image_compress: ^2.0.4
-  image: ^4.0.17
+  # image: ^4.0.17
   flutter_cache_manager: ^3.3.1
   #to launch urls
   url_launcher: ^6.1.12
