@@ -14,6 +14,20 @@ String compareRouteName(String routeCommand) {
       return RouteConst.settingsScreen;
     case "profile" || "profile setting" || "profile settings":
       return RouteConst.profileScreen;
+    case "guide" || "guid" || "gide":
+      return RouteConst.guideScreen;
+    case "Community" || "comunity" || "communi":
+      return RouteConst.communityPostsScreen;
+    case "add post" || "add posts" || "community post" || "adpost" || "addpost":
+      return RouteConst.communityUploadPostScreen;
+    case "set home location" || "seth location" || "set locat":
+      return RouteConst.setResidenceLocScreen;
+    case "set visit locations" || "seth visit location" || "st visit locations":
+      return RouteConst.setfreqVisitingLocScreen;
+    case "set guardian" || "seth guardian":
+      return RouteConst.setGuardianScreen;
+    case "set emergency contact" || "seth emergency contac" || "set emergency":
+      return RouteConst.setEmergencyContactScreen;
     case "home":
       return "home";
     default:

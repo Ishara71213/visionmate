@@ -6,6 +6,7 @@ class TextFormInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? fieldName;
   final bool isMandotary;
+  final bool isTextArea;
   final RegExp? regExp;
   final String? validatorMsg;
   final Color? fillColor;
@@ -19,6 +20,7 @@ class TextFormInput extends StatelessWidget {
       this.regExp,
       this.validatorMsg,
       this.fillColor,
+      this.isTextArea = false,
       this.isMandotary = false});
 
   @override
@@ -61,6 +63,7 @@ class TextFormInput extends StatelessWidget {
       validator: (value) =>
           formFieldValidator(value, validatorMsg, regExp, isMandotary),
       style: kInputFieldText,
+      maxLines: isTextArea ? 5 : 1,
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(

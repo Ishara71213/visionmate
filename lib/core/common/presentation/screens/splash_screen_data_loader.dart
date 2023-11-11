@@ -6,6 +6,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -41,6 +42,16 @@ class _SplashDataLoadScreen extends State<SplashDataLoadScreen>
           String user = BlocProvider.of<UserCubit>(context).userType;
           if (user == UserTypes.visuallyImpairedUser) {
             BlocProvider.of<ViuserCubit>(context)
+                .getCurrrentUserdata()
+                .then((value) {
+              navigationHandlerByUserType(
+                  context,
+                  RouteConst.homeViUserScreen,
+                  RouteConst.homeGuardianUserScreen,
+                  RouteConst.homeVolunteerUserScreen);
+            });
+          } else if (user == UserTypes.guardian) {
+            BlocProvider.of<GuardianCubit>(context)
                 .getCurrrentUserdata()
                 .then((value) {
               navigationHandlerByUserType(

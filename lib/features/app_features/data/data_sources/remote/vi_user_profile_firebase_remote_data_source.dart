@@ -1,4 +1,5 @@
 import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/live_location_entity.dart';
 import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
 
 abstract class ViProfileFirebaseRemoteDataSource {
@@ -6,4 +7,5 @@ abstract class ViProfileFirebaseRemoteDataSource {
   Future<VisuallyImpairedUserEntity> updateCurrentViUserTypeInfo(
       VisuallyImpairedUserEntity entity);
   Future<void> deleteCurrentViUserTypeInfo();
+  Future<void> liveLocationDataUpdate(LiveLocationEntity liveLocationEntity);
 }

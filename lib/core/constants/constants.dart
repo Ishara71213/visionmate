@@ -4,11 +4,15 @@ import 'package:google_fonts/google_fonts.dart';
 Color kPrimaryColor = const Color(0xFF0258DD);
 Color kAppBgColor = const Color(0xFFFAFAFA);
 Color kGreyColor = const Color(0xFFD9D9D9);
+Color kSplashGreyColor = const Color.fromARGB(255, 240, 240, 240);
 Color kBlackColor = const Color(0xFF1C1D1E);
 Color kDarkGreyTextColor = const Color(0xFF5D6166);
 Color kDarkGreyColor = const Color(0xFF8E8E8E);
 Color kGrey = const Color(0xFFB3B3B3);
 Color kLightGreyColor = const Color(0xFFD9D9D9);
+Color kGuideBoxBgColor = const Color(0xFFE9E9E9);
+Color kGuideBoxIconColor = const Color.fromARGB(255, 190, 190, 190);
+Color KbluGrey = const Color(0XFF758199);
 
 Color kSuccessColor = const Color.fromARGB(255, 96, 231, 7);
 Color kWarnningColor = const Color.fromARGB(255, 253, 167, 19);
@@ -40,6 +44,14 @@ TextStyle kFilledButtonSmallTextstyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
   color: kButtonTextWhiteColor,
 );
+
+//filled buttons text style
+TextStyle kFilledButtonSmallTextstyleLight = GoogleFonts.poppins(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  color: kInputFieldBgColor,
+);
+
 //outlined buttons text style
 TextStyle kOutlineButtonTextstyle = GoogleFonts.poppins(
   fontSize: 16,
@@ -111,6 +123,44 @@ TextStyle kOnboardScreenTitle = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     color: kPrimaryColor,
     height: 1.2);
+
+//headding text style
+TextStyle kGuideBoxTitle = GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: kDarkGreyColor,
+    height: 1.2);
+
+TextStyle kImageBoxTitle = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.w500, color: KbluGrey, height: 1.4);
+
+//Guide text style
+TextStyle kGuideDetailsTitle = GoogleFonts.poppins(
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+    color: kDarkGreyTextColor,
+    height: 1.2);
+
+//Guide text style
+TextStyle kGuideDetailsSubTitle = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: kDarkGreyTextColor,
+    height: 1.2);
+
+//Guide text style
+TextStyle kGuideDetailsBubbleCommand = GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: kPrimaryColor,
+    height: 1.2);
+
+//Guide text style
+TextStyle kGuideDetailsBubbleSubCommand = GoogleFonts.poppins(
+    fontSize: 20, fontWeight: FontWeight.w500, color: KbluGrey, height: 1.2);
+
+TextStyle kGuideDetailsBody = GoogleFonts.poppins(
+    fontSize: 16, fontWeight: FontWeight.w400, color: KbluGrey, height: 1.5);
 
 //body text style
 TextStyle kOnboardScreenText = GoogleFonts.poppins(

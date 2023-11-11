@@ -22,7 +22,8 @@ class _ProfileImageState extends State<ProfileImage> {
           builder: (context, state) {
             if (state is ProfileImageLoading &&
                 userCubit.userData != null &&
-                userCubit.userData!.imageUrl != null) {
+                userCubit.userData!.imageUrl != null &&
+                userCubit.userData!.imageUrl != "null") {
               return CircleAvatar(
                   minRadius: 25,
                   maxRadius: 55,
@@ -39,7 +40,8 @@ class _ProfileImageState extends State<ProfileImage> {
                   ));
             } else if (state is ProfileInitial &&
                 userCubit.userData != null &&
-                userCubit.userData!.imageUrl != null) {
+                userCubit.userData!.imageUrl != null &&
+                userCubit.userData!.imageUrl != "null") {
               return CircleAvatar(
                 minRadius: 25,
                 maxRadius: 55,
@@ -56,7 +58,8 @@ class _ProfileImageState extends State<ProfileImage> {
             } else if (state is ProfileImageSuccess &&
                 profileCubit.imageFile != null &&
                 userCubit.userData != null &&
-                userCubit.userData!.imageUrl != null) {
+                userCubit.userData!.imageUrl != null &&
+                userCubit.userData!.imageUrl != "null") {
               return CircleAvatar(
                   minRadius: 25,
                   maxRadius: 55,
@@ -75,7 +78,8 @@ class _ProfileImageState extends State<ProfileImage> {
               //     foregroundImage:
               //         FileImage(profileCubit.imageFile!));
             } else if (userCubit.userData != null &&
-                userCubit.userData!.imageUrl != null) {
+                userCubit.userData!.imageUrl != null &&
+                userCubit.userData!.imageUrl != "null") {
               return CircleAvatar(
                 minRadius: 25,
                 maxRadius: 55,

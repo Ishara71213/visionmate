@@ -1,10 +1,20 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
-import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.dart';
-import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/common_app_bar.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/guardian_default_screen.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:lottie/lottie.dart' as li;
 
 class HomeGuardianUserScreen extends StatefulWidget {
   const HomeGuardianUserScreen({super.key});
@@ -14,63 +24,139 @@ class HomeGuardianUserScreen extends StatefulWidget {
 }
 
 class _HomeGuardianUserScreenState extends State<HomeGuardianUserScreen> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<UserCubit>(context).resetToInitialState();
-                      BlocProvider.of<AuthCubit>(context).signOut();
-                    },
-                    icon: Icon(
-                      Icons.menu_rounded,
-                      size: 40,
-                      color: kPrimaryColor,
-                    )),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/signInScreen", (route) => false);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: kLightGreyColor,
-                        borderRadius: BorderRadius.circular(50)),
-                    padding: const EdgeInsets.all(8),
-                    margin: const EdgeInsets.all(8),
-                    child: const Icon(
-                      Icons.supervised_user_circle_outlined,
-                      size: 30,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [],
+    UserCubit userCubit = BlocProvider.of<UserCubit>(context);
+    GuardianCubit guardianCubit = BlocProvider.of<GuardianCubit>(context);
+    Size size = MediaQuery.of(context).size;
+    LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
+    return GestureDetector(
+      onLongPress: () {
+        BlocProvider.of<SpeechToTextCubit>(context).listning(context);
+      },
+      child: Scaffold(
+        body: SafeArea(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Padding(
+                  padding: EdgeInsets.all(8.0), child: CommonAppBar()),
+              const SizedBox(
+                height: 30,
               ),
-            ),
-          ],
+              Column(
+                children: [
+                  BlocProvider.of<GuardianCubit>(context).wardEmail == ""
+                      ? const Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: GuardianDefaultView(),
+                        )
+                      : SizedBox(
+                          height: size.height - 256,
+                          child: BlocBuilder<GuardianCubit, GuardianState>(
+                            builder: (context, state) {
+                              if (state is GuardianDataLoadingComplete) {
+                                guardianCubit
+                                    .checkIsLocationServiceEnabled(context);
+                                guardianCubit.determinePosition();
+                              } else if (state
+                                  is GuardianLocationDataGathering) {
+                                currentLocation = state.curruntLocation;
+                                _controller.future
+                                    .then((GoogleMapController controller) {
+                                  // The GoogleMapController is ready, you can call methods on it here.
+                                  guardianCubit.updateCurrentLocation(
+                                      BlocProvider.of<GuardianCubit>(context)
+                                              ?.userInfo
+                                              ?.vissuallyImpairedUserId ??
+                                          "",
+                                      controller);
+                                  // guardianCubit.updateMapCameraView(
+                                  //     state.curruntLocation.latitude.toString(),
+                                  //     state.curruntLocation.longitude
+                                  //         .toString(),
+                                  //     controller);
+                                });
+                              } else if (state is LiveLocationDataMonitoring) {
+                                currentLocation = state.curruntLocation;
+                                _controller.future
+                                    .then((GoogleMapController controller) {
+                                  print(state.curruntLocation.latitude
+                                          .toString() +
+                                      "   " +
+                                      state.curruntLocation.longitude
+                                          .toString());
+                                  // The GoogleMapController is ready, you can call methods on it here.
+                                  guardianCubit.updateCurrentLocation(
+                                      BlocProvider.of<GuardianCubit>(context)
+                                              ?.userInfo
+                                              ?.vissuallyImpairedUserId ??
+                                          "",
+                                      controller);
+                                });
+                              } else {
+                                currentLocation = const LatLng(
+                                    37.42796133580664, -122.085749655962);
+                              }
+                              return GoogleMap(
+                                onTap: (argument) =>
+                                    FocusScope.of(context).unfocus(),
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false,
+                                mapType: MapType.normal,
+                                initialCameraPosition: CameraPosition(
+                                  target: currentLocation,
+                                  zoom: 16.4746,
+                                ),
+                                markers: {
+                                  Marker(
+                                    markerId: const MarkerId('currentLocation'),
+                                    position:
+                                        state is LiveLocationDataMonitoring
+                                            ? state.curruntLocation
+                                            : const LatLng(0, 0),
+                                    infoWindow: const InfoWindow(
+                                        title: 'Current Location'),
+                                  ),
+                                  Marker(
+                                    markerId: const MarkerId('startLocation'),
+                                    position:
+                                        state is LiveLocationDataMonitoring
+                                            ? state.wardLocation
+                                            : const LatLng(0, 0),
+                                    infoWindow: const InfoWindow(
+                                        title: 'Start Location'),
+                                  ),
+                                },
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              ),
+            ],
+          ),
+        )),
+        bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+          builder: (context, state) {
+            if (state is Listning) {
+              return li.Lottie.asset('assets/animations/assistant_circle.json',
+                  width: 106, height: 106);
+            } else {
+              return const BottomNavBar(
+                selectedIndex: 0,
+              );
+            }
+          },
         ),
-      )),
-      floatingActionButton: const BottomNavBar(
-        selectedIndex: 5,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -5,5 +5,8 @@ abstract class UserInfoFirebaseRemoteDataSource {
   Future<String> getCurrentUId();
   Future<void> createCurrentViUserTypeInfo(VisuallyImpairedUserEntity user);
   Future<void> createCurrentGuardianUserTypeInfo(GuardianUserEntity user);
+  Future<void> setSpecificFieldByUserNameUsecase(
+      String fieldName, dynamic value);
+  Future<void> guardianInfoUpdateByFieldName(String fieldName, dynamic value);
   Future<String> getUserIdByEmail(String email);
 }

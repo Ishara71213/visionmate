@@ -22,6 +22,14 @@ void navigationHandler(BuildContext context, String path) {
   }
 }
 
+void navigationHandlerWithArgumnets(
+    BuildContext context, String path, Map<String, dynamic> args) {
+  String? previousRouteName = ModalRoute.of(context)?.settings.name.toString();
+  if (previousRouteName != path) {
+    Navigator.pushNamed(context, path, arguments: args);
+  }
+}
+
 void navigationHandlerByUserType(BuildContext context, String viUserpath,
     String guardianPathpath, String volunteerPath) async {
   String? previousRouteName = ModalRoute.of(context)?.settings.name.toString();
@@ -34,11 +42,13 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
     }
   } else if (user == UserTypes.guardian) {
     if (previousRouteName != guardianPathpath) {
-      Navigator.pushNamed(context, guardianPathpath);
+      Navigator.pushNamedAndRemoveUntil(
+          context, guardianPathpath, (route) => false);
     }
   } else if (user == UserTypes.volunteer) {
     if (previousRouteName != volunteerPath) {
-      Navigator.pushNamed(context, volunteerPath);
+      Navigator.pushNamedAndRemoveUntil(
+          context, volunteerPath, (route) => false);
     }
   }
 }
@@ -46,6 +56,7 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
 void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
   String routeName = compareRouteName(routeCommand);
   if (routeName.contains("home")) {
+    textToSpeech("Go to home");
     navigationHandlerByUserType(context, RouteConst.homeViUserScreen,
         RouteConst.homeGuardianUserScreen, RouteConst.homeVolunteerUserScreen);
   } else if (routeName != "not found") {

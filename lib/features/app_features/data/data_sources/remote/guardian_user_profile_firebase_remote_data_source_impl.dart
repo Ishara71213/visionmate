@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:visionmate/core/common/data/models/guardian_user_model.dart';
+import 'package:visionmate/core/common/data/models/live_location_model.dart';
 import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
+import 'package:visionmate/core/common/domain/entities/live_location_entity.dart';
 import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
 import 'package:visionmate/core/common/data/models/visually_impaired_user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,5 +48,29 @@ class GuardianProfileFirebaseRemoteDataSourceImpl
   Future<GuardianUserEntity> updateCurrentGuardianUserTypeInfo() {
     // TODO: implement updateCurrentViUserTypeInfo
     throw UnimplementedError();
+  }
+
+  @override
+  Future<LiveLocationEntity> liveLocationDataMonitor(String uid) async {
+    LiveLocationEntity liveLocation = const LiveLocationEntity(
+        isAllowedLivelocationShare: false, liveLocation: null);
+
+    CollectionReference liveLocationCollectionRef =
+        firestore.collection("liveLocation");
+    try {
+      //final uid = auth.currentUser!.uid;
+      await liveLocationCollectionRef.doc(uid).get().then((value) {
+        if (value.exists) {
+          LiveLocationModel model = LiveLocationModel.fromSnapshot(value);
+
+          liveLocation = LiveLocationEntity(
+              isAllowedLivelocationShare: model.isAllowedLivelocationShare,
+              liveLocation: model.liveLocation);
+        }
+      });
+      return liveLocation;
+    } catch (err) {
+      throw ();
+    }
   }
 }

@@ -1,23 +1,24 @@
 // ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
-import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:lottie/lottie.dart' as li;
 
 class UserSetResidenceLocationScreen extends StatefulWidget {
-  const UserSetResidenceLocationScreen({super.key});
+  final dynamic data;
+  const UserSetResidenceLocationScreen({super.key, required this.data});
 
   @override
   State<UserSetResidenceLocationScreen> createState() =>
@@ -40,6 +41,10 @@ class _UserSetResidenceLocationScreenState
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    final bool isAccessingFromSettings =
+        widget.data?['isAccessingFromSettings'] ?? false;
+
     LatLng currentLocation = const LatLng(6.8393012, 79.9003934);
     UserInfoCubit userInfoCubit = BlocProvider.of<UserInfoCubit>(context);
     return BlocListener<UserInfoCubit, UserInfoState>(
@@ -52,6 +57,11 @@ class _UserSetResidenceLocationScreenState
       child: Scaffold(
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
+          onLongPress: () {
+            isAccessingFromSettings
+                ? BlocProvider.of<SpeechToTextCubit>(context).listning(context)
+                : null;
+          },
           child: SafeArea(
             child: Stack(
               children: [
@@ -117,48 +127,53 @@ class _UserSetResidenceLocationScreenState
                               },
                             ),
                           ),
-                          SizedBox(
-                            height: size.height - 256,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: FilledButton(
-                                      onPressed: () {
-                                        userInfoCubit.residenceLocation =
-                                            currentLocation;
-                                        navigationHandler(
-                                            context,
-                                            RouteConst
-                                                .setfreqVisitingLocScreen);
-                                      },
-                                      style: FilledButton.styleFrom(
-                                          minimumSize:
-                                              const Size.fromHeight(60),
-                                          backgroundColor: kButtonPrimaryColor,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0))),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.add_circle),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text("Add Location",
-                                              style: kFilledButtonTextstyle),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
+                          !isAccessingFromSettings
+                              ? SizedBox(
+                                  height: size.height - 256,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: FilledButton(
+                                            onPressed: () {
+                                              userInfoCubit.residenceLocation =
+                                                  currentLocation;
+                                              navigationHandler(
+                                                  context,
+                                                  RouteConst
+                                                      .setfreqVisitingLocScreen);
+                                            },
+                                            style: FilledButton.styleFrom(
+                                                minimumSize:
+                                                    const Size.fromHeight(60),
+                                                backgroundColor:
+                                                    kButtonPrimaryColor,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6.0))),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.add_circle),
+                                                const SizedBox(
+                                                  width: 8,
+                                                ),
+                                                Text("Add Location",
+                                                    style:
+                                                        kFilledButtonTextstyle),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20.0, vertical: 14.0),
@@ -195,11 +210,17 @@ class _UserSetResidenceLocationScreenState
                                           prediction.lng.toString(),
                                           controller);
                                     });
-
+                                    userInfoCubit.residenceLocation = LatLng(
+                                        double.parse(
+                                            prediction?.lat.toString() ?? "0"),
+                                        double.parse(
+                                            prediction?.lng.toString() ?? "0"));
                                     print("placeDetails" +
                                         prediction.lng.toString());
                                   }, // this callback is called when isLatLngRequired is true
                                   itemClick: (Prediction prediction) {
+                                    userInfoCubit.recidenceAddress =
+                                        prediction.description.toString();
                                     _locationSearchController.text =
                                         prediction.description.toString();
                                     _locationSearchController.selection =
@@ -276,41 +297,71 @@ class _UserSetResidenceLocationScreenState
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Skip",
-                    style: kBluetextStyle,
-                  )),
-              OutlinedButton(
-                onPressed: () {
-                  navigationHandler(
-                      context, RouteConst.setfreqVisitingLocScreen);
-                },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: kPrimaryColor),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  primary: kPrimaryColor,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor, shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.navigate_next,
-                    size: 40,
-                    color: kLightGreyColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
+        bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+          builder: (context, state) {
+            if (state is Listning) {
+              return li.Lottie.asset('assets/animations/assistant_circle.json',
+                  width: 106, height: 106);
+            } else {
+              return !isAccessingFromSettings
+                  ? Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Skip",
+                                style: kBluetextStyle,
+                              )),
+                          OutlinedButton(
+                            onPressed: () {
+                              navigationHandler(
+                                  context, RouteConst.setfreqVisitingLocScreen);
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: kPrimaryColor),
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(10),
+                              primary: kPrimaryColor,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(9),
+                              decoration: BoxDecoration(
+                                  color: kPrimaryColor, shape: BoxShape.circle),
+                              child: Icon(
+                                Icons.navigate_next,
+                                size: 40,
+                                color: kLightGreyColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () async {
+                            if (_locationSearchController.text != "" ||
+                                userInfoCubit.residenceLocation?.latitude !=
+                                    0) {
+                              await userInfoCubit.submitResidenceLocatinField();
+                              BlocProvider.of<ViuserCubit>(context)
+                                  .getCurrrentUserdata();
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Save", style: kFilledButtonTextstyle)),
+                    );
+            }
+          },
         ),
       ),
     );

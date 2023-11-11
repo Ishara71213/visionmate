@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -17,11 +19,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'assets/icons/Home.svg',
     'assets/icons/Guide.svg',
     'assets/icons/Community.svg',
-    'assets/icons/Settings.svg'
+    'assets/icons/chat.svg'
     // 'assets/icons/navigation-Products.svg',
   ];
 
-  List<String> iconNames = ['Home', 'Guide', 'Community', 'Settings'];
+  List<String> iconNames = ['Home', 'Guide', 'Community', 'Messages'];
 
   @override
   void initState() {
@@ -36,7 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16.0),
 
       width: double.infinity,
       height: 60, // Increased the height to accommodate the icon names
@@ -55,37 +57,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onTap: () {
                   setState(() {
                     if (index == 0) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
-                    } else if (index == 1) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
-                    } else if (index == 2) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeViUserScreen();
-                          },
-                        ),
-                      );
-                    } else if (index == 3) {
-                      Navigator.push(
+                      navigationHandlerByUserType(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeViUserScreen()));
+                          RouteConst.homeViUserScreen,
+                          RouteConst.homeGuardianUserScreen,
+                          RouteConst.homeVolunteerUserScreen);
+                    } else if (index == 1) {
+                      navigationHandler(context, RouteConst.guideScreen);
+                    } else if (index == 2) {
+                      navigationHandler(
+                          context, RouteConst.communityPostsScreen);
+                    } else if (index == 3) {
+                      // navigationHandler(
+                      //     context, RouteConst.setfreqVisitingLocScreen);
                     }
                   });
                 },

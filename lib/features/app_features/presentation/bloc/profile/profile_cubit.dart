@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -124,6 +125,10 @@ class ProfileCubit extends Cubit<ProfileState> {
         if (updatedUser != null) {
           BlocProvider.of<UserCubit>(context).userData = updatedUser;
           if (updatedUser.imageUrl != null) {
+            imageCache?.clear();
+            imageCache.clearLiveImages();
+            imageCache.containsKey('profileimage');
+            DefaultCacheManager().emptyCache();
             emit(ProfileImageSuccess());
             return;
           } else {

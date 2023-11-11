@@ -7,6 +7,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
+import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
@@ -26,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     UserCubit userCubit = BlocProvider.of<UserCubit>(context);
+    GuardianCubit GuardianuserCubit = BlocProvider.of<GuardianCubit>(context);
 
     return GestureDetector(
       onLongPress: () {
@@ -167,11 +169,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Guardian",
+                                      "Ward",
                                       style: kSmallTitleText,
                                     ),
                                     Text(
-                                      userCubit.userData?.userType
+                                      GuardianuserCubit?.wardEmail
                                               ?.toString() ??
                                           "",
                                       style: kSmallSubTitleMediumBoldText,

@@ -14,6 +14,8 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/get_current_ui
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_email.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/guardian_info_updateby_fieldname_usecase.dart';
+import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 
 part 'user_info_state.dart';
 
@@ -22,6 +24,9 @@ class UserInfoCubit extends Cubit<UserInfoState> {
   final GetCurrentUIdGlobalUsecase getCurrentUIdUsecase;
   final GetUIdByEmailUsecase getUIdEmailUsecase;
   final CreateCurrentguardianUserTypeInfo createCurrentguardianUserTypeInfo;
+  final SetSpecificFieldByUserNameUsecase setSpecificFieldByUserNameUsecase;
+  final GuardianInfoUpdateByFieldNameUsecase
+      guardianInfoUpdateByFieldNameUsecase;
 
   String errorMsg = "";
   String emergencyContactName = "";
@@ -33,6 +38,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
   List<VisitLocation> freqVisitingLocations = [];
   String assignerEmail = "";
   String assignerId = "";
+  LatLng? currentLocationTemp;
 
   bool isAllowedLivelocationShare = false;
 
@@ -40,7 +46,9 @@ class UserInfoCubit extends Cubit<UserInfoState> {
       {required this.createCurrentViUserTypeInfo,
       required this.createCurrentguardianUserTypeInfo,
       required this.getCurrentUIdUsecase,
-      required this.getUIdEmailUsecase})
+      required this.getUIdEmailUsecase,
+      required this.setSpecificFieldByUserNameUsecase,
+      required this.guardianInfoUpdateByFieldNameUsecase})
       : super(UserInfoInitial());
 
   Future<void> resetToInitialState() async {
@@ -52,6 +60,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     double lat = double.parse(latitude);
     double lng = double.parse(longitude);
     freqVisitLocationTemp = LatLng(lat, lng);
+    currentLocationTemp = LatLng(lat, lng);
     emit(UserInfoLocationDataGathering(curruntLocation: LatLng(lat, lng)));
     controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
   }
@@ -80,6 +89,7 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     Position currentLocation = await Geolocator.getCurrentPosition();
+
     emit(UserInfoLocationDataGathering(
         curruntLocation:
             LatLng(currentLocation.latitude, currentLocation.longitude)));
@@ -155,6 +165,96 @@ class UserInfoCubit extends Cubit<UserInfoState> {
     try {
       await createCurrentViUserTypeInfo.call(user);
       emit(UserInfoSuccess());
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> submitSpecificField(String fieldName, String value) async {
+    try {
+      // if (fieldName == "guardianId") {
+      //   value = await getUIdEmailUsecase.call(value);
+      // }
+      if (value != "") {
+        await setSpecificFieldByUserNameUsecase.call(fieldName, value);
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> guardianDataUpdateByFieldName(
+      String fieldName, String value) async {
+    try {
+      if (value != "") {
+        await guardianInfoUpdateByFieldNameUsecase.call(fieldName, value);
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> submitResidenceLocatinField() async {
+    try {
+      Map<String, dynamic> cordinate;
+
+      if (residenceLocation == null && currentLocationTemp != null) {
+        residenceLocation = currentLocationTemp;
+        recidenceAddress = "Home Location";
+      }
+      if (recidenceAddress != "" && residenceLocation != null) {
+        cordinate = {
+          "latitude": residenceLocation?.latitude,
+          "longitude": residenceLocation?.longitude,
+        };
+
+        await setSpecificFieldByUserNameUsecase.call(
+            "recidenceAddress", recidenceAddress);
+        await setSpecificFieldByUserNameUsecase.call(
+            "recidenceCordinate", cordinate);
+      }
+    } on SocketException catch (_) {
+      emit(UserInfoFailrue());
+    } catch (e) {
+      final error = e.toString();
+      errorMsg = error.split(']').last;
+      emit(UserInfoFailrue());
+    }
+  }
+
+  Future<void> submitFreqVisitingPlacesField() async {
+    try {
+      List<Map<String, dynamic>> visitLocationList;
+
+      if (freqVisitingLocations != null && freqVisitingLocations.isNotEmpty) {
+        visitLocationList = (freqVisitingLocations != null)
+            ? freqVisitingLocations!.map((visitLocation) {
+                return {
+                  "locationName": visitLocation.locationName,
+                  "locationPurpose": visitLocation.locationPurpose,
+                  "locationCordinates": {
+                    "latitude": visitLocation.locationCordinates?.latitude,
+                    "longitude": visitLocation.locationCordinates?.longitude,
+                  },
+                };
+              }).toList()
+            : [];
+        await setSpecificFieldByUserNameUsecase.call(
+            "visitLocation", visitLocationList);
+        emit(UserInfoSuccess());
+      }
     } on SocketException catch (_) {
       emit(UserInfoFailrue());
     } catch (e) {

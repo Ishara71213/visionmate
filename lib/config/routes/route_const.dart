@@ -25,4 +25,8 @@ class RouteConst {
       '/splashScreenYoloModelLoader';
   static const String objectDetectionScreen = '/objectDetectionScreen';
   static const String locationScreen = '/locationScreen';
+  static const String guideScreen = '/guideScreen';
+  static const String communityPostsScreen = '/communityPostsScreen';
+  static const String communitySinglePostScreen = '/communitySinglePostScreen';
+  static const String communityUploadPostScreen = '/communityUploadPostScreen';
 }

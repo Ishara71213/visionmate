@@ -3,7 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_posts_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_single_post_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_upload_posts_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/edit_profile_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/guide_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/profile_screen.dart';
@@ -50,28 +55,36 @@ class OnGenerateRoute {
       // widget: const UserInfoInitialScreen(), route: routeName);
       case RouteConst.setEmergencyContactScreen:
         return materialBuilder(
-            widget: const UserEmergencyInfoScreen(), route: routeName);
+            widget: UserEmergencyInfoScreen(data: args), route: routeName);
       case RouteConst.setfreqVisitingLocScreen:
         return materialBuilder(
-            widget: const UserSetFrequentlyVisitingLocationsScreen(),
+            widget: UserSetFrequentlyVisitingLocationsScreen(
+              data: args,
+            ),
             route: routeName);
       case RouteConst.addfreqVisitingLocScreen:
         return materialBuilder(
-            widget: const UserFrequentlyVisitingLocationsInfoScreen(),
+            widget: UserFrequentlyVisitingLocationsInfoScreen(
+              data: args,
+            ),
             route: routeName);
       case RouteConst.setResidenceLocScreen:
         return materialBuilder(
-            widget: const UserSetResidenceLocationScreen(), route: routeName);
+            widget: UserSetResidenceLocationScreen(
+              data: args,
+            ),
+            route: routeName);
       case RouteConst.setVisualDisabilityScreen:
         return materialBuilder(
-            widget: const UserDisabilityInfoScreen(), route: routeName);
+            widget: UserDisabilityInfoScreen(data: args), route: routeName);
       case RouteConst.setGuardianScreen:
         return materialBuilder(
-            widget: const UserGuardianInfoScreen(), route: routeName);
+            widget: UserGuardianInfoScreen(data: args), route: routeName);
       case RouteConst.setViUserScreen:
         return materialBuilder(
-            // widget: const UserViUserInfoScreen(), route: routeName);
-            widget: const HomeViUserScreen(),
+            widget: UserViUserInfoScreen(
+              data: args,
+            ),
             route: routeName);
       // home screens
       case RouteConst.homeViUserScreen:
@@ -103,6 +116,17 @@ class OnGenerateRoute {
       case RouteConst.locationScreen:
         return materialBuilder(
             widget: const LocationScreen(), route: routeName);
+      case RouteConst.guideScreen:
+        return materialBuilder(widget: const GuideScreen(), route: routeName);
+      case RouteConst.communityPostsScreen:
+        return materialBuilder(
+            widget: const CommunityPostsScreen(), route: routeName);
+      // case RouteConst.communitySinglePostScreen:
+      //   return materialBuilder(
+      //       widget: const CommunitySinglePostScreen(), route: routeName);
+      case RouteConst.communityUploadPostScreen:
+        return materialBuilder(
+            widget: const CommunityUploadPostsScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());
