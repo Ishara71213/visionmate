@@ -2,34 +2,36 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:visionmate/core/common/domain/entities/user_entity.dart';
-import 'package:visionmate/features/app_features/domain/usecases/update_profile_data_usecase.dart';
-import 'package:visionmate/features/app_features/domain/usecases/update_profile_image_usecase.dart';
-import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
-import 'package:visionmate/features/auth/domain/usecases/get_current_uid_usecase.dart';
+import 'package:visionmate/features/app_features/domain/entities/post_entity.dart';
+import 'package:visionmate/features/app_features/domain/usecases/get_all_post_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/submit_post_usecase.dart';
+import 'package:visionmate/features/app_features/domain/usecases/upload_image_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
-part 'profile_state.dart';
+part 'community_state.dart';
 
-class ProfileCubit extends Cubit<ProfileState> {
-  UpdateProfileImageUsecase updateProfileImageUsecase;
-  UpdateProfileDataUsecase updateProfileDataUsecase;
+class CommunityCubit extends Cubit<CommunityState> {
+  GetAllPostUsecase getAllPostUsecase;
+  SubmitPosteUsecase submitPosteUsecase;
+  UploadimageUsecase uploadimageUsecase;
 
-  ProfileCubit(
-      {required this.updateProfileImageUsecase,
-      required this.updateProfileDataUsecase})
-      : super(ProfileInitial());
+  CommunityCubit(
+      {required this.getAllPostUsecase,
+      required this.submitPosteUsecase,
+      required this.uploadimageUsecase})
+      : super(CommunityInitial());
 
   File? imageFile;
   XFile? imageFileCompressed;
-  String profileImageUrl = "";
+  String postTitle = "";
+  String postContent = "";
+  List<PostEntity> postList = [];
+  List<String> postIdList = [];
 
   Future<XFile?> compressFile(File file) async {
     final filePath = file.absolute.path;
@@ -67,6 +69,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   void getFromCamera(BuildContext context) async {
     try {
+      emit(CommunityPhotoUploading());
       final PickedFile =
           await ImagePicker().pickImage(source: ImageSource.camera);
 
@@ -75,8 +78,9 @@ class ProfileCubit extends Cubit<ProfileState> {
         XFile? compressedFile = await compressFile(hqFile);
 
         imageFile = File(compressedFile!.path);
+        emit(CommunityPhotoUploadingomplete());
         //imageFileCompressed = compressedFile;
-        uploadProfileImage(context);
+        //uploadProfileImage(context);
       } else {
         return;
       }
@@ -88,7 +92,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   void getFromGallery(BuildContext context) async {
     var status = await Permission.storage.request();
-
+    emit(CommunityPhotoUploading());
     try {
       if (status.isGranted) {
         final PickedFile =
@@ -100,7 +104,8 @@ class ProfileCubit extends Cubit<ProfileState> {
           imageFile = File(compressedFile!.path);
           final originalLength = await hqFile.length();
           final compressedSize = await imageFile!.length();
-          uploadProfileImage(context);
+          emit(CommunityPhotoUploadingomplete());
+          // uploadProfileImage(context);
           //if (compressedSize > 700000) {}
         } else {
           return;
@@ -117,76 +122,43 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  void uploadProfileImage(BuildContext context) async {
+  void submitPost(BuildContext context) async {
     try {
-      emit(ProfileImageLoading());
+      emit(CommunityPostUploadLoading());
       if (imageFile != null) {
-        UserEntity updatedUser = await updateProfileImageUsecase(imageFile!);
-        if (updatedUser != null) {
-          BlocProvider.of<UserCubit>(context).userData = updatedUser;
-          if (updatedUser.imageUrl != null) {
-            imageCache?.clear();
-            imageCache.clearLiveImages();
-            imageCache.containsKey('profileimage');
-            DefaultCacheManager().emptyCache();
-            emit(ProfileImageSuccess());
-            return;
-          } else {
-            emit(ProfileImageFailure());
-            return;
-          }
+        String imageUrl =
+            await uploadimageUsecase.call(imageFile!, "communitypost");
+        if (imageUrl != null || imageUrl != "") {
+          PostEntity entity = PostEntity(
+              title: postTitle,
+              content: postContent,
+              imageUrl: imageUrl,
+              createdUser:
+                  BlocProvider.of<UserCubit>(context).userData?.firstName,
+              createdDate: DateTime.now());
+          bool result = await submitPosteUsecase.call(entity);
+          result
+              ? emit(CommunityPostUploadSuccess())
+              : emit(CommunityPostUploadFailed());
+          Future.delayed(const Duration(seconds: 2), () {
+            imageFile = null;
+            imageFileCompressed = null;
+            Navigator.pop(context);
+            emit(CommunityInitial());
+          });
         }
       } else {
-        emit(ProfileInitial());
+        emit(CommunityInitial());
         return;
       }
     } catch (ex) {
-      emit(ProfileImageFailure());
+      emit(CommunityPostUploadFailed());
     }
   }
 
-  void updateUserInfo({context, firstNameCtrl, lastNameCtrl, dobCtrl}) async {
-    try {
-      if (BlocProvider.of<UserCubit>(context).userData != null) {
-        emit(ProfiledataUpdateLoading());
-        UserEntity user = UserEntity(
-            uid: BlocProvider.of<UserCubit>(context).userData?.uid.toString(),
-            firstName: firstNameCtrl ??
-                BlocProvider.of<UserCubit>(context)
-                    .userData
-                    ?.firstName
-                    .toString(),
-            lastName: lastNameCtrl ??
-                BlocProvider.of<UserCubit>(context)
-                    .userData
-                    ?.lastName
-                    .toString(),
-            email:
-                BlocProvider.of<UserCubit>(context).userData?.email.toString(),
-            dob: dobCtrl ??
-                BlocProvider.of<UserCubit>(context).userData?.dob.toString(),
-            imageUrl: BlocProvider.of<UserCubit>(context)
-                .userData
-                ?.imageUrl
-                .toString(),
-            userType: BlocProvider.of<UserCubit>(context)
-                .userData
-                ?.userType
-                .toString());
-        user = await updateProfileDataUsecase(user);
-        if (user != null) {
-          emit(ProfiledataUpdateSuccess());
-        }
-        BlocProvider.of<UserCubit>(context).userData = user;
-        Future.delayed(const Duration(seconds: 2), () {
-          emit(ProfileInitial());
-        });
-      } else {
-        return;
-      }
-    } catch (ex) {
-      emit(ProfiledataUpdateFailure());
-      return;
-    }
+  Future<List<PostEntity>> loadPosts() async {
+    List<PostEntity> postListemp = await getAllPostUsecase.call();
+
+    return postListemp;
   }
 }

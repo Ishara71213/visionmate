@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {

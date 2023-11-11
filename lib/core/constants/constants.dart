@@ -44,6 +44,14 @@ TextStyle kFilledButtonSmallTextstyle = GoogleFonts.poppins(
   fontWeight: FontWeight.w600,
   color: kButtonTextWhiteColor,
 );
+
+//filled buttons text style
+TextStyle kFilledButtonSmallTextstyleLight = GoogleFonts.poppins(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  color: kInputFieldBgColor,
+);
+
 //outlined buttons text style
 TextStyle kOutlineButtonTextstyle = GoogleFonts.poppins(
   fontSize: 16,
@@ -123,6 +131,9 @@ TextStyle kGuideBoxTitle = GoogleFonts.poppins(
     color: kDarkGreyColor,
     height: 1.2);
 
+TextStyle kImageBoxTitle = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.w500, color: KbluGrey, height: 1.4);
+
 //Guide text style
 TextStyle kGuideDetailsTitle = GoogleFonts.poppins(
     fontSize: 22,
@@ -149,7 +160,7 @@ TextStyle kGuideDetailsBubbleSubCommand = GoogleFonts.poppins(
     fontSize: 20, fontWeight: FontWeight.w500, color: KbluGrey, height: 1.2);
 
 TextStyle kGuideDetailsBody = GoogleFonts.poppins(
-    fontSize: 16, fontWeight: FontWeight.w400, color: KbluGrey, height: 1.2);
+    fontSize: 16, fontWeight: FontWeight.w400, color: KbluGrey, height: 1.5);
 
 //body text style
 TextStyle kOnboardScreenText = GoogleFonts.poppins(

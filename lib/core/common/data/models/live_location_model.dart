@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
 import 'package:visionmate/core/common/domain/entities/live_location_entity.dart';
 
 class LiveLocationModel extends LiveLocationEntity {

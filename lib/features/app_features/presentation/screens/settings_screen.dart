@@ -34,7 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                const AppBarMenuAndProfile(
+                const AppBarBackBtnProfile(
                   appBarTitle: "Settings",
                 ),
                 const SizedBox(

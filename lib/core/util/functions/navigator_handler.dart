@@ -56,6 +56,7 @@ void navigationHandlerByUserType(BuildContext context, String viUserpath,
 void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
   String routeName = compareRouteName(routeCommand);
   if (routeName.contains("home")) {
+    textToSpeech("Go to home");
     navigationHandlerByUserType(context, RouteConst.homeViUserScreen,
         RouteConst.homeGuardianUserScreen, RouteConst.homeVolunteerUserScreen);
   } else if (routeName != "not found") {

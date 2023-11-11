@@ -22,4 +22,7 @@ class RouteConst {
   static const String homeVolunteerUserScreen = '/homeVolunteerUserScreen';
   static const String locationScreen = '/locationScreen';
   static const String guideScreen = '/guideScreen';
+  static const String communityPostsScreen = '/communityPostsScreen';
+  static const String communitySinglePostScreen = '/communitySinglePostScreen';
+  static const String communityUploadPostScreen = '/communityUploadPostScreen';
 }

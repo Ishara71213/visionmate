@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
-import 'package:visionmate/core/util/classes/cordinates.dart';
 import 'package:visionmate/core/util/classes/visit_location.dart';
 
 class VisuallyImpairedUserModel extends VisuallyImpairedUserEntity {

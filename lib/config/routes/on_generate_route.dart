@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_posts_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_single_post_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/community_upload_posts_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/edit_profile_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/guide_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
@@ -102,6 +105,15 @@ class OnGenerateRoute {
             widget: const LocationScreen(), route: routeName);
       case RouteConst.guideScreen:
         return materialBuilder(widget: const GuideScreen(), route: routeName);
+      case RouteConst.communityPostsScreen:
+        return materialBuilder(
+            widget: const CommunityPostsScreen(), route: routeName);
+      // case RouteConst.communitySinglePostScreen:
+      //   return materialBuilder(
+      //       widget: const CommunitySinglePostScreen(), route: routeName);
+      case RouteConst.communityUploadPostScreen:
+        return materialBuilder(
+            widget: const CommunityUploadPostsScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

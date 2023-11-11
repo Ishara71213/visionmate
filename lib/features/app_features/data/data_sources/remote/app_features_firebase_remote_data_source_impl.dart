@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:visionmate/core/common/domain/entities/guardian_user_entity.dart';
 import 'package:visionmate/core/common/domain/entities/user_entity.dart';
 import 'package:visionmate/core/common/domain/entities/visually_impaired_user_entity.dart';
@@ -11,6 +12,8 @@ import 'package:visionmate/core/common/data/models/visually_impaired_user_model.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:visionmate/core/constants/user_types.dart';
 import 'package:visionmate/features/app_features/data/data_sources/remote/app_features_firebase_remote_data_source.dart';
+import 'package:visionmate/features/app_features/data/model/post_model.dart';
+import 'package:visionmate/features/app_features/domain/entities/post_entity.dart';
 
 class AppFeaturesFirebaseRemoteDataSourceImpl
     extends AppFeaturesFirebaseRemoteDataSource {
@@ -108,6 +111,24 @@ class AppFeaturesFirebaseRemoteDataSourceImpl
   }
 
   @override
+  Future<String> uploadImage(File image, String fileType) async {
+    try {
+      String? uid = auth.currentUser?.uid;
+      final now = DateTime.now();
+      final String fileName =
+          'img${DateFormat('yyyyMMddHHmmss').format(now)}${uid?.toString()}';
+      final path = 'images/$fileType/$fileName';
+      final ref = FirebaseStorage.instance.ref().child(path);
+      UploadTask uploadTask = ref.putFile(image);
+      final snapShot = await uploadTask!.whenComplete(() => null);
+      final urlDownload = await snapShot.ref.getDownloadURL();
+      return urlDownload;
+    } catch (ex) {
+      throw ();
+    }
+  }
+
+  @override
   Future<String> getUserEmailByUid(String uid) async {
     try {
       CollectionReference userCollectionRef = firestore.collection("Users");
@@ -121,6 +142,62 @@ class AppFeaturesFirebaseRemoteDataSourceImpl
         }
       });
       return email;
+    } catch (ex) {
+      throw ();
+    }
+  }
+
+  @override
+  Future<List<PostEntity>> getAllPost() async {
+    CollectionReference postCollectionRef =
+        firestore.collection("communityPosts");
+    List<PostEntity> postList = [];
+
+    try {
+      await postCollectionRef.get().then((value) {
+        value.docs.forEach((element) {
+          final PostModal post = PostModal.fromSnapshot(element);
+          PostEntity postEntity = PostEntity(
+              title: post.title,
+              content: post.content,
+              imageUrl: post.imageUrl,
+              createdUserId: post.createdUserId,
+              createdUser: post.createdUser);
+          //postList.add(postEntity);
+          // fetch inverse Order
+          postList.insert(0, postEntity);
+        });
+      });
+      return postList;
+    } catch (ex) {
+      throw ();
+    }
+  }
+
+  @override
+  Future<bool> submitPost(PostEntity entity) async {
+    CollectionReference postCollectionRef =
+        firestore.collection("communityPosts");
+    try {
+      final uid = auth.currentUser!.uid;
+      final now = DateTime.now();
+      final String fileName =
+          '${DateFormat('yyyyMMddHHmmss').format(now)}${uid?.toString()}';
+      await postCollectionRef.doc(fileName).get().then((value) {
+        if (value.exists) {
+          return false;
+        }
+        final post = PostModal(
+                title: entity.title,
+                content: entity.content,
+                imageUrl: entity.imageUrl,
+                createdUser: entity.createdUser,
+                createdDate: DateTime.now(),
+                createdUserId: uid)
+            .toDocument();
+        postCollectionRef.doc(fileName).set(post);
+      });
+      return true;
     } catch (ex) {
       throw ();
     }

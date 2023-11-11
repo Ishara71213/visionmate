@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
@@ -5,6 +6,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class CommonAppBar extends StatefulWidget {
   final String appBarTitle;
@@ -27,8 +29,8 @@ class _CommonAppBarState extends State<CommonAppBar> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 10, top: 28, right: 12),
+                    padding: const EdgeInsets.only(
+                        bottom: 10, top: 21, right: 12, left: 10),
                     child: Text(
                       widget.appBarTitle,
                       style: kTitleOneText,
@@ -63,8 +65,9 @@ class _CommonAppBarState extends State<CommonAppBar> {
                           minRadius: 25,
                           maxRadius: 25,
                           backgroundColor: kLightGreyColor,
-                          foregroundImage: NetworkImage(
-                              userCubit.userData!.imageUrl.toString()),
+                          foregroundImage: CachedNetworkImageProvider(
+                              userCubit.userData!.imageUrl.toString()!,
+                              cacheKey: "profileimage"),
                           child: Icon(
                             Icons.person,
                             color: kGrey,
@@ -85,7 +88,7 @@ class _CommonAppBarState extends State<CommonAppBar> {
               },
             ))
           ],
-        ),
+        )
       ],
     );
   }

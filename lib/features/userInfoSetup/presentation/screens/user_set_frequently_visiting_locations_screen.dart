@@ -5,11 +5,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:visionmate/config/routes/route_const.dart';
+import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:visionmate/core/constants/secret_api_keys.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
@@ -17,6 +16,7 @@ import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:lottie/lottie.dart' as li;
 
 class UserSetFrequentlyVisitingLocationsScreen extends StatefulWidget {
   final dynamic data;
@@ -63,6 +63,11 @@ class _UserSetFrequentlyVisitingLocationsScreenState
       child: Scaffold(
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
+          onLongPress: () {
+            isAccessingFromSettings
+                ? BlocProvider.of<SpeechToTextCubit>(context).listning(context)
+                : null;
+          },
           child: SafeArea(
             child: Stack(
               children: [
@@ -315,65 +320,76 @@ class _UserSetFrequentlyVisitingLocationsScreenState
             ),
           ),
         ),
-        bottomNavigationBar: !isAccessingFromSettings
-            ? Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Skip",
-                          style: kBluetextStyle,
-                        )),
-                    OutlinedButton(
-                      onPressed: () {
-                        navigationHandler(
-                            context, RouteConst.setVisualDisabilityScreen);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: kPrimaryColor),
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(10),
-                        primary: kPrimaryColor,
+        bottomNavigationBar: BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
+          builder: (context, state) {
+            if (state is Listning) {
+              return li.Lottie.asset('assets/animations/assistant_circle.json',
+                  width: 106, height: 106);
+            } else {
+              return !isAccessingFromSettings
+                  ? Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Skip",
+                                style: kBluetextStyle,
+                              )),
+                          OutlinedButton(
+                            onPressed: () {
+                              navigationHandler(context,
+                                  RouteConst.setVisualDisabilityScreen);
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: kPrimaryColor),
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(10),
+                              primary: kPrimaryColor,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(9),
+                              decoration: BoxDecoration(
+                                  color: kPrimaryColor, shape: BoxShape.circle),
+                              child: Icon(
+                                Icons.navigate_next,
+                                size: 40,
+                                color: kLightGreyColor,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Container(
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                            color: kPrimaryColor, shape: BoxShape.circle),
-                        child: Icon(
-                          Icons.navigate_next,
-                          size: 40,
-                          color: kLightGreyColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: FilledButton(
-                    onPressed: () async {
-                      if (_locationNameController.text != "" &&
-                          _locationPurposeController.text != "") {
-                        userInfoCubit.addFeqVisitLocationsToList(
-                            _locationNameController.text,
-                            _locationPurposeController.text);
-                        await userInfoCubit.submitFreqVisitingPlacesField();
-                        Navigator.pop(context);
-                        BlocProvider.of<ViuserCubit>(context)
-                            .getCurrrentUserdata();
-                      }
-                    },
-                    style: FilledButton.styleFrom(
-                        minimumSize: const Size.fromHeight(60),
-                        backgroundColor: kButtonPrimaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0))),
-                    child: Text("Save", style: kFilledButtonTextstyle)),
-              ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FilledButton(
+                          onPressed: () async {
+                            if (_locationNameController.text != "" &&
+                                _locationPurposeController.text != "") {
+                              userInfoCubit.addFeqVisitLocationsToList(
+                                  _locationNameController.text,
+                                  _locationPurposeController.text);
+                              await userInfoCubit
+                                  .submitFreqVisitingPlacesField();
+                              Navigator.pop(context);
+                              BlocProvider.of<ViuserCubit>(context)
+                                  .getCurrrentUserdata();
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(60),
+                              backgroundColor: kButtonPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0))),
+                          child: Text("Save", style: kFilledButtonTextstyle)),
+                    );
+            }
+          },
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.da
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/common_app_bar.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 import 'package:lottie/lottie.dart';
 
@@ -42,54 +44,10 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          navigationHandler(context, RouteConst.settingsScreen);
-                        },
-                        icon: Icon(
-                          Icons.menu_rounded,
-                          size: 40,
-                          color: kPrimaryColor,
-                        )),
-                    GestureDetector(onTap: () {
-                      navigationHandler(context, RouteConst.profileScreen);
-                    }, child: BlocBuilder<ProfileCubit, ProfileState>(
-                      builder: (context, state) {
-                        return Container(
-                          padding: const EdgeInsets.all(10.0),
-                          child: userCubit.userData != null &&
-                                  userCubit.userData!.imageUrl != null &&
-                                  userCubit.userData!.imageUrl != "null"
-                              ? CircleAvatar(
-                                  minRadius: 25,
-                                  maxRadius: 25,
-                                  backgroundColor: kLightGreyColor,
-                                  foregroundImage: NetworkImage(
-                                      userCubit.userData!.imageUrl.toString()),
-                                  child: Icon(
-                                    Icons.person,
-                                    color: kGrey,
-                                    size: 35,
-                                  ),
-                                )
-                              : CircleAvatar(
-                                  minRadius: 25,
-                                  maxRadius: 25,
-                                  backgroundColor: kLightGreyColor,
-                                  child: Icon(
-                                    Icons.person,
-                                    color: kGrey,
-                                    size: 35,
-                                  ),
-                                ),
-                        );
-                      },
-                    ))
-                  ],
+                BlocBuilder<ProfileCubit, ProfileState>(
+                  builder: (context, state) {
+                    return CommonAppBar();
+                  },
                 ),
                 const SizedBox(
                   height: 30,
@@ -156,7 +114,7 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(
-                selectedIndex: 5,
+                selectedIndex: 0,
               );
             }
           },

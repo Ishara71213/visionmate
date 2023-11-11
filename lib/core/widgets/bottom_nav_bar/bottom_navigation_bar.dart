@@ -19,11 +19,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     'assets/icons/Home.svg',
     'assets/icons/Guide.svg',
     'assets/icons/Community.svg',
-    'assets/icons/Settings.svg'
+    'assets/icons/chat.svg'
     // 'assets/icons/navigation-Products.svg',
   ];
 
-  List<String> iconNames = ['Home', 'Guide', 'Community', 'Settings'];
+  List<String> iconNames = ['Home', 'Guide', 'Community', 'Messages'];
 
   @override
   void initState() {
@@ -65,12 +65,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     } else if (index == 1) {
                       navigationHandler(context, RouteConst.guideScreen);
                     } else if (index == 2) {
-                      navigationHandler(context, RouteConst.guideScreen);
+                      navigationHandler(
+                          context, RouteConst.communityPostsScreen);
                     } else if (index == 3) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeViUserScreen()));
+                      // navigationHandler(
+                      //     context, RouteConst.setfreqVisitingLocScreen);
                     }
                   });
                 },

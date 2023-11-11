@@ -41,12 +41,124 @@ class _GuideScreenState extends State<GuideScreen> {
       },
       child: Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: isGuideBtnClick ? 8 : 30,
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: isGuideBtnClick
+                                ? GuideDescriptionCommon(
+                                    widgetName: guideName,
+                                    size: size,
+                                  )
+                                : Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(
+                                                  GuideScreens.voiceAssistance);
+                                            },
+                                            child: GuideBox(
+                                                title: "Voice Assistance",
+                                                icon: Icons.assessment_rounded,
+                                                size: size),
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(
+                                                  GuideScreens.emergencyCall);
+                                            },
+                                            child: GuideBox(
+                                                title: "Emergency call guide",
+                                                icon: Icons.emergency_rounded,
+                                                size: size),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(
+                                                  GuideScreens.useLocation);
+                                            },
+                                            child: GuideBox(
+                                                title: "How to use Location",
+                                                icon: Icons.directions,
+                                                size: size),
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(
+                                                  GuideScreens.objectDetection);
+                                            },
+                                            child: GuideBox(
+                                                title: "Object Detection",
+                                                icon: Icons.camera_alt_rounded,
+                                                size: size),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(GuideScreens
+                                                  .featureNavigation);
+                                            },
+                                            child: GuideBox(
+                                                title: "Feature Navigation",
+                                                icon: Icons
+                                                    .record_voice_over_rounded,
+                                                size: size),
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectGuide(
+                                                  GuideScreens.communityGuide);
+                                            },
+                                            child: GuideBox(
+                                                title: "Community guide",
+                                                icon: Icons.post_add_rounded,
+                                                size: size),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  color: kAppBgColor,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -113,107 +225,8 @@ class _GuideScreenState extends State<GuideScreen> {
                       ))
                     ],
                   ),
-                  SizedBox(
-                    height: isGuideBtnClick ? 8 : 30,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: isGuideBtnClick
-                          ? GuideDescriptionCommon(
-                              widgetName: guideName,
-                              size: size,
-                            )
-                          : Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(
-                                            GuideScreens.voiceAssistance);
-                                      },
-                                      child: GuideBox(
-                                          title: "Voice Assistance",
-                                          icon: Icons.assessment_rounded,
-                                          size: size),
-                                    ),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(GuideScreens.emergencyCall);
-                                      },
-                                      child: GuideBox(
-                                          title: "Emergency call guide",
-                                          icon: Icons.emergency_rounded,
-                                          size: size),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(GuideScreens.useLocation);
-                                      },
-                                      child: GuideBox(
-                                          title: "How to use Location",
-                                          icon: Icons.directions,
-                                          size: size),
-                                    ),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(
-                                            GuideScreens.objectDetection);
-                                      },
-                                      child: GuideBox(
-                                          title: "Object Detection",
-                                          icon: Icons.camera_alt_rounded,
-                                          size: size),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(
-                                            GuideScreens.featureNavigation);
-                                      },
-                                      child: GuideBox(
-                                          title: "Feature Navigation",
-                                          icon: Icons.record_voice_over_rounded,
-                                          size: size),
-                                    ),
-                                    const SizedBox(
-                                      width: 16,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        selectGuide(
-                                            GuideScreens.communityGuide);
-                                      },
-                                      child: GuideBox(
-                                          title: "Community guide",
-                                          icon: Icons.post_add_rounded,
-                                          size: size),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ))
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
