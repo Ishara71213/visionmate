@@ -16,9 +16,9 @@ import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit
 part 'community_state.dart';
 
 class CommunityCubit extends Cubit<CommunityState> {
-  GetAllPostUsecase getAllPostUsecase;
-  SubmitPosteUsecase submitPosteUsecase;
-  UploadimageUsecase uploadimageUsecase;
+  final GetAllPostUsecase getAllPostUsecase;
+  final SubmitPosteUsecase submitPosteUsecase;
+  final UploadimageUsecase uploadimageUsecase;
 
   CommunityCubit(
       {required this.getAllPostUsecase,

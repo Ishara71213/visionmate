@@ -55,6 +55,11 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_ema
 import 'package:visionmate/features/userInfoSetup/domain/usecases/guardian_info_updateby_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
+import 'package:visionmate/features/volenteer_support/data/data_sources/remote/Volunteer_support_firebase_remote_data_source_impl.dart';
+import 'package:visionmate/features/volenteer_support/data/data_sources/remote/volunteer_suport_firebase_remote_data_source.dart';
+import 'package:visionmate/features/volenteer_support/data/repository_impl/volunteer_support_repository_impl.dart';
+import 'package:visionmate/features/volenteer_support/domain/repository/volunteer_support_request_repository.dart';
+import 'package:visionmate/features/volenteer_support/presentation/bloc/voluntee_support/vounteer_support_cubit.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -100,6 +105,12 @@ Future<void> init() async {
       uploadimageUsecase: sl.call()));
 
   sl.registerFactory<TextToSpeechCubit>(() => TextToSpeechCubit());
+
+  sl.registerFactory<VounteerSupportCubit>(() => VounteerSupportCubit(
+      getEmailByUidUsecase: sl.call(),
+      getCurrentUIdGlobalUsecase: sl.call(),
+      getUidByEmailUsecase: sl.call(),
+      uploadimageUsecase: sl.call()));
 
   //usecase
 
@@ -168,6 +179,9 @@ Future<void> init() async {
       () => ViUserProfileRepositoryImpl(remoteDataSource: sl.call()));
   sl.registerLazySingleton<GuardianUserProfileRepository>(
       () => GuardianUserProfileRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<VolunteerSupportRepository>(
+      () => VolunteerSupportRepositoryImpl(remoteDataSource: sl.call()));
+
   //data source
   sl.registerLazySingleton<FirebaseRemoteDataSource>(() =>
       FirebaseRemoteDataSourceImpl(auth: sl.call(), firestore: sl.call()));
@@ -182,6 +196,9 @@ Future<void> init() async {
           auth: sl.call(), firestore: sl.call()));
   sl.registerLazySingleton<GuardianProfileFirebaseRemoteDataSource>(() =>
       GuardianProfileFirebaseRemoteDataSourceImpl(
+          auth: sl.call(), firestore: sl.call()));
+  sl.registerLazySingleton<VounteerSupportFirebaseRemoteDataSource>(() =>
+      VounteerSupportFirebaseRemoteDataSourceImpl(
           auth: sl.call(), firestore: sl.call()));
   //external
   final auth = FirebaseAuth.instance;
