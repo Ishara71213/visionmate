@@ -5,13 +5,13 @@ import 'package:lottie/lottie.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
-import 'package:visionmate/features/app_features/domain/entities/post_entity.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/community/community_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
+import 'package:visionmate/features/volenteer_support/domain/entities/volenteer_request_entity.dart';
 
 class VolunteerSuportSingleRequestScreen extends StatelessWidget {
-  final PostEntity post;
-  const VolunteerSuportSingleRequestScreen({super.key, required this.post});
+  final VolunteerRequestEntity request;
+  const VolunteerSuportSingleRequestScreen({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class VolunteerSuportSingleRequestScreen extends StatelessWidget {
                                   alignment: AlignmentDirectional.bottomStart,
                                   children: [
                                     Container(
-                                      child: post.imageUrl != null
+                                      child: request.imageUrl != null
                                           ? ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(14),
@@ -49,7 +49,7 @@ class VolunteerSuportSingleRequestScreen extends StatelessWidget {
                                                   width: size.width - 32,
                                                   height:
                                                       (size.width - 32) / 1.5,
-                                                  imageUrl: post.imageUrl!,
+                                                  imageUrl: request.imageUrl!,
                                                   placeholder: (context, url) =>
                                                       Column(
                                                         mainAxisAlignment:
@@ -111,7 +111,7 @@ class VolunteerSuportSingleRequestScreen extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    post.title?.toString() ?? "",
+                                    request.title?.toString() ?? "",
                                     style: kTitleOneText,
                                     textAlign: TextAlign.start,
                                   ),
@@ -125,7 +125,7 @@ class VolunteerSuportSingleRequestScreen extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    post.content?.toString() ?? "",
+                                    request.content?.toString() ?? "",
                                     style: kGuideDetailsBody,
                                     textAlign: TextAlign.start,
                                   ),
@@ -139,7 +139,7 @@ class VolunteerSuportSingleRequestScreen extends StatelessWidget {
                   ),
                 ),
                 const AppBarBackBtnProfile(
-                  appBarTitle: "Community",
+                  appBarTitle: "Support Request",
                 )
               ],
             ),

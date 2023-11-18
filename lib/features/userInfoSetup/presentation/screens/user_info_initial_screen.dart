@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class UserInfoInitialScreen extends StatefulWidget {
   const UserInfoInitialScreen({super.key});
@@ -78,11 +80,15 @@ class _UserInfoInitialScreenState extends State<UserInfoInitialScreen> {
                   ),
                   OutlinedButton(
                       onPressed: () {
-                        navigationHandlerByUserType(
-                            context,
-                            RouteConst.homeViUserScreen,
-                            RouteConst.homeGuardianUserScreen,
-                            RouteConst.homeVolunteerUserScreen);
+                        BlocProvider.of<UserInfoCubit>(context)
+                            .submitViUserInfo();
+                        navigationHandlerWithRemovePrevRoute(
+                            context, RouteConst.splashDataLoadScreen);
+                        // navigationHandlerByUserType(
+                        //     context,
+                        //     RouteConst.homeViUserScreen,
+                        //     RouteConst.homeGuardianUserScreen,
+                        //     RouteConst.homeVolunteerUserScreen);
                       },
                       style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(60),

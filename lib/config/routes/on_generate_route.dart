@@ -4,12 +4,11 @@ import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen_data_loader.dart';
 import 'package:visionmate/features/app_features/presentation/screens/community_posts_screen.dart';
-import 'package:visionmate/features/app_features/presentation/screens/community_single_post_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/community_upload_posts_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/edit_profile_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/guide_screen.dart';
-import 'package:visionmate/features/app_features/presentation/screens/home_guardian_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/home_vi_user_screen.dart';
+import 'package:visionmate/features/app_features/presentation/screens/home_volunteer_user_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/location_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/profile_screen.dart';
 import 'package:visionmate/features/app_features/presentation/screens/settings_screen.dart';
@@ -17,7 +16,6 @@ import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart'
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
-import 'package:visionmate/features/object_detection/presentation/screens/home.dart';
 import 'package:visionmate/features/object_detection/presentation/screens/object_detection_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
 import 'package:visionmate/features/object_detection/presentation/widgets/splash_screen_yolo_model_loader.dart';
@@ -30,6 +28,8 @@ import 'package:visionmate/features/userInfoSetup/presentation/screens/user_guar
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_info_initial_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_residence_location_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_vi_user_info_screen.dart';
+import 'package:visionmate/features/volenteer_support/presentation/Screens/volunteer_support_screen.dart';
+import 'package:visionmate/features/volenteer_support/presentation/Screens/volunteer_upload_request_screen.dart';
 
 class OnGenerateRoute {
   static Route<dynamic> route(RouteSettings settings) {
@@ -96,7 +96,7 @@ class OnGenerateRoute {
             widget: const HomeGuardianUserScreen(), route: routeName);
       case RouteConst.homeVolunteerUserScreen:
         return materialBuilder(
-            widget: const HomeGuardianUserScreen(), route: routeName);
+            widget: const HomeVolunteerUserScreen(), route: routeName);
       case RouteConst.splashScreenYoloModelLoader:
         return materialBuilder(
             widget: const SplashScreenYoloModelLoader(), route: routeName);
@@ -131,6 +131,12 @@ class OnGenerateRoute {
       case RouteConst.textToSpeechScreen:
         return materialBuilder(
             widget: const TextToSpeechScreen(), route: routeName);
+      case RouteConst.volunteerSupportScreen:
+        return materialBuilder(
+            widget: const VolunteerSupportScreen(), route: routeName);
+      case RouteConst.volunteerUploadRequestScreen:
+        return materialBuilder(
+            widget: const VolunteerUploadRequestScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

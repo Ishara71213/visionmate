@@ -16,6 +16,8 @@ import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDet
 import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
+import 'features/volenteer_support/presentation/bloc/voluntee_support_cubit/volunteer_support_cubit.dart';
+
 // distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,8 @@ class VisionMateApp extends StatelessWidget {
         BlocProvider<ViuserCubit>(create: (_) => di.sl<ViuserCubit>()),
         BlocProvider<GuardianCubit>(create: (_) => di.sl<GuardianCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => di.sl<ProfileCubit>()),
+        BlocProvider<VolunteerSupportCubit>(
+            create: (_) => di.sl<VolunteerSupportCubit>()),
         BlocProvider<ObjectDetectionCubit>(
             create: (_) => di.sl<ObjectDetectionCubit>()),
         BlocProvider<CommunityCubit>(create: (_) => di.sl<CommunityCubit>()),

@@ -237,7 +237,7 @@ class _GuideScreenState extends State<GuideScreen> {
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(
-                selectedIndex: 1,
+                selectedIndex: 3,
               );
             }
           },

@@ -47,12 +47,6 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
           await Future.delayed(const Duration(seconds: 1), () {
             navigationHandlerWithRemovePrevRoute(
                 context, RouteConst.splashDataLoadScreen);
-            // navigationHandlerByUserType(
-            //     context,
-            //     RouteConst.homeViUserScreen,
-            //     RouteConst.homeGuardianUserScreen,
-            //     RouteConst.homeVolunteerUserScreen);
-            // BlocProvider.of<AuthCubit>(context).appStarted();
           });
         }
       },
@@ -302,7 +296,11 @@ class _UserGuardianInfoScreenState extends State<UserGuardianInfoScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                userInfoCubit.submitViUserInfo();
+                                navigationHandlerWithRemovePrevRoute(
+                                    context, RouteConst.splashDataLoadScreen);
+                              },
                               child: Text(
                                 "Skip",
                                 style: kBluetextStyle,

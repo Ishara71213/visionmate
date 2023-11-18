@@ -14,9 +14,7 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
   @override
   Future<void> getCreateCurrentUser(UserEntity user) async {
     CollectionReference userCollectionRef;
-    // CollectionReference userEmailsCollectionRef;
     userCollectionRef = firestore.collection("Users");
-    // userEmailsCollectionRef = firestore.collection("UserEmails");
 
     final uid = await getCurrentUId();
 
@@ -48,43 +46,6 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
       }
     });
     return;
-    // CollectionReference userCollectionRef;
-    // CollectionReference userTypeCollectionRef;
-    // if (user.userType == "Volunteer") {
-    //   userTypeCollectionRef = firestore.collection("Volunteers");
-    // } else if (user.userType == "Guardian") {
-    //   userTypeCollectionRef = firestore.collection("Guardians");
-    // } else {
-    //   userTypeCollectionRef = firestore.collection("VisuallyImpairedUsers");
-    // }
-
-    // final uid = await getCurrentUId();
-
-    // await userTypeCollectionRef.doc(uid).get().then((value) {
-    //   if (!value.exists) {
-    //     final newUser = UserModel(
-    //             uid: uid,
-    //             name: user.name,
-    //             email: user.email,
-    //             dob: user.dob,
-    //             status: user.status,
-    //             userType: user.userType)
-    //         .toDocument();
-
-    //     userTypeCollectionRef.doc(uid).set(newUser);
-    //   }
-    //   //return;
-    // });
-
-    // userCollectionRef = firestore.collection("Users");
-    // await userCollectionRef.doc(uid).get().then((value) {
-    //   if (!value.exists) {
-    //     final newUser = UserModel(userType: user.userType).toDocumentUserType();
-
-    //     userCollectionRef.doc(uid).set(newUser);
-    //   }
-    //   return;
-    // });
   }
 
   @override

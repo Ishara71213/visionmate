@@ -7,12 +7,15 @@ Color kGreyColor = const Color(0xFFD9D9D9);
 Color kSplashGreyColor = const Color.fromARGB(255, 240, 240, 240);
 Color kBlackColor = const Color(0xFF1C1D1E);
 Color kDarkGreyTextColor = const Color(0xFF5D6166);
+
 Color kDarkGreyColor = const Color(0xFF8E8E8E);
 Color kGrey = const Color(0xFFB3B3B3);
 Color kLightGreyColor = const Color(0xFFD9D9D9);
 Color kGuideBoxBgColor = const Color(0xFFE9E9E9);
 Color kGuideBoxIconColor = const Color.fromARGB(255, 190, 190, 190);
 Color KbluGrey = const Color(0XFF758199);
+Color KDarkbluGrey = const Color(0XFF475A78);
+Color kGreyextColor = const Color(0xFF4D4E51);
 
 Color kSuccessColor = const Color.fromARGB(255, 96, 231, 7);
 Color kWarnningColor = const Color.fromARGB(255, 253, 167, 19);
@@ -169,6 +172,15 @@ TextStyle kGuideDetailsBubbleSubCommand = GoogleFonts.poppins(
 TextStyle kGuideDetailsBody = GoogleFonts.poppins(
     fontSize: 16, fontWeight: FontWeight.w400, color: KbluGrey, height: 1.5);
 
+//Guide text style
+TextStyle kRequestBoxTitle = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: kDarkGreyTextColor,
+    height: 1.2);
+
+TextStyle kRequstBoxSubTitle = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.w500, color: kGreyextColor, height: 1);
 //body text style
 TextStyle kOnboardScreenText = GoogleFonts.poppins(
     fontSize: 16,

@@ -248,7 +248,7 @@ class _CommunityUploadPostsScreen extends State<CommunityUploadPostsScreen> {
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(
-                selectedIndex: 3,
+                selectedIndex: 1,
               );
             }
           },

@@ -30,4 +30,11 @@ class RouteConst {
   static const String communitySinglePostScreen = '/communitySinglePostScreen';
   static const String communityUploadPostScreen = '/communityUploadPostScreen';
   static const String textToSpeechScreen = '/textToSpeechScreen';
+
+  //volunteerSupport
+  static const String volunteerSupportScreen = '/volunteerSupportScreen';
+  static const String volunteerSuportSingleRequestScreen =
+      '/volunteerSuportSingleRequestScreen';
+  static const String volunteerUploadRequestScreen =
+      '/volunteerUploadRequestScreen';
 }

@@ -1,20 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:visionmate/core/enum/guide_screen_types.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
-import 'package:visionmate/features/app_features/domain/entities/post_entity.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/community/community_cubit.dart';
-import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/screens/community_single_post_screen.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/common_app_bar.dart';
-import 'package:visionmate/features/app_features/presentation/widgets/guide_box.dart';
-import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/guide_description_common%20copy.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/image_box.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
@@ -119,24 +113,6 @@ class _CommunityPostsScreen extends State<CommunityPostsScreen> {
                                 });
                           },
                         ),
-                        // Row(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () {},
-                        //       child: ImageBox(post: post, size: size),
-                        //     ),
-                        //     const SizedBox(
-                        //       width: 16,
-                        //     ),
-                        //     GestureDetector(
-                        //       onTap: () {},
-                        //       child: GuideBox(
-                        //           title: "Emergency call guide",
-                        //           icon: Icons.emergency_rounded,
-                        //           size: size),
-                        //     )
-                        //   ],
-                        // )
                       ],
                     ),
                   ),
@@ -157,7 +133,7 @@ class _CommunityPostsScreen extends State<CommunityPostsScreen> {
                   width: 106, height: 106);
             } else {
               return const BottomNavBar(
-                selectedIndex: 2,
+                selectedIndex: 1,
               );
             }
           },

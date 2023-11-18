@@ -12,6 +12,7 @@ import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
@@ -87,11 +88,15 @@ class TextToSpeechCubit extends Cubit<TextToSpeechState> {
   void getRecognisedText(XFile image, BuildContext context) async {
     try {
       emit(TextToSpeechStartRecognition());
+      final textRecognizer =
+          TextRecognizer(script: TextRecognitionScript.latin);
       final inputImage = InputImage.fromFilePath(image.path);
-      final textDetector = GoogleMlKit.vision.textRecognizer();
-      RecognizedText recognisedText =
-          await textDetector.processImage(inputImage);
-      await textDetector.close();
+      final RecognizedText recognisedText =
+          await textRecognizer.processImage(inputImage);
+      // final textDetector = GoogleMlKit.vision.textRecognizer();
+      // RecognizedText recognisedText =
+      //     await textDetector.processImage(inputImage);
+      await textRecognizer.close();
       scannedText = "";
       for (TextBlock block in recognisedText.blocks) {
         for (TextLine line in block.lines) {

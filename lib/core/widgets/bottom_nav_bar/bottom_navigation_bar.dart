@@ -17,13 +17,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 0;
   List<String> data = [
     'assets/icons/Home.svg',
-    'assets/icons/Guide.svg',
     'assets/icons/Community.svg',
-    'assets/icons/chat.svg'
+    'assets/icons/chat.svg',
+    'assets/icons/Guide.svg',
     // 'assets/icons/navigation-Products.svg',
   ];
 
-  List<String> iconNames = ['Home', 'Guide', 'Community', 'Messages'];
+  List<String> iconNames = ['Home', 'Community', 'Requests', 'Guide'];
 
   @override
   void initState() {
@@ -63,13 +63,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           RouteConst.homeGuardianUserScreen,
                           RouteConst.homeVolunteerUserScreen);
                     } else if (index == 1) {
-                      navigationHandler(context, RouteConst.guideScreen);
-                    } else if (index == 2) {
                       navigationHandler(
                           context, RouteConst.communityPostsScreen);
+                    } else if (index == 2) {
+                      navigationHandler(
+                          context, RouteConst.volunteerSupportScreen);
                     } else if (index == 3) {
-                      // navigationHandler(
-                      //     context, RouteConst.setfreqVisitingLocScreen);
+                      navigationHandler(context, RouteConst.guideScreen);
                     }
                   });
                 },

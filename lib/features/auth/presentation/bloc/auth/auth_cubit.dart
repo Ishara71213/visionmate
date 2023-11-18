@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:visionmate/features/auth/domain/usecases/get_current_uid_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/is_sign_in_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/sign_out_usecase.dart';
@@ -48,6 +50,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signOut() async {
     try {
+      imageCache?.clear();
+      imageCache.clearLiveImages();
+      imageCache.containsKey('profileimage');
+      DefaultCacheManager().emptyCache();
       await signOutUsecase.call();
       emit(UnAuthenticated());
     } on SocketException catch (_) {

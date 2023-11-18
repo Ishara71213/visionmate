@@ -55,11 +55,17 @@ import 'package:visionmate/features/userInfoSetup/domain/usecases/get_uid_by_ema
 import 'package:visionmate/features/userInfoSetup/domain/usecases/guardian_info_updateby_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/domain/usecases/set_specific_field_by_fieldname_usecase.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
-import 'package:visionmate/features/volenteer_support/data/data_sources/remote/Volunteer_support_firebase_remote_data_source_impl.dart';
-import 'package:visionmate/features/volenteer_support/data/data_sources/remote/volunteer_suport_firebase_remote_data_source.dart';
+import 'package:visionmate/features/volenteer_support/data/data_sources/remote/volunteer_support_remote_data_source.dart';
+import 'package:visionmate/features/volenteer_support/data/data_sources/remote/volunteer_support_remote_data_source_impl.dart';
 import 'package:visionmate/features/volenteer_support/data/repository_impl/volunteer_support_repository_impl.dart';
 import 'package:visionmate/features/volenteer_support/domain/repository/volunteer_support_request_repository.dart';
-import 'package:visionmate/features/volenteer_support/presentation/bloc/voluntee_support/vounteer_support_cubit.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/accept_request_by_id_usecase.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/delete_request_usecase.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/get_all_request_usecase.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/get_request_by_id_usecase.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/reject_request_by_id_usecase.dart';
+import 'package:visionmate/features/volenteer_support/domain/usecases/submit_request_usecase.dart';
+import 'package:visionmate/features/volenteer_support/presentation/bloc/voluntee_support_cubit/volunteer_support_cubit.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -105,11 +111,14 @@ Future<void> init() async {
       uploadimageUsecase: sl.call()));
 
   sl.registerFactory<TextToSpeechCubit>(() => TextToSpeechCubit());
-
-  sl.registerFactory<VounteerSupportCubit>(() => VounteerSupportCubit(
-      getEmailByUidUsecase: sl.call(),
-      getCurrentUIdGlobalUsecase: sl.call(),
-      getUidByEmailUsecase: sl.call(),
+  sl.registerFactory<VolunteerSupportCubit>(() => VolunteerSupportCubit(
+      getAllRequestUsecase: sl.call(),
+      submitRequestUsecase: sl.call(),
+      getRequestByIdUsecase: sl.call(),
+      deleteRequestUsecase: sl.call(),
+      getCurrentUIdUsecase: sl.call(),
+      acceptRequestByIdUsecase: sl.call(),
+      rejectRequestByIdUsecase: sl.call(),
       uploadimageUsecase: sl.call()));
 
   //usecase
@@ -168,6 +177,20 @@ Future<void> init() async {
   sl.registerLazySingleton<LiveLocationDataMonitotUsecase>(
       () => LiveLocationDataMonitotUsecase(repository: sl.call()));
 
+  //volunteer support usecase
+  sl.registerLazySingleton<SubmitRequesteUsecase>(
+      () => SubmitRequesteUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetAllRequestUsecase>(
+      () => GetAllRequestUsecase(repository: sl.call()));
+  sl.registerLazySingleton<GetRequestByIdUsecase>(
+      () => GetRequestByIdUsecase(repository: sl.call()));
+  sl.registerLazySingleton<DeleteRequestUsecase>(
+      () => DeleteRequestUsecase(repository: sl.call()));
+  sl.registerLazySingleton<AcceptRequestByIdUsecase>(
+      () => AcceptRequestByIdUsecase(repository: sl.call()));
+  sl.registerLazySingleton<RejectRequestByIdUsecase>(
+      () => RejectRequestByIdUsecase(repository: sl.call()));
+
   //repositories
   sl.registerLazySingleton<FirebaseRepository>(
       () => FirebaseRepositoryImpl(remoteDataSource: sl.call()));
@@ -177,10 +200,10 @@ Future<void> init() async {
       () => AppFeaturesRepositoryImpl(remoteDataSource: sl.call()));
   sl.registerLazySingleton<ViUserProfileRepository>(
       () => ViUserProfileRepositoryImpl(remoteDataSource: sl.call()));
-  sl.registerLazySingleton<GuardianUserProfileRepository>(
-      () => GuardianUserProfileRepositoryImpl(remoteDataSource: sl.call()));
   sl.registerLazySingleton<VolunteerSupportRepository>(
       () => VolunteerSupportRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<GuardianUserProfileRepository>(
+      () => GuardianUserProfileRepositoryImpl(remoteDataSource: sl.call()));
 
   //data source
   sl.registerLazySingleton<FirebaseRemoteDataSource>(() =>
@@ -197,9 +220,10 @@ Future<void> init() async {
   sl.registerLazySingleton<GuardianProfileFirebaseRemoteDataSource>(() =>
       GuardianProfileFirebaseRemoteDataSourceImpl(
           auth: sl.call(), firestore: sl.call()));
-  sl.registerLazySingleton<VounteerSupportFirebaseRemoteDataSource>(() =>
-      VounteerSupportFirebaseRemoteDataSourceImpl(
+  sl.registerLazySingleton<VolunteerSupportRemoteDataSource>(() =>
+      VolunteerSupportRemoteDataSourceImpl(
           auth: sl.call(), firestore: sl.call()));
+
   //external
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;

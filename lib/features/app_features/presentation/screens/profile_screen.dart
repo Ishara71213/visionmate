@@ -10,7 +10,6 @@ import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dar
 import 'package:visionmate/features/app_features/presentation/bloc/guardian/cubit/guardian_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/profile/profile_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
-import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_with_back_button.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/profile_image.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
@@ -184,23 +183,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                  child: OutlinedButton(
-                      onPressed: () {
-                        BlocProvider.of<AuthCubit>(context).signOut();
-                        BlocProvider.of<UserCubit>(context)
-                            .resetToInitialState();
-                      },
-                      style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(60),
-                          side: BorderSide(color: kGrey, width: 2),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0))),
-                      child:
-                          Text("Log Out", style: kOutlineButtonGreyTextstyle)),
-                ),
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                //   child: OutlinedButton(
+                //       onPressed: () {
+                //         BlocProvider.of<AuthCubit>(context).signOut();
+                //         BlocProvider.of<UserCubit>(context)
+                //             .resetToInitialState();
+                //       },
+                //       style: OutlinedButton.styleFrom(
+                //           minimumSize: const Size.fromHeight(60),
+                //           side: BorderSide(color: kGrey, width: 2),
+                //           shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(6.0))),
+                //       child:
+                //           Text("Log Out", style: kOutlineButtonGreyTextstyle)),
+                // ),
               ],
             ),
           ),

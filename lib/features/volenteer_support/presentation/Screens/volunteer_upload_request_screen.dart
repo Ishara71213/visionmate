@@ -9,6 +9,7 @@ import 'package:visionmate/core/widgets/button_widgets/button_widgets_library.da
 import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/community/community_cubit.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/app_bar_menu_and_profile.dart';
+import 'package:visionmate/features/volenteer_support/presentation/bloc/voluntee_support_cubit/volunteer_support_cubit.dart';
 
 class VolunteerUploadRequestScreen extends StatefulWidget {
   const VolunteerUploadRequestScreen({super.key});
@@ -20,14 +21,16 @@ class VolunteerUploadRequestScreen extends StatefulWidget {
 
 class _VolunteerUploadRequestScreen
     extends State<VolunteerUploadRequestScreen> {
-  final GlobalKey<FormState> formKeyCommunityPost = GlobalKey<FormState>();
-  final TextEditingController _postTitleController = TextEditingController();
-  final TextEditingController _postContentController = TextEditingController();
+  final GlobalKey<FormState> formKeyVlounteerSupportRequest =
+      GlobalKey<FormState>();
+  final TextEditingController _requestTitleController = TextEditingController();
+  final TextEditingController _requestContentController =
+      TextEditingController();
 
   @override
   void dispose() {
-    _postTitleController.dispose();
-    _postContentController.dispose();
+    _requestTitleController.dispose();
+    _requestContentController.dispose();
     super.dispose();
   }
 
@@ -35,7 +38,8 @@ class _VolunteerUploadRequestScreen
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     //UserCubit userCubit = BlocProvider.of<UserCubit>(context);
-    CommunityCubit communityCubit = BlocProvider.of<CommunityCubit>(context);
+    VolunteerSupportCubit supportRequestCubit =
+        BlocProvider.of<VolunteerSupportCubit>(context);
 
     return GestureDetector(
       onLongPress: () {
@@ -55,7 +59,8 @@ class _VolunteerUploadRequestScreen
                       children: [
                         Row(
                           children: [
-                            BlocBuilder<CommunityCubit, CommunityState>(
+                            BlocBuilder<VolunteerSupportCubit,
+                                VolunteerSupportState>(
                               builder: (context, state) {
                                 return Stack(
                                   alignment: AlignmentDirectional.bottomStart,
@@ -64,7 +69,8 @@ class _VolunteerUploadRequestScreen
                                       // onTap: () {
                                       //   communityCubit.getFromCamera(context);
                                       // },
-                                      child: communityCubit.imageFile != null
+                                      child: supportRequestCubit.imageFile !=
+                                              null
                                           ? ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(14),
@@ -72,7 +78,7 @@ class _VolunteerUploadRequestScreen
                                                 width: size.width - 32,
                                                 height: (size.width - 32) / 1.5,
                                                 child: Image.memory(
-                                                  communityCubit.imageFile!
+                                                  supportRequestCubit.imageFile!
                                                       .readAsBytesSync(),
                                                   fit: BoxFit.cover,
                                                 ),
@@ -120,7 +126,7 @@ class _VolunteerUploadRequestScreen
                                               children: [
                                                 GestureDetector(
                                                   onTap: () {
-                                                    communityCubit
+                                                    supportRequestCubit
                                                         .getFromGallery(
                                                             context);
                                                   },
@@ -142,7 +148,7 @@ class _VolunteerUploadRequestScreen
                                                 ),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    communityCubit
+                                                    supportRequestCubit
                                                         .getFromCamera(context);
                                                   },
                                                   child: SizedBox(
@@ -174,7 +180,7 @@ class _VolunteerUploadRequestScreen
                           height: 16,
                         ),
                         Form(
-                            key: formKeyCommunityPost,
+                            key: formKeyVlounteerSupportRequest,
                             child: Column(
                               children: [
                                 Padding(
@@ -182,7 +188,7 @@ class _VolunteerUploadRequestScreen
                                         const EdgeInsets.only(bottom: 12.0),
                                     child: TextFormInput(
                                       fieldName: "Title",
-                                      controller: _postTitleController,
+                                      controller: _requestTitleController,
                                       hintText: "Title",
                                     )),
                                 Padding(
@@ -191,30 +197,33 @@ class _VolunteerUploadRequestScreen
                                     child: TextFormInput(
                                       fieldName: "Content",
                                       hintText: "Type here",
-                                      controller: _postContentController,
+                                      controller: _requestContentController,
                                       isTextArea: true,
                                     )),
-                                BlocBuilder<CommunityCubit, CommunityState>(
+                                BlocBuilder<VolunteerSupportCubit,
+                                    VolunteerSupportState>(
                                   builder: (context, state) {
                                     return FilledButtonWithLoader(
                                         initText: 'Submit',
                                         loadingText: 'Uploading',
                                         successText: 'Done',
                                         onPressed: () {
-                                          if (formKeyCommunityPost.currentState!
+                                          if (formKeyVlounteerSupportRequest
+                                              .currentState!
                                               .validate()) {
-                                            communityCubit.postTitle =
-                                                _postTitleController.text;
-                                            communityCubit.postContent =
-                                                _postContentController.text;
-                                            communityCubit.submitPost(context);
+                                            supportRequestCubit.requestTitle =
+                                                _requestTitleController.text;
+                                            supportRequestCubit.requestContent =
+                                                _requestContentController.text;
+                                            supportRequestCubit
+                                                .submitPost(context);
                                           }
                                         },
                                         state: (state
-                                                is CommunityPostUploadLoading)
+                                                is VlounteerSupportRequestUploadLoading)
                                             ? States.loading
                                             : (state
-                                                    is CommunityPostUploadSuccess)
+                                                    is VlounteerSupportRequestUploadSuccess)
                                                 ? States.success
                                                 : States.initial);
                                   },
@@ -226,7 +235,7 @@ class _VolunteerUploadRequestScreen
                   ),
                 ),
                 const AppBarBackBtnProfile(
-                  appBarTitle: "Community",
+                  appBarTitle: "Add Request",
                 )
               ],
             ),
