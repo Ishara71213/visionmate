@@ -84,6 +84,10 @@ dependencies:
   # Text recognition
   # google_ml_kit: ^0.16.3
   google_mlkit_text_recognition: ^0.11.0
+  #BLE plugins
+  flutter_blue: 
+    git:
+      url: https://github.com/Ishara71213/flutter_blue.git
   
 dev_dependencies:
   flutter_test:

@@ -214,3 +214,9 @@ TextStyle kMediumSubTitleMediumBoldText = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     color: kDarkGreyTextColor,
     height: 1.4);
+
+TextStyle kSmallBtnActiveText = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.w500, color: kAppBgColor, height: 1);
+
+TextStyle kSmallBtnDeactiveText = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.w500, color: kAppBgColor, height: 1);

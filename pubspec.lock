@@ -502,6 +502,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  flutter_blue:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "601ab44ffc84fd3cca463d1e0027c7c557439a35"
+      url: "https://github.com/Ishara71213/flutter_blue.git"
+    source: git
+    version: "0.8.1"
   flutter_cache_manager:
     dependency: "direct main"
     description:
@@ -1168,6 +1177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "01dd9bd0fa02548bf2ceee13545d4a0ec6046459d847b6b061d8a27237108a08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   provider:
     dependency: transitive
     description:

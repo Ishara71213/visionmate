@@ -16,6 +16,7 @@ import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart'
 import 'package:visionmate/features/auth/presentation/screens/auth_options_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:visionmate/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:visionmate/features/connect_smart_cane/presentation/screens/connect_cane_screen.dart';
 import 'package:visionmate/features/object_detection/presentation/screens/object_detection_screen.dart';
 import 'package:visionmate/core/common/presentation/screens/splash_screen.dart';
 import 'package:visionmate/features/object_detection/presentation/widgets/splash_screen_yolo_model_loader.dart';
@@ -137,6 +138,9 @@ class OnGenerateRoute {
       case RouteConst.volunteerUploadRequestScreen:
         return materialBuilder(
             widget: const VolunteerUploadRequestScreen(), route: routeName);
+      case RouteConst.connectCaneScreen:
+        return materialBuilder(
+            widget: const ConnectCaneScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

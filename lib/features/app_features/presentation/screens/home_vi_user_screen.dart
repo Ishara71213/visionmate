@@ -88,8 +88,10 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                       ),
                       FilledButtonCustom(
                         onPressed: () {
-                          BlocProvider.of<ViuserCubit>(context)
-                              .getCurrrentUserdata();
+                          // BlocProvider.of<ViuserCubit>(context)
+                          //     .getCurrrentUserdata();
+                          navigationHandler(
+                              context, RouteConst.connectCaneScreen);
                         },
                         initText: "Connect Cane",
                       ),

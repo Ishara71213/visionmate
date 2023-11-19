@@ -12,6 +12,7 @@ import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit
 import 'package:visionmate/core/injection_container.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:visionmate/config/routes/on_generate_route.dart';
+import 'package:visionmate/features/connect_smart_cane/presentation/bloc/cubit/connect_cane_cubit.dart';
 import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
 import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
@@ -43,6 +44,8 @@ class VisionMateApp extends StatelessWidget {
         BlocProvider<ViuserCubit>(create: (_) => di.sl<ViuserCubit>()),
         BlocProvider<GuardianCubit>(create: (_) => di.sl<GuardianCubit>()),
         BlocProvider<ProfileCubit>(create: (_) => di.sl<ProfileCubit>()),
+        BlocProvider<ConnectCaneCubit>(
+            create: (_) => di.sl<ConnectCaneCubit>()),
         BlocProvider<VolunteerSupportCubit>(
             create: (_) => di.sl<VolunteerSupportCubit>()),
         BlocProvider<ObjectDetectionCubit>(
