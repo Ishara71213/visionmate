@@ -141,6 +141,13 @@ TextStyle kGuideBoxTitle = GoogleFonts.poppins(
     color: kDarkGreyColor,
     height: 1.2);
 
+//headding text style
+TextStyle kappFeatureTitle = GoogleFonts.poppins(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: kLightGreyColor,
+    height: 1.2);
+
 TextStyle kImageBoxTitle = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.w500, color: KbluGrey, height: 1.4);
 

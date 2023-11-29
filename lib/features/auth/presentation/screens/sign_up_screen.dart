@@ -31,10 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final List<Map<String, dynamic>> purposeOfUserList = [
     {"text": "Navigation Assistance", "value": UserTypes.visuallyImpairedUser},
-    {
-      "text": "Guardian Of a Visually Imapired user",
-      "value": UserTypes.guardian
-    },
+    {"text": "Guardian", "value": UserTypes.guardian},
     {"text": "Volunteer", "value": UserTypes.volunteer}
   ];
 

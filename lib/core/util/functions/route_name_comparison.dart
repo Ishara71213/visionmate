@@ -9,7 +9,7 @@ String compareRouteName(String routeCommand) {
     case "text to speech" || "text two speech" || "test to speech":
       return RouteConst.textToSpeechScreen;
     case "connect cane" || "connect kane":
-      return RouteConst.setGuardianScreen;
+      return RouteConst.connectCaneScreen;
     case "setting" || "settings":
       return RouteConst.settingsScreen;
     case "navigation" ||
@@ -25,6 +25,13 @@ String compareRouteName(String routeCommand) {
       return RouteConst.communityPostsScreen;
     case "add post" || "add posts" || "community post" || "adpost" || "addpost":
       return RouteConst.communityUploadPostScreen;
+    case "requests" || "request" || "support reuests" || "support reuest":
+      return RouteConst.volunteerSupportScreen;
+    case "requests post" ||
+          "request post" ||
+          "support reuests post" ||
+          "support reuest post":
+      return RouteConst.volunteerSuportSingleRequestScreen;
     case "set home location" || "seth location" || "set locat":
       return RouteConst.setResidenceLocScreen;
     case "set visit locations" ||
