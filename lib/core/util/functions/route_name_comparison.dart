@@ -8,12 +8,15 @@ String compareRouteName(String routeCommand) {
       return RouteConst.setGuardianScreen;
     case "text to speech" || "text two speech" || "test to speech":
       return RouteConst.textToSpeechScreen;
-    case "text to speech":
-      return RouteConst.setGuardianScreen;
     case "connect cane" || "connect kane":
       return RouteConst.setGuardianScreen;
     case "setting" || "settings":
       return RouteConst.settingsScreen;
+    case "navigation" ||
+          "navigation assistance" ||
+          "navigation asistanse" ||
+          "navigation assistant":
+      return RouteConst.locationScreen;
     case "profile" || "profile setting" || "profile settings":
       return RouteConst.profileScreen;
     case "guide" || "guid" || "gide":
@@ -24,7 +27,10 @@ String compareRouteName(String routeCommand) {
       return RouteConst.communityUploadPostScreen;
     case "set home location" || "seth location" || "set locat":
       return RouteConst.setResidenceLocScreen;
-    case "set visit locations" || "seth visit location" || "st visit locations":
+    case "set visit locations" ||
+          "set visit location" ||
+          "seth visit location" ||
+          "st visit locations":
       return RouteConst.setfreqVisitingLocScreen;
     case "set guardian" || "seth guardian":
       return RouteConst.setGuardianScreen;

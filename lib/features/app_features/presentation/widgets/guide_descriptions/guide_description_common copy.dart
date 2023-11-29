@@ -3,7 +3,7 @@ import 'package:visionmate/core/constants/constants.dart';
 import 'package:visionmate/core/enum/guide_screen_types.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/community_guide_description.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/emergency_call_guide_description.dart';
-import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/feature_navigation_guide_description.dart';
+import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/requests_guide_description.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/object_detection_guide_description.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/use_location_guide_description.dart';
 import 'package:visionmate/features/app_features/presentation/widgets/guide_descriptions/voice_assistance_guide_description.dart';
@@ -25,8 +25,8 @@ class GuideDescriptionCommon extends StatelessWidget {
         return UseLocationGuide(size: size);
       case GuideScreens.objectDetection:
         return ObjectDetectionGuide(size: size);
-      case GuideScreens.featureNavigation:
-        return FeatureNavigationGuide(size: size);
+      case GuideScreens.requests:
+        return RequestsGuide(size: size);
       case GuideScreens.communityGuide:
         return CommunityGuide(size: size);
       default:

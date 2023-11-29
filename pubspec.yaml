@@ -122,6 +122,8 @@ flutter:
     - assets/icons/
     - assets/objectRecognitionModel/yolov2_tiny.tflite
     - assets/objectRecognitionModel/yolov2_tiny.txt
+    - assets/color_detection_model/colordetection_model.tflite
+    - assets/color_detection_model/colordetection_labels.txt
     - assets/yolov2_tiny.tflite
     - assets/yolov2_tiny.txt
     - assets/animations/

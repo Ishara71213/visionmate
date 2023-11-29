@@ -1,26 +1,14 @@
 // ignore_for_file: non_constant_identifier_names, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 import 'package:lottie/lottie.dart' as Lt;
-import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/common/presentation/bloc/cubit/speech_to_text_cubit.dart';
 import 'package:visionmate/core/constants/constants.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:visionmate/core/constants/secret_api_keys.dart';
-import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/widgets/bottom_nav_bar/bottom_navigation_bar.dart';
-import 'package:visionmate/core/widgets/input_widgets/input_widgets_library.dart';
 import 'package:visionmate/features/app_features/presentation/bloc/location/cubit/location_cubit.dart';
-import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
-import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
-import 'package:visionmate/features/userInfoSetup/presentation/bloc/user_info/cubit/user_info_cubit.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});

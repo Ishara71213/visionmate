@@ -4,8 +4,12 @@ import 'package:visionmate/core/constants/constants.dart';
 class CommandBubble extends StatelessWidget {
   final String command;
   final String subCommand;
+  final String? leadingCommand;
   const CommandBubble(
-      {super.key, required this.command, this.subCommand = "Command"});
+      {super.key,
+      this.leadingCommand,
+      required this.command,
+      this.subCommand = "Command"});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,22 @@ class CommandBubble extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               child: Row(
                 children: [
+                  leadingCommand != null && leadingCommand != ""
+                      ? Text(
+                          "$leadingCommand + ",
+                          style: kGuideDetailsBubbleSubCommand,
+                        )
+                      : const SizedBox.shrink(),
                   Text(
                     command,
                     style: kGuideDetailsBubbleCommand,
                   ),
                   Text(
-                    " + $subCommand",
+                    subCommand != "" ? " + " : " ",
+                    style: kGuideDetailsBubbleSubCommand,
+                  ),
+                  Text(
+                    subCommand,
                     style: kGuideDetailsBubbleSubCommand,
                   ),
                 ],

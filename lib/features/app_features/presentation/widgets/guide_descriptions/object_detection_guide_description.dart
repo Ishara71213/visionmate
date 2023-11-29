@@ -34,25 +34,13 @@ class ObjectDetectionGuide extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                "Press and hold to activate the voice assistance",
+                "Step 1: Go to object detection.",
                 style: kGuideDetailsTitle,
               ),
             ),
           ],
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Flexible(
-              child: Text(
-                "Assistance voice commands",
-                style: kGuideDetailsSubTitle,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        const CommandBubble(command: "Go To"),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -61,7 +49,7 @@ class ObjectDetectionGuide extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      "Go to command can be used to navigate through application features.",
+                      "Command ‘Go to Object Detection’ or tap on ‘Object Detection ‘on the home menu.",
                       style: kGuideDetailsBody,
                     ),
                   ),
@@ -69,22 +57,26 @@ class ObjectDetectionGuide extends StatelessWidget {
               ),
               const SizedBox(
                 height: 4,
-              ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      "Ex => Go to Settings",
-                      style: kGuideDetailsBody,
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
-        const CommandBubble(command: "Directions To"),
+        const CommandBubble(
+          command: "Go to",
+          subCommand: "Object Detection",
+        ),
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                "Step 2: Aim your camera.",
+                style: kGuideDetailsTitle,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -93,7 +85,7 @@ class ObjectDetectionGuide extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      "Directions to command can be used to get navigation directions to user setup locations Location key words can be change from Settings.",
+                      "Aim your camera to the area where you want to detect the objects and wait. App will take few seconds to process and identify the objects. Please give permission to use the camera for vision mate first.",
                       style: kGuideDetailsBody,
                     ),
                   ),
@@ -102,15 +94,37 @@ class ObjectDetectionGuide extends StatelessWidget {
               const SizedBox(
                 height: 4,
               ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 18),
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                "Step 3: Get Detection info",
+                style: kGuideDetailsTitle,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
               Row(
                 children: [
                   Flexible(
                     child: Text(
-                      "Ex => Directions To Hospital",
+                      "After detecting the object, vision mate will highlight the detected object within its name. Also, personal assistance will read the detected object for you.",
                       style: kGuideDetailsBody,
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 4,
               ),
             ],
           ),

@@ -1,9 +1,8 @@
 enum GuideScreens {
   voiceAssistance,
   emergencyCall,
-  useLocation,
   howToUseLocation,
   objectDetection,
-  featureNavigation,
+  requests,
   communityGuide
 }

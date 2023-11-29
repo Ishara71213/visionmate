@@ -70,7 +70,10 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                         height: 20,
                       ),
                       FilledButtonCustom(
-                        onPressed: () {},
+                        onPressed: () {
+                          navigationHandler(
+                              context, RouteConst.colorDetectionScreen);
+                        },
                         initText: "Color Detection",
                       ),
                       const SizedBox(

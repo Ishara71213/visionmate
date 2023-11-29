@@ -96,8 +96,8 @@ class _GuideScreenState extends State<GuideScreen> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              selectGuide(
-                                                  GuideScreens.useLocation);
+                                              selectGuide(GuideScreens
+                                                  .howToUseLocation);
                                             },
                                             child: GuideBox(
                                                 title: "How to use Location",
@@ -126,11 +126,11 @@ class _GuideScreenState extends State<GuideScreen> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              selectGuide(GuideScreens
-                                                  .featureNavigation);
+                                              selectGuide(
+                                                  GuideScreens.requests);
                                             },
                                             child: GuideBox(
-                                                title: "Feature Navigation",
+                                                title: "support Requests",
                                                 icon: Icons
                                                     .record_voice_over_rounded,
                                                 size: size),

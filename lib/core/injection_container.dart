@@ -42,6 +42,7 @@ import 'package:visionmate/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/auth/auth_cubit.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
+import 'package:visionmate/features/color_detection/presentation/bloc/color_detection/color_detection_cubit.dart';
 import 'package:visionmate/features/connect_smart_cane/presentation/bloc/cubit/connect_cane_cubit.dart';
 import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
 import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
@@ -95,6 +96,7 @@ Future<void> init() async {
   sl.registerFactory<ObjectDetectionCubit>(() => ObjectDetectionCubit());
   sl.registerFactory<ConnectCaneCubit>(() => ConnectCaneCubit());
   sl.registerFactory<SpeechToTextCubit>(() => SpeechToTextCubit());
+  sl.registerFactory<ColorDetectionCubit>(() => ColorDetectionCubit());
   sl.registerFactory<LocationCubit>(
       () => LocationCubit(liveLocationDataUsecase: sl.call()));
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(

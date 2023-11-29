@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:visionmate/core/constants/user_types.dart';
-import 'package:visionmate/core/util/functions/navigator_handler.dart';
-import 'package:visionmate/features/app_features/presentation/bloc/viuser/cubit/viuser_cubit.dart';
-import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
