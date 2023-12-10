@@ -43,7 +43,7 @@ class _ConnectCaneScreenState extends State<ConnectCaneScreen> {
                 SingleChildScrollView(
                   child: BlocBuilder<ConnectCaneCubit, ConnectCaneState>(
                     builder: (context, state) {
-                      if (state is! CaneConnected) {
+                      if (state is! CaneConnected && state is! CaneSearching) {
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(8, 75, 8, 8),
                           child: Column(
@@ -119,10 +119,36 @@ class _ConnectCaneScreenState extends State<ConnectCaneScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Lottie.asset(
-                                    'assets/animations/search-radar.json',
-                                    width: size.width - 32,
-                                    height: size.width - 32),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          connectCaneCubit.disconnectDevice();
+                                        },
+                                        icon: Icon(
+                                          Icons.bluetooth_disabled_rounded,
+                                          color: kPrimaryColor,
+                                          size: 34,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Stack(
+                                  children: [
+                                    Lottie.asset(
+                                        'assets/animations/search-radar.json',
+                                        width: size.width - 32,
+                                        height: size.width - 32),
+                                    Lottie.asset(
+                                        'assets/animations/search-radar.json',
+                                        width: size.width - 32,
+                                        height: size.width - 32),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -133,7 +159,7 @@ class _ConnectCaneScreenState extends State<ConnectCaneScreen> {
                 ),
                 BlocBuilder<ConnectCaneCubit, ConnectCaneState>(
                   builder: (context, state) {
-                    if (state is! CaneConnected) {
+                    if (state is! CaneConnected && state is! CaneSearching) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Column(
@@ -141,7 +167,9 @@ class _ConnectCaneScreenState extends State<ConnectCaneScreen> {
                           children: [
                             FilledButtonCustom(
                               onPressed: () async {
-                                await connectCaneCubit.scanDevices();
+                                //await connectCaneCubit.scanDevices();
+                                await connectCaneCubit
+                                    .automatedWithVoiceMommand();
                               },
                               initText: "Scan",
                             ),
@@ -155,8 +183,16 @@ class _ConnectCaneScreenState extends State<ConnectCaneScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             FilledButtonCustom(
-                              onPressed: () async {},
-                              initText: "Find Device",
+                              onPressed: () async {
+                                if (state is CaneSearching) {
+                                  connectCaneCubit.stopFindDevice();
+                                } else {
+                                  connectCaneCubit.findDevice();
+                                }
+                              },
+                              initText: state is CaneSearching
+                                  ? "Stop Finding"
+                                  : "Find Device",
                             ),
                           ],
                         ),

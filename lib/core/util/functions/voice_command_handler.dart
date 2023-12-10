@@ -5,6 +5,7 @@ import 'package:visionmate/core/util/functions/location_name_comparison.dart';
 import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/util/functions/string_helper.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
+import 'package:visionmate/features/connect_smart_cane/presentation/bloc/cubit/connect_cane_cubit.dart';
 import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 
 void voiceCommandHandler(BuildContext context, command, double confidence) {
@@ -25,6 +26,14 @@ void voiceCommandHandler(BuildContext context, command, double confidence) {
       textToSpeech(BlocProvider.of<TextToSpeechCubit>(context)?.readText ?? "");
     } else if (command.contains("clear screen")) {
       BlocProvider.of<TextToSpeechCubit>(context)?.clearData();
+    } else if (command.contains("connect device")) {
+      BlocProvider.of<ConnectCaneCubit>(context)?.automatedWithVoiceMommand();
+    } else if (command.contains("remove device")) {
+      BlocProvider.of<ConnectCaneCubit>(context)?.disconnectDevice();
+    } else if (command.contains("find device")) {
+      BlocProvider.of<ConnectCaneCubit>(context)?.findDevice();
+    } else if (command.contains("stop find")) {
+      BlocProvider.of<ConnectCaneCubit>(context)?.stopFindDevice();
     } else {
       textToSpeech("Invalid command $command");
     }

@@ -66,13 +66,11 @@ void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
   }
   //settings page navigation
   else if (routeName == RouteConst.setGuardianScreen) {
-    textToSpeech("Go to $routeCommand \n Tap Screen to Scan Text");
     navigationHandlerWithArgumnets(context, RouteConst.setGuardianScreen, {
       'isAccessingFromSettings': true,
       'guardianId': BlocProvider.of<ViuserCubit>(context).guardianEmail ?? ""
     });
   } else if (routeName == RouteConst.setEmergencyContactScreen) {
-    textToSpeech("Go to $routeCommand \n Tap Screen to Scan Text");
     navigationHandlerWithArgumnets(
         context, RouteConst.setEmergencyContactScreen, {
       'isAccessingFromSettings': true,
@@ -84,7 +82,6 @@ void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
           BlocProvider.of<ViuserCubit>(context).userInfo?.emergencyContact ?? ""
     });
   } else if (routeName == RouteConst.setResidenceLocScreen) {
-    textToSpeech("Go to $routeCommand \n Tap Screen to Scan Text");
     navigationHandlerWithArgumnets(context, RouteConst.setResidenceLocScreen, {
       'isAccessingFromSettings': true,
       'recidenceAddress':
@@ -102,7 +99,6 @@ void navigateUsingVoiceCommand(BuildContext context, String routeCommand) {
           ""
     });
   } else if (routeName == RouteConst.setfreqVisitingLocScreen) {
-    textToSpeech("Go to $routeCommand \n Tap Screen to Scan Text");
     navigationHandlerWithArgumnets(
         context, RouteConst.addfreqVisitingLocScreen, {
       'isAccessingFromSettings': true,

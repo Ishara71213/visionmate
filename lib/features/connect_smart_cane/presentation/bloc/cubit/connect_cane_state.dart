@@ -17,6 +17,8 @@ final class CaneDisconnected extends ConnectCaneState {}
 
 final class CaneDisconnecting extends ConnectCaneState {}
 
+final class CaneSearching extends ConnectCaneState {}
+
 final class CaneConnectionError extends ConnectCaneState {}
 
 final class SearchConnections extends ConnectCaneState {}

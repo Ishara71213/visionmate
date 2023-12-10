@@ -103,7 +103,7 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                                         context, RouteConst.textToSpeechScreen);
                                   },
                                   child: AppFeatureBox(
-                                      title: "Text to Speech Convert",
+                                      title: "Text to Speech",
                                       icon: Icons.assessment_rounded,
                                       size: size),
                                 ),
@@ -116,7 +116,7 @@ class _HomeViUserScreenState extends State<HomeViUserScreen> {
                                         context, RouteConst.connectCaneScreen);
                                   },
                                   child: AppFeatureBox(
-                                      title: "Connect Smart Cane",
+                                      title: "Connect Cane",
                                       icon: Icons.bluetooth_searching_rounded,
                                       size: size),
                                 )
