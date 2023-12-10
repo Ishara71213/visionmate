@@ -6,6 +6,7 @@ import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/core/util/functions/string_helper.dart';
 import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/features/connect_smart_cane/presentation/bloc/cubit/connect_cane_cubit.dart';
+import 'package:visionmate/features/object_detection/presentation/bloc/ObjectDetection/object_detection_cubit.dart';
 import 'package:visionmate/features/text_to_Speech/presentation/bloc/text_to_peech/text_to_speech_cubit.dart';
 
 void voiceCommandHandler(BuildContext context, command, double confidence) {
@@ -34,6 +35,9 @@ void voiceCommandHandler(BuildContext context, command, double confidence) {
       BlocProvider.of<ConnectCaneCubit>(context)?.findDevice();
     } else if (command.contains("stop find")) {
       BlocProvider.of<ConnectCaneCubit>(context)?.stopFindDevice();
+    } else if (command.contains("find")) {
+      String searchTearm = removeWord(command, "find");
+      BlocProvider.of<ObjectDetectionCubit>(context)?.searchObject(searchTearm);
     } else {
       textToSpeech("Invalid command $command");
     }

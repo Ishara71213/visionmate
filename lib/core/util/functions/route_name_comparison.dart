@@ -3,7 +3,7 @@ import 'package:visionmate/config/routes/route_const.dart';
 String compareRouteName(String routeCommand) {
   switch (routeCommand) {
     case "object detection" || "object detector":
-      return RouteConst.setEmergencyContactScreen;
+      return RouteConst.objectDetectionScreen;
     case "color detection" || "colour detector" || "colour detection":
       return RouteConst.setGuardianScreen;
     case "text to speech" || "text two speech" || "test to speech":

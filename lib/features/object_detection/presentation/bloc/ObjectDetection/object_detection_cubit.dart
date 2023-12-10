@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:visionmate/core/util/functions/text_to_speech_helper.dart';
 import 'package:visionmate/features/object_detection/domain/entities/object_recognition.dart';
 import 'package:visionmate/features/object_detection/presentation/screens/models.dart';
 
@@ -18,32 +19,30 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
 
   List<dynamic> recognitions = [];
 
-  // final StreamController<List<dynamic>> _streamController = StreamController();
-  // StreamSink<List<dynamic>> get _detectionSink => _streamController.sink;
-  // Stream<List<dynamic>> get detectionStream => _streamController.stream;
-
-  final StreamController<ObjectRecognitionEntity> _streamController =
+  StreamController<ObjectRecognitionEntity> streamController =
       StreamController();
   StreamSink<ObjectRecognitionEntity> get _detectionSink =>
-      _streamController.sink;
+      streamController.sink;
   Stream<ObjectRecognitionEntity> get detectionStream =>
-      _streamController.stream;
+      streamController.stream;
 
   late CameraController controller;
   bool isDetecting = false;
   bool isImageStreamStart = false;
   bool isCameraInitialized = false;
-  ObjectDetectionCubit() : super(ObjectDetectionInitial()) {
-    // initCamera();
-  }
+  bool isSearching = false;
+  String objectName = "";
+
+  ObjectDetectionCubit() : super(ObjectDetectionInitial());
 
   void init() {
     initCamera();
   }
 
   void dispose() {
+    isSearching = false;
     emit(ObjectDetectInitial());
-    _streamController.close();
+    streamController.close();
     controller.stopImageStream();
     controller.dispose();
   }
@@ -58,6 +57,12 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
       print("Permission denied");
       emit(ObjectDetectionModelLoadingFailed());
     }
+  }
+
+  void searchObject(String objectName) {
+    textToSpeech("Finding $objectName");
+    isSearching = true;
+    objectName = objectName;
   }
 
   Future<void> loadModel() async {
@@ -149,8 +154,19 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
                         recognitions: recognitions,
                         imageHeight: img.height,
                         imageWidth: img.width);
-                if (!_streamController.isClosed) {
+                if (!streamController.isClosed && !isSearching) {
                   _detectionSink.add(objRecognition);
+                } else if (!streamController.isClosed && isSearching) {
+                  for (var items in recognitions) {
+                    if (items['detectedClass'] == objectName) {
+                      textToSpeech("$objectName found");
+                      _detectionSink.add(objRecognition);
+                    } else {
+                      textToSpeech("Object Did n't found");
+                    }
+                  }
+                } else {
+                  streamController = StreamController();
                 }
                 isDetecting = false;
               });
