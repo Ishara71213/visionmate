@@ -24,12 +24,17 @@ class GuardianCubit extends Cubit<GuardianState> {
   LatLng? currentLocationTemp;
   late StreamSubscription<Position> positionStream;
   bool isDisposed = false;
+  bool isliveLocationMonitering = false;
+  LiveLocationEntity liveLocationMonitor = const LiveLocationEntity(
+      isAllowedLivelocationShare: true,
+      liveLocation: LatLng(6.8559091, 79.8628161));
+  int count = 0;
 
   GuardianCubit(
       {required this.getCurrentGuardianUserById,
       required this.getEmailByUidUsecase,
       required this.liveLocationDataMonitotUsecase})
-      : super(GuardianInitial());
+      : super(GuardianInitial()) {}
 
   Future<void> resetToInitialState() async {
     emit(GuardianInitial());
@@ -52,6 +57,28 @@ class GuardianCubit extends Cubit<GuardianState> {
     }
   }
 
+  void refreshLocation() {
+    getDataFromServer();
+    emit(LiveLocationDataMonitoring(
+      wardLocation: LatLng(liveLocationMonitor?.liveLocation?.latitude ?? 0,
+          liveLocationMonitor?.liveLocation?.longitude ?? 0),
+    ));
+  }
+
+  void locationMoniter() {
+    isliveLocationMonitering = !isliveLocationMonitering;
+    if (isliveLocationMonitering) {
+      getDataFromServer();
+    }
+  }
+
+  void getDataFromServer() async {
+    if (isliveLocationMonitering) {
+      liveLocationMonitor = await liveLocationDataMonitotUsecase(
+          userInfo!.vissuallyImpairedUserId.toString());
+    }
+  }
+
   void updateMapCameraView(
       String latitude, String longitude, GoogleMapController controller) {
     double lat = double.parse(latitude);
@@ -67,27 +94,30 @@ class GuardianCubit extends Cubit<GuardianState> {
       accuracy: LocationAccuracy.low,
       distanceFilter: 0,
     );
-    // positionStream =
-    //     Geolocator.getPositionStream(locationSettings: locationSettings)
-    //         .listen((Position? position) async {
-    //   if (position != null) {
-    //     LiveLocationEntity liveLocationMonitor =
-    //         await liveLocationDataMonitotUsecase(wardId);
-    //     emit(LiveLocationDataMonitoring(
-    //       curruntLocation: LatLng(position.latitude, position.longitude),
-    //       wardLocation: LatLng(liveLocationMonitor?.liveLocation?.latitude ?? 0,
-    //           liveLocationMonitor?.liveLocation?.longitude ?? 0),
-    //     ));
-    //     if (!isDisposed) {
-    //       controller.animateCamera(CameraUpdate.newLatLng(LatLng(
-    //           liveLocationMonitor.liveLocation?.latitude ?? 0,
-    //           liveLocationMonitor.liveLocation?.longitude ?? 0)));
-    //     }
-    //   }
-    //   print(position == null
-    //       ? 'Unknown'
-    //       : 'live ${position.latitude.toString()}, ${position.longitude.toString()}');
-    // });
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) async {
+      if (position != null) {
+        if (count % 99 == 0 && isliveLocationMonitering) {}
+        if (count == 99999999) {
+          count = 0;
+        }
+        count++;
+        emit(LiveLocationDataMonitoring(
+          curruntLocation: LatLng(position.latitude, position.longitude),
+          wardLocation: LatLng(liveLocationMonitor?.liveLocation?.latitude ?? 0,
+              liveLocationMonitor?.liveLocation?.longitude ?? 0),
+        ));
+        if (!isDisposed) {
+          controller.animateCamera(CameraUpdate.newLatLng(LatLng(
+              liveLocationMonitor.liveLocation?.latitude ?? 0,
+              liveLocationMonitor.liveLocation?.longitude ?? 0)));
+        }
+      }
+      print(position == null
+          ? 'Unknown'
+          : 'live ${position.latitude.toString()}, ${position.longitude.toString()}');
+    });
   }
 
   void determinePosition() async {

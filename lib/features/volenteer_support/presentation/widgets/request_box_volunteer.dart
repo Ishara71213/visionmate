@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:visionmate/config/routes/route_const.dart';
 import 'package:visionmate/core/constants/constants.dart';
+import 'package:visionmate/core/util/functions/navigator_handler.dart';
 import 'package:visionmate/features/volenteer_support/domain/entities/volenteer_request_entity.dart';
 import 'package:visionmate/features/volenteer_support/presentation/bloc/voluntee_support_cubit/volunteer_support_cubit.dart';
 
@@ -111,7 +113,12 @@ class RequestBoxVolunteer extends StatelessWidget {
                         await BlocProvider.of<VolunteerSupportCubit>(context)
                             .acceptRequest(request, context);
                       }
-                    : null,
+                    : () async {
+                        BlocProvider.of<VolunteerSupportCubit>(context)
+                            .selectedRequest = request;
+                        navigationHandler(
+                            context, RouteConst.volunteerMessageScreen);
+                      },
                 style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(40),
                     backgroundColor: kButtonPrimaryColor,
@@ -135,8 +142,8 @@ class RequestBoxVolunteer extends StatelessWidget {
                   child: FilledButton(
                 onPressed: () async {
                   if (request.requestId != null) {
-                    // await BlocProvider.of<VolunteerSupportCubit>(context)
-                    //     .deleteRequest(request.requestId!);
+                    await BlocProvider.of<VolunteerSupportCubit>(context)
+                        .deleteRequest(request.requestId!);
                   }
                 },
                 style: FilledButton.styleFrom(

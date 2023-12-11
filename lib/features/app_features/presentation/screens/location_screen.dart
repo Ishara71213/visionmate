@@ -163,6 +163,9 @@ class _LocationScreenState extends State<LocationScreen> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    const SizedBox(
+                      height: 16.0,
+                    ),
                     BlocBuilder<SpeechToTextCubit, SpeechToTextState>(
                       builder: (context, state) {
                         if (state is Listning) {
@@ -174,11 +177,39 @@ class _LocationScreenState extends State<LocationScreen> {
                                 height: 106),
                           );
                         } else {
-                          return const Padding(
-                            padding: EdgeInsets.only(bottom: 16.0),
-                            child: BottomNavBar(
-                              selectedIndex: 4,
-                            ),
+                          return Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: FilledButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        locationCubit.locationShare();
+                                      });
+                                    },
+                                    style: FilledButton.styleFrom(
+                                        minimumSize: const Size.fromHeight(60),
+                                        backgroundColor:
+                                            locationCubit.isLocationShared
+                                                ? kSuccessColor
+                                                : kButtonPrimaryColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6.0))),
+                                    child: Text(
+                                        locationCubit.isLocationShared
+                                            ? "Location Sharing"
+                                            : "Share Location",
+                                        style: kFilledButtonTextstyle)),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(bottom: 16.0),
+                                child: BottomNavBar(
+                                  selectedIndex: 4,
+                                ),
+                              ),
+                            ],
                           );
                         }
                       },

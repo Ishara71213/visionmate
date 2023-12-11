@@ -38,6 +38,9 @@ void voiceCommandHandler(BuildContext context, command, double confidence) {
     } else if (command.contains("find")) {
       String searchTearm = removeWord(command, "find");
       BlocProvider.of<ObjectDetectionCubit>(context)?.searchObject(searchTearm);
+    } else if (command.contains("stop find") ||
+        command.contains("stop search")) {
+      BlocProvider.of<ObjectDetectionCubit>(context)?.stopSearching();
     } else {
       textToSpeech("Invalid command $command");
     }

@@ -39,4 +39,5 @@ class RouteConst {
       '/volunteerSuportSingleRequestScreen';
   static const String volunteerUploadRequestScreen =
       '/volunteerUploadRequestScreen';
+  static const String volunteerMessageScreen = '/volunteerMessageScreen';
 }

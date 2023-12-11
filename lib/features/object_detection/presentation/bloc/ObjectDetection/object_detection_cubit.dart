@@ -31,6 +31,7 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
   bool isImageStreamStart = false;
   bool isCameraInitialized = false;
   bool isSearching = false;
+  bool isobjectFond = false;
   String objectName = "";
 
   ObjectDetectionCubit() : super(ObjectDetectionInitial());
@@ -59,10 +60,17 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
     }
   }
 
-  void searchObject(String objectName) {
-    textToSpeech("Finding $objectName");
+  void searchObject(String query) {
+    textToSpeech("Finding $query");
     isSearching = true;
-    objectName = objectName;
+    objectName = query;
+  }
+
+  void stopSearching() {
+    textToSpeech("Stop Searching");
+    isSearching = false;
+    isobjectFond = false;
+    objectName = "";
   }
 
   Future<void> loadModel() async {
@@ -99,78 +107,45 @@ class ObjectDetectionCubit extends Cubit<ObjectDetectionState> {
             isDetecting = true;
 
             int startTime = DateTime.now().millisecondsSinceEpoch;
+            Tflite.detectObjectOnFrame(
+              bytesList: img.planes.map((plane) {
+                return plane.bytes;
+              }).toList(),
+              model: model == yolo ? "YOLO" : "SSDMobileNet",
+              imageHeight: img.height,
+              imageWidth: img.width,
+              imageMean: model == yolo ? 0 : 127.5,
+              imageStd: model == yolo ? 255.0 : 127.5,
+              numResultsPerClass: 1,
+              threshold: model == yolo ? 0.2 : 0.4,
+            ).then((recognitions) {
+              int endTime = DateTime.now().millisecondsSinceEpoch;
+              print("Detection took ${endTime - startTime}");
 
-            if (model == mobilenet) {
-              Tflite.runModelOnFrame(
-                bytesList: img.planes.map((plane) {
-                  return plane.bytes;
-                }).toList(),
-                imageHeight: img.height,
-                imageWidth: img.width,
-                numResults: 2,
-              ).then((recognitions) {
-                int endTime = DateTime.now().millisecondsSinceEpoch;
-                print("Detection took ${endTime - startTime}");
-
-                setRecognitions(recognitions!, img.height, img.width);
-
-                isDetecting = false;
-              });
-            } else if (model == posenet) {
-              Tflite.runPoseNetOnFrame(
-                bytesList: img.planes.map((plane) {
-                  return plane.bytes;
-                }).toList(),
-                imageHeight: img.height,
-                imageWidth: img.width,
-                numResults: 2,
-              ).then((recognitions) {
-                int endTime = DateTime.now().millisecondsSinceEpoch;
-                print("Detection took ${endTime - startTime}");
-
-                setRecognitions(recognitions!, img.height, img.width);
-
-                isDetecting = false;
-              });
-            } else {
-              Tflite.detectObjectOnFrame(
-                bytesList: img.planes.map((plane) {
-                  return plane.bytes;
-                }).toList(),
-                model: model == yolo ? "YOLO" : "SSDMobileNet",
-                imageHeight: img.height,
-                imageWidth: img.width,
-                imageMean: model == yolo ? 0 : 127.5,
-                imageStd: model == yolo ? 255.0 : 127.5,
-                numResultsPerClass: 1,
-                threshold: model == yolo ? 0.2 : 0.4,
-              ).then((recognitions) {
-                int endTime = DateTime.now().millisecondsSinceEpoch;
-                print("Detection took ${endTime - startTime}");
-
-                setRecognitions(recognitions!, img.height, img.width);
-                ObjectRecognitionEntity objRecognition =
-                    ObjectRecognitionEntity(
-                        recognitions: recognitions,
-                        imageHeight: img.height,
-                        imageWidth: img.width);
-                if (!streamController.isClosed && !isSearching) {
-                  _detectionSink.add(objRecognition);
-                } else if (!streamController.isClosed && isSearching) {
-                  for (var items in recognitions) {
-                    if (items['detectedClass'] == objectName) {
-                      textToSpeech("$objectName found");
-                      _detectionSink.add(objRecognition);
-                    } else {
-                      textToSpeech("Object Did n't found");
-                    }
+              setRecognitions(recognitions!, img.height, img.width);
+              ObjectRecognitionEntity objRecognition = ObjectRecognitionEntity(
+                  recognitions: recognitions,
+                  imageHeight: img.height,
+                  imageWidth: img.width);
+              if (!streamController.isClosed && !isSearching) {
+                _detectionSink.add(objRecognition);
+              } else if (!streamController.isClosed && isSearching) {
+                for (var items in recognitions) {
+                  if (items['detectedClass'] == objectName) {
+                    isobjectFond = true;
+                    textToSpeech("$objectName found");
+                    _detectionSink.add(objRecognition);
                   }
-                } else {
-                  streamController = StreamController();
                 }
-                isDetecting = false;
-              });
-            }
+                if (!isobjectFond) {
+                  textToSpeech("Object Did n't found");
+                }
+                _detectionSink.add(objRecognition);
+              } else {
+                streamController = StreamController();
+              }
+              isDetecting = false;
+            });
           }
         });
       });

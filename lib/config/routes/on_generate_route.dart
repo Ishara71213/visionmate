@@ -30,6 +30,7 @@ import 'package:visionmate/features/userInfoSetup/presentation/screens/user_guar
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_info_initial_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_set_residence_location_screen.dart';
 import 'package:visionmate/features/userInfoSetup/presentation/screens/user_vi_user_info_screen.dart';
+import 'package:visionmate/features/volenteer_support/presentation/Screens/volunteer_message_screen.dart';
 import 'package:visionmate/features/volenteer_support/presentation/Screens/volunteer_support_screen.dart';
 import 'package:visionmate/features/volenteer_support/presentation/Screens/volunteer_upload_request_screen.dart';
 
@@ -145,6 +146,9 @@ class OnGenerateRoute {
       case RouteConst.colorDetectionScreen:
         return materialBuilder(
             widget: const ColorDetectionScrean(), route: routeName);
+      case RouteConst.volunteerMessageScreen:
+        return materialBuilder(
+            widget: const VolunteerMessageScreen(), route: routeName);
       //error page
       default:
         return MaterialPageRoute(builder: (context) => const ErrorPage());

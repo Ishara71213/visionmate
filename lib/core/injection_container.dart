@@ -123,6 +123,7 @@ Future<void> init() async {
       getCurrentUIdUsecase: sl.call(),
       acceptRequestByIdUsecase: sl.call(),
       rejectRequestByIdUsecase: sl.call(),
+      getEmailByUidUseCae: sl.call(),
       uploadimageUsecase: sl.call()));
 
   //usecase

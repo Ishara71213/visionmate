@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:visionmate/features/app_features/domain/usecases/get_email_by_uid.dart';
 import 'package:visionmate/features/app_features/domain/usecases/upload_image_usecase.dart';
 import 'package:visionmate/features/auth/domain/usecases/get_current_uid_usecase.dart';
 import 'package:visionmate/features/auth/presentation/bloc/user/cubit/user_cubit.dart';
@@ -29,6 +31,7 @@ class VolunteerSupportCubit extends Cubit<VolunteerSupportState> {
   final GetCurrentUIdUsecase getCurrentUIdUsecase;
   final AcceptRequestByIdUsecase acceptRequestByIdUsecase;
   final RejectRequestByIdUsecase rejectRequestByIdUsecase;
+  final GetEmailByUidUsecase getEmailByUidUseCae;
 
   VolunteerSupportCubit(
       {required this.getAllRequestUsecase,
@@ -38,6 +41,7 @@ class VolunteerSupportCubit extends Cubit<VolunteerSupportState> {
       required this.getCurrentUIdUsecase,
       required this.rejectRequestByIdUsecase,
       required this.acceptRequestByIdUsecase,
+      required this.getEmailByUidUseCae,
       required this.uploadimageUsecase})
       : super(VolunteerSupportInitial());
 
@@ -47,6 +51,7 @@ class VolunteerSupportCubit extends Cubit<VolunteerSupportState> {
   String requestContent = "";
   List<VolunteerRequestEntity> postList = [];
   List<String> postIdList = [];
+  late VolunteerRequestEntity selectedRequest;
 
   Future<XFile?> compressFile(File file) async {
     final filePath = file.absolute.path;
@@ -133,6 +138,43 @@ class VolunteerSupportCubit extends Cubit<VolunteerSupportState> {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Image Selecting error')));
     }
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
+  void emailSendtoVolunteer(String subject, String body) async {
+    if (selectedRequest == null) return;
+    String? email = await getEmailByUidUseCae
+        .call(selectedRequest.acceptedUserUserId.toString());
+    lunchEmail(toEmail: email, subject: subject, message: body);
+  }
+
+  void emailSendtoViUser(String subject, String body) async {
+    if (selectedRequest == null) return;
+    String? email = await getEmailByUidUseCae
+        .call(selectedRequest.createdUserId.toString());
+    lunchEmail(toEmail: email, subject: subject, message: body);
+  }
+
+  Future lunchEmail(
+      {required String toEmail,
+      required String subject,
+      required String message}) async {
+    // String url =
+    //     "mailto:$toEmail?subject=${Uri.encodeFull(subject)}&body=${Uri.encodeFull(message)}";
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: toEmail,
+      query: encodeQueryParameters(
+          <String, String>{'subject': subject, 'body': message}),
+    );
+
+    launchUrl(emailLaunchUri);
   }
 
   void submitPost(BuildContext context) async {

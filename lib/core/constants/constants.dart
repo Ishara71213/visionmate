@@ -17,7 +17,7 @@ Color KbluGrey = const Color(0XFF758199);
 Color KDarkbluGrey = const Color(0XFF475A78);
 Color kGreyextColor = const Color(0xFF4D4E51);
 
-Color kSuccessColor = const Color.fromARGB(255, 96, 231, 7);
+Color kSuccessColor = const Color.fromARGB(255, 4, 117, 47);
 Color kWarnningColor = const Color.fromARGB(255, 253, 167, 19);
 Color kErrorColor = const Color.fromARGB(255, 207, 22, 22);
 

@@ -28,6 +28,9 @@ class LocationCubit extends Cubit<LocationState> {
   List<LatLng> polylineCordinates = [];
   late StreamSubscription<Position> positionStream;
   bool isDisposed = false;
+  DateTime startTime = DateTime.now();
+  bool isLocationShared = false;
+  int count = 0;
 
   LocationCubit({required this.liveLocationDataUsecase})
       : super(LocationInitial());
@@ -85,21 +88,37 @@ class LocationCubit extends Cubit<LocationState> {
     // controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, lng)));
   }
 
+  void locationShare() {
+    isLocationShared = !isLocationShared;
+    startTime = DateTime.now();
+  }
+
+  void sendDataToServer(Position position) {
+    if (isLocationShared) {
+      print(
+          "InsideLocation loop ----------------------------------------- count ${position?.longitude} ${position?.latitude}");
+      LiveLocationEntity liveLocationEntity = LiveLocationEntity(
+          isAllowedLivelocationShare: true,
+          liveLocation: LatLng(position.latitude, position.longitude));
+      liveLocationDataUsecase(liveLocationEntity);
+    }
+  }
+
   void updateCurrentLocation(GoogleMapController controller) async {
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.low,
       distanceFilter: 0,
     );
+
     positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position? position) {
       if (position != null) {
-        var count = 0;
-        if (count % 25 == 0) {
-          // LiveLocationEntity liveLocationEntity = LiveLocationEntity(
-          //     isAllowedLivelocationShare: true,
-          //     liveLocation: LatLng(position.latitude, position.longitude));
-          // liveLocationDataUsecase(liveLocationEntity);
+        if (count % 99 == 0 && isLocationShared) {
+          sendDataToServer(position);
+        }
+        if (count == 99999999) {
+          count = 0;
         }
         count++;
         emit(LocationStartDirections(
