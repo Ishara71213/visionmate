@@ -155,8 +155,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                              'assets/icons/Google__G__Logo 2.svg'),
+                          GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<AuthCubit>(context)
+                                  .signInWithGoogle();
+                            },
+                            child: SvgPicture.asset(
+                                'assets/icons/Google__G__Logo 2.svg'),
+                          ),
                           const SizedBox(
                             width: 26.0,
                           ),
